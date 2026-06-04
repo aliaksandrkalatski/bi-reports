@@ -87,6 +87,11 @@
   .chartbox{position:relative; width:100%; height:250px; margin-top:6px;}
   footer{text-align:center; color:var(--hint); font-size:12px; font-family:'IBM Plex Mono',monospace; margin-top:40px;}
   @media(max-width:640px){ .grid2{grid-template-columns:1fr;} .wrap{padding:32px 16px 64px;} section.report{padding:22px 18px 26px;} }
+
+  .ra-tab{font-family:'IBM Plex Sans',sans-serif; font-size:13px; padding:8px 12px; background:none; border:none; border-bottom:2px solid transparent; color:var(--muted); cursor:pointer;}
+  .ra-tab:hover{color:var(--ink);}
+  .ra-tab.active{color:var(--accent); border-bottom-color:var(--accent); font-weight:600;}
+  #ra-body table{width:100%;}
 </style>
 </head>
 <body>
@@ -109,6 +114,11 @@
     <a href="#r3"><span class="n">03</span><span class="t">Partner (B2B) Performance</span></a>
     <a href="#r4"><span class="n">04</span><span class="t">Tournament Performance</span></a>
     <a href="#r5"><span class="n">05</span><span class="t">Discipline Performance</span></a>
+    <a href="#r6"><span class="n">06</span><span class="t">Quick Player P&L</span></a>
+    <a href="#r7"><span class="n">07</span><span class="t">Player Profiling</span></a>
+    <a href="#r8"><span class="n">08</span><span class="t">Rejection Monitor — Daily</span></a>
+    <a href="#r9"><span class="n">09</span><span class="t">Rejection Monitor — Monthly</span></a>
+    <a href="#r10"><span class="n">10</span><span class="t">Risk Alerts</span></a>
   </nav>
 
   <!-- 1. DAILY -->
@@ -252,6 +262,107 @@
     </div>
   </section>
 
+
+  <!-- 6. QUICK PLAYER P&L -->
+  <section class="report" id="r6">
+    <div class="rhead"><span class="rnum">06</span><h2>Quick Player P&amp;L</h2></div>
+    <p class="rpurpose"><b>Morning radar</b> — open and instantly see the day's most extreme players by P&amp;L. Two sections: our losses (players who beat us) and our profit. Top 50 each. Audience: risk, trading.</p>
+    <div class="filters"><span class="lbl">Period</span><select><option>Previous day (UTC)</option><option>Last 24h (rolling)</option><option>Last 7 days</option></select></div>
+    <p class="caption" style="color:var(--neg);">Our losses — players who beat us</p>
+    <div class="scroll" style="margin-bottom:1.5rem;">
+      <table><thead><tr><th>Player</th><th>Client</th><th>Bets</th><th>Total stake</th><th>P&amp;L</th><th>Hold %</th><th>Avg bet</th><th>Avg odds</th></tr></thead>
+      <tbody class="num">
+        <tr><td>#48201 · m.kovac@…</td><td>BetZone</td><td>142</td><td>€38,400</td><td class="neg">−€21,300</td><td class="neg">−55.5%</td><td>€270</td><td>3.42</td></tr>
+        <tr><td>#33915 · sharp_99</td><td>LuckyDome</td><td>88</td><td>€52,100</td><td class="neg">−€18,750</td><td class="neg">−36.0%</td><td>€592</td><td>2.10</td></tr>
+        <tr><td>#51120 · a.ivanov@…</td><td>BetZone</td><td>205</td><td>€29,800</td><td class="neg">−€12,400</td><td class="neg">−41.6%</td><td>€145</td><td>1.88</td></tr>
+      </tbody></table>
+    </div>
+    <p class="caption" style="color:var(--pos);">Our profit — players who lost to us</p>
+    <div class="scroll">
+      <table><thead><tr><th>Player</th><th>Client</th><th>Bets</th><th>Total stake</th><th>P&amp;L</th><th>Hold %</th><th>Avg bet</th><th>Avg odds</th></tr></thead>
+      <tbody class="num">
+        <tr><td>#29044 · highroller_7</td><td>BetZone</td><td>318</td><td>€64,200</td><td class="pos">+€19,800</td><td class="pos">30.8%</td><td>€202</td><td>2.55</td></tr>
+        <tr><td>#41882 · d.smith@…</td><td>LuckyDome</td><td>176</td><td>€41,500</td><td class="pos">+€15,200</td><td class="pos">36.6%</td><td>€236</td><td>1.72</td></tr>
+        <tr><td>#37650 · lucky_loser</td><td>BetZone</td><td>94</td><td>€22,900</td><td class="pos">+€11,650</td><td class="pos">50.9%</td><td>€244</td><td>2.95</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- 7. PLAYER PROFILING -->
+  <section class="report" id="r7">
+    <div class="rhead"><span class="rnum">07</span><h2>Player Profiling</h2></div>
+    <p class="rpurpose"><b>Full per-player analytical view</b> — attributes, volume, accepted vs rejected flow, P&amp;L and the rejected flow's potential cost. Scroll sideways for all columns. Audience: risk, profiling, trading.</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option></select><select><option>All disciplines</option></select><select><option>All markets</option></select><select><option>Live + Prematch</option></select><select><option>Single + Multi</option></select><select><option>All tiers</option></select><select><option>Previous day</option></select></div>
+    <div class="scroll" style="border:0.5px solid var(--line); border-radius:8px;">
+      <table style="min-width:1650px; white-space:nowrap;">
+        <thead><tr>
+          <th>ID</th><th>Email</th><th>Country</th><th>Lang</th><th>Client</th><th>Cur</th><th>Sex</th><th>Age</th><th>Fraud</th><th>Tier</th><th>Acc</th><th>Rej</th><th>Rej %</th><th>Bets</th><th>Stake</th><th>Profit</th><th>Rej. profit*</th><th>Avg bet</th><th>Avg odds</th>
+        </tr></thead>
+        <tbody class="num">
+          <tr><td>#48201</td><td>m.kovac@…</td><td>SK</td><td>SK</td><td>BetZone</td><td>EUR</td><td>M</td><td>34</td><td class="neg">flag</td><td>Sharp</td><td>142</td><td>86</td><td>37.7%</td><td>228</td><td>€38,400</td><td class="neg">−€21,300</td><td class="neg">−€34,800</td><td>€270</td><td>3.42</td></tr>
+          <tr><td>#33915</td><td>sharp_99</td><td>GB</td><td>EN</td><td>LuckyDome</td><td>GBP</td><td>M</td><td>41</td><td>—</td><td>Sharp</td><td>88</td><td>154</td><td>63.6%</td><td>242</td><td>€52,100</td><td class="neg">−€18,750</td><td class="neg">−€61,200</td><td>€592</td><td>2.10</td></tr>
+          <tr><td>#29044</td><td>highroller_7</td><td>DE</td><td>DE</td><td>BetZone</td><td>EUR</td><td>M</td><td>28</td><td>—</td><td>VIP</td><td>318</td><td>12</td><td>3.6%</td><td>330</td><td>€64,200</td><td class="pos">+€19,800</td><td class="pos">+€2,100</td><td>€202</td><td>2.55</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11px; color:var(--hint); margin:8px 0 0;">* Rejected profit = hypothetical P&amp;L if rejected bets had been accepted at the moment, by actual outcome.</p>
+  </section>
+
+  <!-- 8. REJECTION MONITOR DAILY -->
+  <section class="report" id="r8">
+    <div class="rhead"><span class="rnum">08</span><h2>Rejection Monitor — Daily</h2></div>
+    <p class="rpurpose"><b>Track bet rejection rate day by day</b> within the current month, with reason breakdown, to catch spikes early. Disabled reasons drop out of the rate. Audience: risk, trading, operations.</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option></select><select><option>All disciplines</option></select><select><option>All tournaments</option></select><select><option>Live + Prematch</option></select><select><option>Single + Multi</option></select><span class="lbl" style="margin-left:6px;">Reasons</span><span style="font-size:12px;color:var(--muted);">Limit · Odds change · Technical · Other (toggle)</span></div>
+    <div class="scroll">
+      <table><thead><tr><th>Date</th><th>Matches</th><th>Attempts</th><th>Accepted</th><th>Rejected</th><th>Limit</th><th>Odds chg</th><th>Tech</th><th>Other</th><th>Reject %</th></tr></thead>
+      <tbody class="num">
+        <tr><td>3 Jun</td><td>412</td><td>9,180</td><td>8,412</td><td>768</td><td>402</td><td>221</td><td>98</td><td>47</td><td>8.4%</td></tr>
+        <tr><td>2 Jun</td><td>528</td><td>13,640</td><td>12,905</td><td>735</td><td>368</td><td>214</td><td>109</td><td>44</td><td>5.4%</td></tr>
+        <tr><td>1 Jun</td><td>486</td><td>11,020</td><td>10,233</td><td>787</td><td>503</td><td>189</td><td>61</td><td>34</td><td>7.1%</td></tr>
+        <tr class="total"><td>Total — June</td><td>1,426</td><td>33,840</td><td>31,550</td><td>2,290</td><td>1,273</td><td>624</td><td>268</td><td>125</td><td>6.8%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- 9. REJECTION MONITOR MONTHLY -->
+  <section class="report" id="r9">
+    <div class="rhead"><span class="rnum">09</span><h2>Rejection Monitor — Monthly</h2></div>
+    <p class="rpurpose"><b>Long-term trend of bet rejection rate</b>, rolled up to months to avoid daily clutter over long periods. Audience: risk, trading, operations.</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option></select><select><option>All disciplines</option></select><select><option>Live + Prematch</option></select><select><option>Single + Multi</option></select><select><option>Last 6 months</option></select></div>
+    <div class="scroll">
+      <table><thead><tr><th>Month</th><th>Matches</th><th>Attempts</th><th>Accepted</th><th>Rejected</th><th>Limit</th><th>Odds chg</th><th>Tech</th><th>Other</th><th>Reject %</th></tr></thead>
+      <tbody class="num">
+        <tr><td>2026-06</td><td>1,426</td><td>33,840</td><td>31,550</td><td>2,290</td><td>1,273</td><td>624</td><td>268</td><td>125</td><td>6.8%</td></tr>
+        <tr><td>2026-05</td><td>4,180</td><td>104,200</td><td>98,420</td><td>5,780</td><td>3,010</td><td>1,640</td><td>812</td><td>318</td><td>5.5%</td></tr>
+        <tr><td>2026-04</td><td>3,920</td><td>97,600</td><td>91,180</td><td>6,420</td><td>3,890</td><td>1,510</td><td>694</td><td>326</td><td>6.6%</td></tr>
+        <tr class="total"><td>Total</td><td>9,526</td><td>235,640</td><td>221,150</td><td>14,490</td><td>8,173</td><td>3,774</td><td>1,774</td><td>769</td><td>6.1%</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- 10. RISK ALERTS -->
+  <section class="report" id="r10">
+    <div class="rhead"><span class="rnum">10</span><h2>Risk Alerts</h2></div>
+    <p class="rpurpose"><b>Anomaly detectors</b> to catch suspicious players by specific patterns — one report with switchable trigger tabs. Default period: last 12h (rolling). Audience: risk, integrity.</p>
+    <div id="ra-tabs" style="display:flex; gap:4px; flex-wrap:wrap; border-bottom:1px solid var(--line); margin-bottom:16px;">
+      <button class="ra-tab" data-t="opp">Opposite bets</button>
+      <button class="ra-tab" data-t="flags">New / demo flags</button>
+      <button class="ra-tab" data-t="odds">Odds above market</button>
+      <button class="ra-tab" data-t="cash">Cashouts</button>
+      <button class="ra-tab" data-t="late">Late bets</button>
+      <button class="ra-tab" data-t="strat">Strategy change</button>
+    </div>
+    <div class="filters" style="margin-bottom:14px;">
+      <select><option>All clients</option></select>
+      <select><option>All disciplines</option></select>
+      <select><option>All tournaments</option></select>
+      <select><option>Live + Prematch</option></select>
+      <select><option>Single + Multi</option></select>
+      <select><option>Last 12h</option><option>Last 24h</option></select>
+    </div>
+    <div id="ra-body"></div>
+  </section>
+
   <footer>BI Reports — Trading &amp; Risk Analytics · mockups with sample data</footer>
 
 </div>
@@ -342,6 +453,58 @@ function initCharts(){
 }
 if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', initCharts); } else { initCharts(); }
 
+</script>
+
+<script>
+(function(){
+  var fmt=function(n){return (n<0?'\u2212':'')+'\u20ac'+Math.abs(n).toLocaleString('en-US');};
+  var data={
+    opp:{cap:'Opposite bets \u2014 players who bet opposite outcomes on one market and beat us overall (P&L \u2264 \u2212200)',
+      head:['Player','Market','Bets','Total stake','Our P&L','Hold %'],
+      rows:[['#48201 \u00b7 m.kovac@\u2026','CHE\u2013ARS \u00b7 1X2','3','\u20ac6,400','<span class="neg">\u2212\u20ac420</span>','<span class="neg">\u22126.6%</span>'],
+            ['#33915 \u00b7 sharp_99','NADAL\u2013ALC \u00b7 Winner','2','\u20ac5,200','<span class="neg">\u2212\u20ac280</span>','<span class="neg">\u22125.4%</span>'],
+            ['#51120 \u00b7 a.ivanov@\u2026','LAL\u2013BOS \u00b7 Total 220.5','2','\u20ac4,100','<span class="neg">\u2212\u20ac210</span>','<span class="neg">\u22125.1%</span>']]},
+    flags:{cap:'New / demo flags \u2014 catch drops & bonus abusers by first-bet / sex / age flags and combinations',
+      head:['Player','Flags','Bet time','Stake','Odds','Market'],
+      rows:[['#62890 \u00b7 new_user_1','<span class="neg">First bet \u00b7 Female \u00b7 18</span>','08:42','\u20ac500','1.95','CHE\u2013ARS \u00b7 1X2'],
+            ['#62914 \u00b7 j.doe@\u2026','<span class="neg">First bet \u00b7 50+</span>','09:05','\u20ac1,200','2.40','Totals 2.5'],
+            ['#62950 \u00b7 anon_77','Female \u00b7 50+','10:11','\u20ac300','3.10','Winner']]},
+    odds:{cap:'Odds above market \u2014 our price higher than market average (depends on a market-odds feed)',
+      head:['Player','Bet / settle','Stake','Our odds','Market odds','Diff %','Market'],
+      rows:[['#48201 \u00b7 m.kovac@\u2026','09:12 / 11:00','\u20ac3,200','2.50','2.20','<span class="neg">+13.6%</span>','CHE\u2013ARS \u00b7 1X2'],
+            ['#33915 \u00b7 sharp_99','10:01 / 12:30','\u20ac2,600','1.95','1.80','<span class="neg">+8.3%</span>','Winner'],
+            ['#51120 \u00b7 a.ivanov@\u2026','11:20 / 13:15','\u20ac2,100','2.05','1.92','<span class="neg">+6.8%</span>','Totals 220.5']]},
+    cash:{cap:'Cashouts \u2014 negative cashouts (amount limit available as a filter)',
+      head:['Player','Bet time','Cashout time','Settle time','Stake','Cashout','P&L'],
+      rows:[['#41001 \u00b7 cash_king','08:00','08:45','11:00','\u20ac1,000','\u20ac1,800','<span class="neg">\u2212\u20ac800</span>'],
+            ['#41205 \u00b7 p.novak@\u2026','09:30','09:52','12:00','\u20ac600','\u20ac1,150','<span class="neg">\u2212\u20ac550</span>'],
+            ['#41330 \u00b7 quick_out','10:15','10:40','13:00','\u20ac400','\u20ac720','<span class="neg">\u2212\u20ac320</span>']]},
+    late:{cap:'Late bets \u2014 decisive markets bet shortly before settlement (\u2264 5 min)',
+      head:['Player','Bet time','Settle time','Diff (min)','Market','Stake','Odds','P&L'],
+      rows:[['#55012 \u00b7 late_larry','20:43','20:46','3','Next goal','\u20ac900','1.85','<span class="neg">\u2212\u20ac765</span>'],
+            ['#55090 \u00b7 m.weber@\u2026','21:10','21:14','4','Total goals 2.5','\u20ac1,500','2.10','<span class="neg">\u2212\u20ac1,650</span>'],
+            ['#55141 \u00b7 timing_99','19:58','20:01','3','Winner','\u20ac700','1.70','<span class="neg">\u2212\u20ac490</span>']]},
+    strat:{cap:'Strategy change \u2014 sharp shift vs the player\u2019s baseline',
+      head:['Player','Metric','Baseline','Current','Change'],
+      rows:[['#48201 \u00b7 m.kovac@\u2026','Avg stake','\u20ac1','\u20ac50','<span class="neg">\u00d750</span>'],
+            ['#33915 \u00b7 sharp_99','Bet type mix','90% Multi','85% Single','<span class="neg">flipped</span>'],
+            ['#51120 \u00b7 a.ivanov@\u2026','Avg odds','3.40','1.85','<span class="neg">\u221246%</span>']]}
+  };
+  var body=document.getElementById('ra-body');
+  var tabs=document.querySelectorAll('.ra-tab');
+  function render(key){
+    var d=data[key];
+    var h='<p class="caption">'+d.cap+'</p><div class="scroll"><table style="white-space:nowrap;"><thead><tr>';
+    d.head.forEach(function(c,i){ h+='<th'+(i===0||(key==='flags'&&i===1)||(key==='strat'&&i<=1)?' style="text-align:left;"':'')+'>'+c+'</th>'; });
+    h+='</tr></thead><tbody class="num">';
+    d.rows.forEach(function(r){ h+='<tr>'; r.forEach(function(c,i){ var left=(i===0||(key==='flags'&&i===1)||(key==='odds'&&i===6)||(key==='cash'&&false)||(key==='late'&&i===4)||(key==='opp'&&i===1)||(key==='strat'&&i<=1)); h+='<td'+(left?' style="text-align:left;"':'')+'>'+c+'</td>'; }); h+='</tr>'; });
+    h+='</tbody></table></div>';
+    body.innerHTML=h;
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.t===key); });
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ render(t.dataset.t); }); });
+  render('opp');
+})();
 </script>
 </body>
 </html>
