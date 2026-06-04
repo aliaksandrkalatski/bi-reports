@@ -260,7 +260,7 @@
 const fmt = (n) => (n<0?'−':'')+'€'+Math.abs(n).toLocaleString('en-US');
 const nf = (n) => n.toLocaleString('en-US');
 
-/* ---- 4. Tournament: sortable ---- */
+/* 4. Tournament: sortable */
 (function(){
   const rows = [
     {discipline:'Football', tournament:'Champions League', tier:1, active:9840, matches:124, bets:18420, stake:512300, ggr:28100},
@@ -270,15 +270,16 @@ const nf = (n) => n.toLocaleString('en-US');
     {discipline:'Football', tournament:'Serie A', tier:2, active:2980, matches:76, bets:5310, stake:142900, ggr:6700},
     {discipline:'Tennis', tournament:'Wimbledon', tier:1, active:4220, matches:64, bets:7800, stake:201500, ggr:9100},
     {discipline:'eSports', tournament:'CS2 Major', tier:3, active:1840, matches:88, bets:3120, stake:62400, ggr:-1900},
-    {discipline:'Basketball', tournament:'EuroLeague', tier:3, active:1210, matches:54, bets:2040, stake:48700, ggr:2300},
+    {discipline:'Basketball', tournament:'EuroLeague', tier:3, active:1210, matches:54, bets:2040, stake:48700, ggr:2300}
   ];
   const tb = document.getElementById('tb_tourn');
+  if(!tb) return;
   let sortK='stake', dir=-1;
   function render(){
     rows.sort((a,b)=>{ let av=a[sortK], bv=b[sortK]; if(typeof av==='string') return dir*av.localeCompare(bv); return dir*(av-bv); });
     tb.innerHTML = rows.map(r=>{
       const avg=Math.round(r.stake/r.bets), hold=(r.ggr/r.stake*100).toFixed(1), pc=r.ggr>=0?'pos':'neg';
-      return `<tr><td>${r.discipline}</td><td>${r.tournament}</td><td>T${r.tier}</td><td>${nf(r.active)}</td><td>${r.matches}</td><td>${nf(r.bets)}</td><td>${fmt(r.stake)}</td><td class="${pc}">${r.ggr>=0?'+':''}${fmt(r.ggr)}</td><td>${hold}%</td><td>${fmt(avg)}</td></tr>`;
+      return '<tr><td>'+r.discipline+'</td><td>'+r.tournament+'</td><td>T'+r.tier+'</td><td>'+nf(r.active)+'</td><td>'+r.matches+'</td><td>'+nf(r.bets)+'</td><td>'+fmt(r.stake)+'</td><td class="'+pc+'">'+(r.ggr>=0?'+':'')+fmt(r.ggr)+'</td><td>'+hold+'%</td><td>'+fmt(avg)+'</td></tr>';
     }).join('');
     document.querySelectorAll('#t_tourn th').forEach(th=>{ th.textContent=th.textContent.replace(/ [▼▲]$/,''); if(th.dataset.k===sortK) th.textContent+=dir===-1?' ▼':' ▲'; });
   }
@@ -288,7 +289,7 @@ const nf = (n) => n.toLocaleString('en-US');
   render();
 })();
 
-/* ---- 5. Discipline: drill-down ---- */
+/* 5. Discipline: drill-down */
 (function(){
   const data = [
     {discipline:'Football', active:21300, matches:362, bets:48200, stake:1198400, ggr:62100, open:true, kids:[
@@ -299,16 +300,17 @@ const nf = (n) => n.toLocaleString('en-US');
       {t:'ATP Masters', active:3120, matches:210, bets:6890, stake:184600, ggr:-5200},
       {t:'Wimbledon', active:4220, matches:64, bets:7800, stake:201500, ggr:9100}]},
     {discipline:'eSports', active:4210, matches:184, bets:7800, stake:142600, ggr:3900, open:false, kids:[
-      {t:'CS2 Major', active:1840, matches:88, bets:3120, stake:62400, ggr:-1900}]},
+      {t:'CS2 Major', active:1840, matches:88, bets:3120, stake:62400, ggr:-1900}]}
   ];
   const tb=document.getElementById('tb_disc');
+  if(!tb) return;
   function render(){
     let h='';
     data.forEach((d,i)=>{
       const pc=d.ggr>=0?'pos':'neg', hold=(d.ggr/d.stake*100).toFixed(1);
-      h+=`<tr class="disc ${d.open?'open':''}" data-i="${i}"><td>${d.discipline}</td><td>${nf(d.active)}</td><td>${d.matches}</td><td>${nf(d.bets)}</td><td>${fmt(d.stake)}</td><td class="${pc}">${d.ggr>=0?'+':''}${fmt(d.ggr)}</td><td>${hold}%</td></tr>`;
+      h+='<tr class="disc '+(d.open?'open':'')+'" data-i="'+i+'"><td>'+d.discipline+'</td><td>'+nf(d.active)+'</td><td>'+d.matches+'</td><td>'+nf(d.bets)+'</td><td>'+fmt(d.stake)+'</td><td class="'+pc+'">'+(d.ggr>=0?'+':'')+fmt(d.ggr)+'</td><td>'+hold+'%</td></tr>';
       if(d.open) d.kids.forEach(k=>{ const kpc=k.ggr>=0?'pos':'neg', kh=(k.ggr/k.stake*100).toFixed(1);
-        h+=`<tr class="child"><td>${k.t}</td><td>${nf(k.active)}</td><td>${k.matches}</td><td>${nf(k.bets)}</td><td>${fmt(k.stake)}</td><td class="${kpc}">${k.ggr>=0?'+':''}${fmt(k.ggr)}</td><td>${kh}%</td></tr>`; });
+        h+='<tr class="child"><td>'+k.t+'</td><td>'+nf(k.active)+'</td><td>'+k.matches+'</td><td>'+nf(k.bets)+'</td><td>'+fmt(k.stake)+'</td><td class="'+kpc+'">'+(k.ggr>=0?'+':'')+fmt(k.ggr)+'</td><td>'+kh+'%</td></tr>'; });
     });
     tb.innerHTML=h;
     tb.querySelectorAll('tr.disc').forEach(tr=>tr.addEventListener('click',()=>{ data[+tr.dataset.i].open=!data[+tr.dataset.i].open; render(); }));
@@ -316,21 +318,30 @@ const nf = (n) => n.toLocaleString('en-US');
   render();
 })();
 
-/* ---- charts ---- */
-window.addEventListener('load',()=>{
-  new Chart(document.getElementById('c_daily'),{
+/* charts */
+function makeDaily(el){
+  return new Chart(el, {
     type:'line',
-    data:{labels:Array.from({length:30},(_,i)=>i+1),datasets:[{data:[-7920,18650,11240,...Array(27).fill(null)],borderColor:'#0f6e56',backgroundColor:'rgba(15,110,86,.08)',borderWidth:2,tension:.35,pointRadius:3,pointBackgroundColor:'#0f6e56',spanGaps:false,fill:true}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{ticks:{callback:v=>(v<0?'−':'')+'€'+Math.abs(v/1000)+'k',font:{size:11}},grid:{color:'rgba(0,0,0,.06)'}}}}
+    data:{ labels:Array.from({length:30},function(_,i){return i+1;}), datasets:[{ data:[-7920,18650,11240].concat(Array(27).fill(null)), borderColor:'#0f6e56', backgroundColor:'rgba(15,110,86,.08)', borderWidth:2, tension:.35, pointRadius:3, pointBackgroundColor:'#0f6e56', spanGaps:false, fill:true }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ font:{ size:10 } } }, y:{ ticks:{ callback:function(v){return (v<0?'−':'')+'€'+Math.abs(v/1000)+'k';}, font:{ size:11 } }, grid:{ color:'rgba(0,0,0,.06)' } } } }
   });
-  const mp=[-48200,132400,21970], avg=mp.reduce((a,b)=>a+b,0)/mp.length;
-  new Chart(document.getElementById('c_monthly'),{
+}
+function makeMonthly(el){
+  var mp=[-48200,132400,21970], avg=mp.reduce(function(a,b){return a+b;},0)/mp.length;
+  return new Chart(el, {
     type:'bar',
-    data:{labels:['2026-04','2026-05','2026-06'],datasets:[{data:mp,backgroundColor:mp.map(v=>v>=0?'#0f6e56':'#b5322e'),borderRadius:4,barPercentage:.5}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{ticks:{callback:v=>(v<0?'−':'')+'€'+Math.abs(Math.round(v/1000))+'k',font:{size:11}},grid:{color:'rgba(0,0,0,.06)'}}},
-    plugins:[{id:'avg',afterDraw(c){const{ctx,chartArea,scales}=c,y=scales.y.getPixelForValue(avg);ctx.save();ctx.setLineDash([6,4]);ctx.lineWidth=1.5;ctx.strokeStyle='#9a9c96';ctx.beginPath();ctx.moveTo(chartArea.left,y);ctx.lineTo(chartArea.right,y);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#9a9c96';ctx.font='11px IBM Plex Mono';ctx.textAlign='right';ctx.fillText('avg €'+Math.round(avg/1000)+'k',chartArea.right-4,y-5);ctx.restore();}}]
+    data:{ labels:['2026-04','2026-05','2026-06'], datasets:[{ data:mp, backgroundColor:mp.map(function(v){return v>=0?'#0f6e56':'#b5322e';}), borderRadius:4, barPercentage:.5 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ font:{ size:11 } } }, y:{ ticks:{ callback:function(v){return (v<0?'−':'')+'€'+Math.abs(Math.round(v/1000))+'k';}, font:{ size:11 } }, grid:{ color:'rgba(0,0,0,.06)' } } } },
+    plugins:[{ id:'avg', afterDraw:function(c){ var a=c.chartArea, s=c.scales, ctx=c.ctx, y=s.y.getPixelForValue(avg); ctx.save(); ctx.setLineDash([6,4]); ctx.lineWidth=1.5; ctx.strokeStyle='#9a9c96'; ctx.beginPath(); ctx.moveTo(a.left,y); ctx.lineTo(a.right,y); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle='#9a9c96'; ctx.font='11px sans-serif'; ctx.textAlign='right'; ctx.fillText('avg €'+Math.round(avg/1000)+'k', a.right-4, y-5); ctx.restore(); } }]
   });
-});
+}
+function initCharts(){
+  if(typeof Chart === 'undefined') return;
+  var d=document.getElementById('c_daily'); if(d) makeDaily(d);
+  var m=document.getElementById('c_monthly'); if(m) makeMonthly(m);
+}
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', initCharts); } else { initCharts(); }
+
 </script>
 </body>
 </html>
