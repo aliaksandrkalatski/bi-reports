@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partial cash-out - demo</title>
+<style>
+  :root {
+    --bg: #f3f2ee;
+    --surface: #ffffff;
+    --surface-2: #faf9f6;
+    --ink: #1b1b18;
+    --muted: #6c6b64;
+    --hint: #9a988f;
+    --border: rgba(27,27,24,0.12);
+    --border-strong: rgba(27,27,24,0.22);
+    --pos: #0f6e56;
+    --pos-bg: #e1f5ee;
+    --live: #1d9e75;
+    --risk: #9a5b12;
+    --accent: #1b1b18;
+    --radius: 14px;
+    --radius-sm: 9px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #19191a;
+      --surface: #232324;
+      --surface-2: #1e1e1f;
+      --ink: #ececea;
+      --muted: #a0a09a;
+      --hint: #777771;
+      --border: rgba(255,255,255,0.12);
+      --border-strong: rgba(255,255,255,0.22);
+      --pos: #5dcaa5;
+      --pos-bg: rgba(29,158,117,0.16);
+      --live: #5dcaa5;
+      --risk: #efb45a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card {
+    width: 100%;
+    max-width: 396px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px 20px;
+  }
+  .mono { font-family: ui-monospace, "SFMono-Regular", Menlo, "Cascadia Mono", monospace; font-variant-numeric: tabular-nums; }
+  .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .head h1 { font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--live); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--live); display: inline-block; }
+  @media (prefers-reduced-motion: no-preference) { .dot { animation: pulse 1.8s ease-in-out infinite; } }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .event { font-size: 13.5px; color: var(--muted); margin: 0 0 14px; }
+  .divider { height: 0.5px; background: var(--border); margin: 14px 0; border: 0; }
+  .inputs { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .field label { display: block; font-size: 11px; color: var(--hint); margin-bottom: 4px; letter-spacing: 0.01em; }
+  .field input {
+    width: 100%; height: 34px; padding: 0 8px;
+    background: var(--surface-2); color: var(--ink);
+    border: 0.5px solid var(--border); border-radius: var(--radius-sm);
+    font-size: 14px; font-family: ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums;
+  }
+  .field input:focus { outline: none; border-color: var(--border-strong); box-shadow: 0 0 0 3px var(--pos-bg); }
+  .fullrow { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+  .fullrow span:first-child { font-size: 13px; color: var(--muted); }
+  .fullrow .big { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .sliderhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+  .sliderhead .lbl { font-size: 13px; color: var(--muted); }
+  .right { display: flex; align-items: center; gap: 10px; }
+  .toggle { display: inline-flex; border: 0.5px solid var(--border); border-radius: 7px; overflow: hidden; }
+  .toggle button { border: 0; background: transparent; color: var(--muted); font-size: 12px; font-weight: 500; padding: 3px 9px; cursor: pointer; }
+  .toggle button.on { background: var(--accent); color: var(--surface); }
+  .readout { font-size: 14px; font-weight: 600; min-width: 56px; text-align: right; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; border-radius: 4px; background: var(--border-strong); outline: none; margin: 4px 0 0; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--pos); border: 2px solid var(--surface); cursor: pointer; }
+  input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--pos); border: 2px solid var(--surface); cursor: pointer; }
+  input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--pos-bg); }
+  .presets { display: flex; gap: 7px; margin-top: 12px; }
+  .presets button {
+    flex: 1; padding: 6px 0; font-size: 12.5px; font-weight: 500;
+    background: var(--surface-2); color: var(--muted);
+    border: 0.5px solid var(--border); border-radius: var(--radius-sm); cursor: pointer;
+  }
+  .presets button:hover { border-color: var(--border-strong); color: var(--ink); }
+  .presets button.on { background: var(--pos-bg); color: var(--pos); border-color: transparent; }
+  .results { display: flex; flex-direction: column; gap: 11px; margin-top: 18px; }
+  .results .row { display: flex; align-items: baseline; justify-content: space-between; font-size: 14px; }
+  .results .row span:first-child { color: var(--muted); }
+  .results .row .val { font-weight: 600; }
+  .results .row .val.pos { color: var(--pos); }
+  .results .row .val.risk { color: var(--risk); }
+  .formula { margin-top: 16px; padding: 11px 12px; background: var(--surface-2); border-radius: var(--radius-sm); border: 0.5px solid var(--border); }
+  .formula .k { font-size: 11px; color: var(--hint); margin: 0 0 5px; letter-spacing: 0.02em; text-transform: uppercase; }
+  .formula .expr { font-size: 13px; color: var(--ink); line-height: 1.55; word-break: break-word; }
+  .formula .expr .res { color: var(--pos); font-weight: 600; }
+  .note { font-size: 11.5px; color: var(--hint); line-height: 1.5; margin: 13px 0 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" role="group" aria-label="Partial cash-out calculator">
+    <div class="head">
+      <h1>Cash out</h1>
+      <span class="live"><span class="dot" aria-hidden="true"></span>Live</span>
+    </div>
+    <p class="event">Home win - league match</p>
+
+    <div class="inputs">
+      <div class="field">
+        <label for="stake">Stake (&euro;)</label>
+        <input id="stake" type="number" inputmode="decimal" value="1000" min="0" step="50">
+      </div>
+      <div class="field">
+        <label for="d0">Odds taken d&#8320;</label>
+        <input id="d0" type="number" inputmode="decimal" value="2.00" min="1.01" step="0.05">
+      </div>
+      <div class="field">
+        <label for="dt">Now d&#8348;</label>
+        <input id="dt" type="number" inputmode="decimal" value="1.50" min="1.01" step="0.05">
+      </div>
+    </div>
+
+    <div class="fullrow">
+      <span>Full cash-out value</span>
+      <span class="big mono" id="full">&euro;1,333</span>
+    </div>
+
+    <div class="sliderhead">
+      <span class="lbl">Amount to cash out</span>
+      <div class="right">
+        <div class="toggle" role="group" aria-label="Display mode">
+          <button id="mPct" class="on" type="button">%</button>
+          <button id="mEur" type="button">&euro;</button>
+        </div>
+        <span class="readout mono" id="readout">50%</span>
+      </div>
+    </div>
+    <input id="slider" type="range" min="0" max="100" step="1" value="50" aria-label="Share of the bet to cash out, percent">
+    <div class="presets" role="group" aria-label="Quick amounts">
+      <button type="button" data-v="25">25%</button>
+      <button type="button" data-v="50" class="on">50%</button>
+      <button type="button" data-v="75">75%</button>
+      <button type="button" data-v="100">100%</button>
+    </div>
+
+    <div class="results">
+      <div class="row"><span>You receive now</span><span class="val pos mono" id="receive">&euro;667</span></div>
+      <div class="row"><span>Stake left in play</span><span class="val mono" id="left">&euro;500</span></div>
+      <div class="row"><span>Returns if remainder wins</span><span class="val risk mono" id="ifwin">&euro;1,000</span></div>
+    </div>
+
+    <div class="formula">
+      <p class="k">How it computes</p>
+      <p class="expr mono" id="expr">Cashout = 0.50 &times; 1000 &times; 2.00 / 1.50 = <span class="res">&euro;667</span></p>
+    </div>
+
+    <p class="note">Slider sets f (0-100% of the bet). The euro view maps back to the same f internally - so a free-amount slider and fixed presets share one backend. Overround O assumed 1 here; add &divide;O to strip the book margin in production.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var slider = $('slider'), readout = $('readout');
+  var mode = 'pct';
+  var presets = Array.prototype.slice.call(document.querySelectorAll('.presets button'));
+
+  function num(el, fallback) { var v = parseFloat(el.value); return isFinite(v) && v > 0 ? v : fallback; }
+  function eur(n) { return '\u20AC' + Math.round(n).toLocaleString('en-US'); }
+
+  function compute() {
+    var S = num($('stake'), 0);
+    var d0 = num($('d0'), 1.01);
+    var dt = num($('dt'), 1.01);
+    var full = dt > 0 ? S * d0 / dt : 0;
+    var f = parseInt(slider.value, 10) / 100;
+
+    var receive = f * full;
+    var left = (1 - f) * S;
+    var ifwin = (1 - f) * S * d0;
+
+    $('full').textContent = eur(full);
+    $('receive').textContent = eur(receive);
+    $('left').textContent = eur(left);
+    $('ifwin').textContent = eur(ifwin);
+
+    readout.textContent = mode === 'pct' ? Math.round(f * 100) + '%' : eur(receive);
+
+    $('expr').innerHTML = 'Cashout = ' + f.toFixed(2) + ' \u00d7 ' + Math.round(S) +
+      ' \u00d7 ' + d0.toFixed(2) + ' / ' + dt.toFixed(2) +
+      ' = <span class="res">' + eur(receive) + '</span>';
+
+    presets.forEach(function (b) { b.classList.toggle('on', parseInt(b.dataset.v, 10) === parseInt(slider.value, 10)); });
+  }
+
+  slider.addEventListener('input', compute);
+  ['stake', 'd0', 'dt'].forEach(function (id) { $(id).addEventListener('input', compute); });
+  presets.forEach(function (b) { b.addEventListener('click', function () { slider.value = b.dataset.v; compute(); }); });
+  $('mPct').addEventListener('click', function () { mode = 'pct'; this.classList.add('on'); $('mEur').classList.remove('on'); compute(); });
+  $('mEur').addEventListener('click', function () { mode = 'eur'; this.classList.add('on'); $('mPct').classList.remove('on'); compute(); });
+
+  compute();
+})();
+</script>
+</body>
+</html>
