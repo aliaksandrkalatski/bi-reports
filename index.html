@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BI Reports — Trading &amp; Risk Analytics</title>
+<title>BI Reports - Trading &amp; Risk Analytics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -92,6 +92,86 @@
   .ra-tab:hover{color:var(--ink);}
   .ra-tab.active{color:var(--accent); border-bottom-color:var(--accent); font-weight:600;}
   #ra-body table{width:100%;}
+
+  /* --- added components (new reports + generic sort) --- */
+  :root{ --warn:#8a6500; }
+  thead th .ar{color:var(--accent); font-size:10px; margin-left:3px;}
+  thead th.l{text-align:left;} tbody td.l{text-align:left;}
+  thead th.gsort{cursor:pointer; user-select:none;} thead th.gsort:hover{color:var(--accent);}
+  .caption b{color:var(--ink); font-weight:600;}
+  .warnc{color:var(--warn);}
+  td .disc{color:var(--muted); font-weight:400; font-size:12px;}
+  td .ctx{color:var(--muted); font-size:12px; font-weight:400;}
+  .x{color:var(--neg); font-weight:600;}
+  /* tabs (new reports) */
+  .tabs{display:flex; gap:4px; flex-wrap:wrap; border-bottom:1px solid var(--line); margin-bottom:16px;}
+  .tab{font-family:'IBM Plex Sans',sans-serif; font-size:13px; padding:8px 12px; background:none; border:none; border-bottom:2px solid transparent; color:var(--muted); cursor:pointer;}
+  .tab:hover{color:var(--ink);} .tab.active{color:var(--accent); border-bottom-color:var(--accent); font-weight:600;}
+  /* status tiles */
+  .tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(158px,1fr)); gap:12px; margin-bottom:22px;}
+  .tile{background:var(--bg); border-radius:12px; padding:13px 15px; border-left:3px solid var(--line-strong);}
+  .tile.ok{border-left-color:var(--pos);} .tile.warn{border-left-color:var(--warn);} .tile.bad{border-left-color:var(--neg);}
+  .tile .k{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--hint); font-family:'IBM Plex Mono',monospace;}
+  .tile .v{font-size:22px; font-weight:600; font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums; margin-top:2px;}
+  .tile.ok .v{color:var(--pos);} .tile.warn .v{color:var(--warn);} .tile.bad .v{color:var(--neg);}
+  .tile .s{font-size:12px; color:var(--muted);}
+  /* score / pill / dot / tag */
+  .score{font-family:'IBM Plex Mono',monospace; font-weight:600; border-radius:6px; padding:2px 9px; font-size:12px; display:inline-block; min-width:34px; text-align:center;}
+  .score.hi{background:#f7e0df; color:var(--neg);} .score.md{background:#f5ecd4; color:var(--warn);} .score.lo{background:#eef0ec; color:var(--hint);}
+  .pill{font-family:'IBM Plex Mono',monospace; font-size:11px; border-radius:6px; padding:2px 8px; background:var(--info-bg); color:var(--muted);}
+  .dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:middle;}
+  .dot.ok{background:var(--pos);} .dot.warn{background:var(--warn);} .dot.bad{background:var(--neg);}
+  .tag{font-family:'IBM Plex Mono',monospace; font-size:11px; border-radius:6px; padding:2px 8px;}
+  .tag.pend{background:#f5ecd4; color:var(--warn);} .tag.rs{background:var(--info-bg); color:var(--accent);} .tag.cx{background:#f7e0df; color:var(--neg);}
+  /* alert rows */
+  tr.alert{cursor:pointer;} tr.alert:hover td{background:#fafaf8;}
+  tr.alert td.l b{font-weight:600;}
+  tr.alert.exp td:first-child b::before{content:"\25B8"; color:var(--accent); margin-right:8px; display:inline-block; font-size:11px;}
+  tr.alert.exp.open td:first-child b::before{content:"\25BE";}
+  tr.kid td{background:#fbfbf9; color:var(--muted); font-size:12px;} tr.kid td.l{padding-left:30px; font-weight:400;}
+  /* selected market row (P&L) */
+  tbody tr.row{cursor:pointer;} tbody tr.row:hover td{background:#fafaf8;}
+  tbody tr.row.sel td{background:var(--accent-soft);} tbody tr.row.sel td:first-child{box-shadow:inset 3px 0 0 var(--accent);}
+  /* incident / attention log */
+  .log{list-style:none; padding:0; margin:6px 0 0;}
+  .log li{display:flex; gap:12px; align-items:baseline; padding:8px 0; border-top:1px solid var(--line); font-size:13px;}
+  .log .tm{font-family:'IBM Plex Mono',monospace; color:var(--hint); font-size:12px; min-width:96px;}
+  .log .ty{font-weight:500; min-width:120px;} .log .ds{color:var(--muted); flex:1;} .log .ds b{color:var(--ink); font-weight:500;}
+  .note{font-size:12px; color:var(--hint); margin-top:16px; border-top:1px dashed var(--line); padding-top:12px;}
+  .note code{font-family:'IBM Plex Mono',monospace; background:var(--info-bg); padding:1px 5px; border-radius:4px;}
+  .liab-x{color:var(--neg); font-weight:600;}
+  .hint{font-size:12px; color:var(--hint); margin-top:14px;} .hint code{font-family:'IBM Plex Mono',monospace; background:var(--info-bg); padding:1px 5px; border-radius:4px;}
+
+  .dnote{font-family:'IBM Plex Mono',monospace; font-size:11px; border-radius:6px; padding:5px 10px; display:inline-block; margin:-4px 0 16px; line-height:1.4;}
+  .dnote.real{background:var(--accent-soft); color:var(--accent);}
+  .dnote.part{background:#f5ecd4; color:var(--warn);}
+  .dnote.na{background:#f7e0df; color:var(--neg);}
+
+  .demo-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;background:#f5ecd4;color:var(--warn);
+    border:1px solid #e6d9b0;border-radius:5px;padding:3px 8px;display:inline-flex;align-items:center;gap:5px;
+    white-space:nowrap;margin-left:auto;}
+  .demo-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--warn);display:inline-block;flex:none;}
+  .demo-banner{font-size:12px;background:#f5ecd4;border:1px solid #e6d9b0;color:#6b5a1e;border-radius:8px;
+    padding:10px 14px;margin:0 0 22px;display:flex;gap:9px;align-items:flex-start;line-height:1.45;}
+  .demo-banner b{color:var(--warn);}
+  .demo-banner .dot{width:8px;height:8px;border-radius:50%;background:var(--warn);margin-top:4px;flex:none;}
+
+  .rbadges{display:inline-flex;gap:6px;margin-left:11px;vertical-align:middle;}
+  .rbadge{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;border-radius:5px;
+    padding:2px 8px;display:inline-flex;align-items:center;gap:5px;letter-spacing:.02em;line-height:1.5;}
+  .rbadge::before{content:"";width:6px;height:6px;border-radius:50%;display:inline-block;flex:none;}
+  .rbadge.freq-rt{background:var(--accent-soft);color:var(--accent);}
+  .rbadge.freq-rt::before{background:var(--accent);}
+  .rbadge.freq-hr{background:#e9eef6;color:#3f5d92;}
+  .rbadge.freq-hr::before{background:#3f5d92;}
+  .rbadge.freq-dl{background:#eef0ec;color:#5f655c;}
+  .rbadge.freq-dl::before{background:#8a8f86;}
+  .rbadge.crit-c{background:#f7e0df;color:var(--neg);}
+  .rbadge.crit-c::before{background:var(--neg);}
+  .rbadge.crit-n{background:#eef0ec;color:#5f655c;}
+  .rbadge.crit-n::before{background:#8a8f86;}
+  .rbadge.crit-l{background:transparent;color:var(--hint);border:1px solid #e3e6e0;}
+  .rbadge.crit-l::before{background:var(--hint);}
 </style>
 </head>
 <body>
@@ -100,8 +180,9 @@
   <header class="top">
     <p class="eyebrow">BI Reports</p>
     <h1>Trading &amp; Risk Analytics</h1>
-    <p class="lede">Recurring reports for monitoring sportsbook trading performance across the platform and its B2B partners. Mockups with sample data — filters are illustrative; sorting and drill-down are live.</p>
+    <p class="lede">Recurring reports for monitoring sportsbook trading performance across the platform and its B2B partners. Mockups with sample data - filters are illustrative; sorting and drill-down are live.</p>
     <div class="conv">
+      <span style="background:var(--accent-soft);color:var(--accent);font-weight:600;">Data: Betboom RU · 2026-05-07 to 2026-05-25 (18 days) · eSports · amounts in EUR (converted from native RUB at daily rate)</span>
       <span>Currency: EUR</span>
       <span>Updated daily · 00:00 UTC</span>
       <span>Hold % = GGR / turnover</span>
@@ -116,54 +197,37 @@
     <a href="#r5"><span class="n">05</span><span class="t">Discipline Performance</span></a>
     <a href="#r6"><span class="n">06</span><span class="t">Quick Player P&L</span></a>
     <a href="#r7"><span class="n">07</span><span class="t">Player Profiling</span></a>
-    <a href="#r8"><span class="n">08</span><span class="t">Rejection Monitor — Daily</span></a>
-    <a href="#r9"><span class="n">09</span><span class="t">Rejection Monitor — Monthly</span></a>
+    <a href="#r8"><span class="n">08</span><span class="t">Rejection Monitor - Daily</span></a>
+    <a href="#r9"><span class="n">09</span><span class="t">Rejection Monitor - Monthly</span></a>
     <a href="#r10"><span class="n">10</span><span class="t">Risk Alerts</span></a>
+    <a href="#r11"><span class="n">11</span><span class="t">P&amp;L Breakdown by Market</span></a>
+    <a href="#r12"><span class="n">12</span><span class="t">Integrity Alerts</span></a>
+    <a href="#r13"><span class="n">13</span><span class="t">Feed &amp; Platform Health</span></a>
+    <a href="#r14"><span class="n">14</span><span class="t">Settlement &amp; Liability</span></a>
   </nav>
 
   <!-- 1. DAILY -->
-  <section class="report" id="r1">
-    <div class="rhead"><span class="rnum">01</span><h2>Daily Trading Performance</h2></div>
-    <p class="rpurpose"><b>Daily snapshot of trading results</b> — recent days of the current month plus the month-to-date total. Audience: traders, Head of Trading, management.</p>
-    <div class="filters">
-      <span class="lbl">Client</span>
-      <select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select>
-    </div>
+  <div class="demo-banner"><span class="dot"></span><span><b>Demo mode.</b> Column-header sorting is live. The filter bars (Sport type, discipline, timing, etc.) are visual mockups - not wired to data yet; they will filter once the reports run on live data.</span></div>
+<section class="report" id="r1">
+    <div class="rhead"><span class="rnum">01</span><h2>Daily Trading Performance</h2><span class="rbadges"><span class="rbadge freq-hr">hourly</span><span class="rbadge crit-n">normal</span></span></div>
+    <p class="rpurpose"><b>Daily snapshot of trading results</b> - recent days of the current month plus the month-to-date total. Audience: traders, Head of Trading, management.</p><p class="dnote real">Real data · 2026-05-07 to 2026-05-25 · NGR unavailable (no bonus/tax data in export)</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><span class="demo-badge">demo - not wired</span></div>
     <div class="scroll">
-      <table>
-        <thead><tr><th>Date</th><th>DAU</th><th>Bets</th><th>Total stake</th><th>GGR</th><th>NGR</th><th>Hold %</th></tr></thead>
-        <tbody class="num">
-          <tr class="today cur"><td>3 Jun<span class="tag">today</span></td><td>3,180</td><td>8,412</td><td>€214,300</td><td class="pos">+€11,240</td><td class="pos">+€8,910</td><td>5.2%</td></tr>
-          <tr><td>2 Jun</td><td>4,025</td><td>12,905</td><td>€331,800</td><td class="pos">+€18,650</td><td class="pos">+€15,120</td><td>5.6%</td></tr>
-          <tr><td>1 Jun</td><td>3,470</td><td>10,233</td><td>€268,400</td><td class="neg">−€7,920</td><td class="neg">−€10,050</td><td>−2.9%</td></tr>
-          <tr class="total"><td>Total — June</td><td>7,640</td><td>31,550</td><td>€814,500</td><td>+€21,970</td><td>+€13,980</td><td>2.7%</td></tr>
-        </tbody>
-      </table>
+      <table><thead><tr><th>Date</th><th>DAU</th><th>Bets</th><th>Total stake</th><th>GGR</th><th>Hold %</th></tr></thead><tbody class="num"><tr><td>7 May</td><td>267</td><td>343</td><td>€9,098</td><td class="pos">+€5,025</td><td>55.23%</td></tr><tr><td>8 May</td><td>20,139</td><td>107,225</td><td>€3,367,517</td><td class="pos">+€618,312</td><td>18.36%</td></tr><tr><td>9 May</td><td>18,020</td><td>89,198</td><td>€2,736,510</td><td class="pos">+€103,724</td><td>3.79%</td></tr><tr><td>10 May</td><td>16,463</td><td>80,746</td><td>€2,539,713</td><td class="pos">+€110,398</td><td>4.35%</td></tr><tr><td>12 May</td><td>535</td><td>835</td><td>€8,746</td><td class="pos">+€1,104</td><td>12.62%</td></tr><tr><td>13 May</td><td>35,708</td><td>232,981</td><td>€6,740,828</td><td class="pos">+€53,649</td><td>0.8%</td></tr><tr><td>14 May</td><td>40,013</td><td>272,196</td><td>€8,389,004</td><td class="pos">+€465,497</td><td>5.55%</td></tr><tr><td>15 May</td><td>33,190</td><td>179,543</td><td>€5,628,345</td><td class="pos">+€308,535</td><td>5.48%</td></tr><tr><td>16 May</td><td>37,962</td><td>217,638</td><td>€6,707,649</td><td class="pos">+€570,416</td><td>8.5%</td></tr><tr><td>17 May</td><td>29,542</td><td>143,905</td><td>€4,379,533</td><td class="neg">−€129,052</td><td>-2.95%</td></tr><tr><td>18 May</td><td>34,244</td><td>136,840</td><td>€4,243,664</td><td class="neg">−€106,312</td><td>-2.51%</td></tr><tr><td>19 May</td><td>41,860</td><td>245,562</td><td>€7,803,667</td><td class="neg">−€500,829</td><td>-6.42%</td></tr><tr><td>20 May</td><td>38,641</td><td>187,549</td><td>€6,682,440</td><td class="pos">+€950,887</td><td>14.23%</td></tr><tr><td>21 May</td><td>41,050</td><td>227,582</td><td>€8,092,198</td><td class="pos">+€620,258</td><td>7.66%</td></tr><tr><td>22 May</td><td>39,855</td><td>226,141</td><td>€7,250,725</td><td class="pos">+€447,675</td><td>6.17%</td></tr><tr><td>23 May</td><td>39,151</td><td>211,561</td><td>€6,992,924</td><td class="pos">+€1,063,323</td><td>15.21%</td></tr><tr><td>24 May</td><td>37,502</td><td>198,022</td><td>€7,416,920</td><td class="pos">+€1,223,169</td><td>16.49%</td></tr><tr><td>25 May</td><td>6,629</td><td>10,174</td><td>€257,561</td><td class="pos">+€120,301</td><td>46.71%</td></tr><tr class="total"><td>Total - May</td><td>102,328</td><td>2,768,041</td><td>€89,247,043</td><td>+€5,926,078</td><td>6.64%</td></tr></tbody></table>
     </div>
-    <p class="caption">Monthly profit by day — June</p>
+    <p class="caption">Monthly profit by day - June</p>
     <div class="chartbox"><canvas id="c_daily" role="img" aria-label="Daily profit for June, days 1 to 3">Daily profit June</canvas></div>
   </section>
 
   <!-- 2. MONTHLY -->
   <section class="report" id="r2">
-    <div class="rhead"><span class="rnum">02</span><h2>Monthly Trading Performance</h2></div>
-    <p class="rpurpose"><b>Month-over-month trend</b> of trading results, against the period average and the previous month. Audience: Head of Trading, analytics, management.</p>
-    <div class="filters">
-      <span class="lbl">Filters</span>
-      <select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select>
-      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option></select>
-      <select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select>
-      <select><option>Last 3 months</option><option>Last 6 months</option><option>This year</option></select>
-    </div>
+    <div class="rhead"><span class="rnum">02</span><h2>Monthly Trading Performance</h2><span class="rbadges"><span class="rbadge freq-dl">daily</span><span class="rbadge crit-l">low</span></span></div>
+    <p class="rpurpose"><b>Month-over-month trend</b> of trading results, against the period average and the previous month. Audience: Head of Trading, analytics, management.</p><p class="dnote part">May 2026 = REAL data (period 2026-05-07 to 25, with gaps). Mar &amp; Apr 2026 = SIMULATED for visual trend (one +, one -). Tagged per row.</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><select><option>Last 3 months</option><option>Last 6 months</option><option>This year</option></select><span class="demo-badge">demo - not wired</span></div>
     <div class="scroll">
       <table>
         <thead><tr><th>Month</th><th>MAU</th><th>Matches</th><th>Bets</th><th>Stake</th><th>Profit</th><th>MoM Δ</th><th>Hold %</th><th>Avg bet</th><th>Avg odds</th></tr></thead>
-        <tbody class="num">
-          <tr class="cur"><td>2026-06<span class="tag" style="font-family:'IBM Plex Mono';font-size:10px;color:var(--hint);margin-left:5px;">cur</span></td><td>18,420</td><td>1,240</td><td>31,550</td><td>€814,500</td><td class="pos">+€21,970</td><td class="neg">−€110,430</td><td>2.7%</td><td>€25.8</td><td>1.94</td></tr>
-          <tr><td>2026-05</td><td>42,180</td><td>3,910</td><td>98,420</td><td>€2,548,300</td><td class="pos">+€132,400</td><td class="pos">+€180,600</td><td>5.2%</td><td>€25.9</td><td>2.01</td></tr>
-          <tr><td>2026-04</td><td>39,640</td><td>3,720</td><td>91,180</td><td>€2,331,700</td><td class="neg">−€48,200</td><td style="color:var(--hint)">—</td><td>−2.1%</td><td>€25.6</td><td>2.08</td></tr>
-          <tr class="total"><td>Total</td><td>100,240</td><td>8,870</td><td>221,150</td><td>€5,694,500</td><td>+€106,170</td><td>—</td><td>1.9%</td><td>€25.7</td><td>2.02</td></tr>
-        </tbody>
+        <tbody class="num"><tr class=""><td>2026-03<span style="font-family:'IBM Plex Mono';font-size:10px;background:#eef0ec;color:var(--hint);border-radius:4px;padding:1px 6px;margin-left:6px;">sim</span></td><td>94,200</td><td>3,210</td><td>2,410,000</td><td>€76,400,000</td><td><span class="pos">+€4,180,000</span></td><td><span style="color:var(--hint)">-</span></td><td>5.47%</td><td>€31.7</td><td>2.03</td></tr><tr class=""><td>2026-04<span style="font-family:'IBM Plex Mono';font-size:10px;background:#eef0ec;color:var(--hint);border-radius:4px;padding:1px 6px;margin-left:6px;">sim</span></td><td>98,600</td><td>3,540</td><td>2,560,000</td><td>€81,900,000</td><td><span class="neg">−€2,140,000</span></td><td><span class="neg">−€6,320,000</span></td><td>-2.61%</td><td>€32.0</td><td>2.06</td></tr><tr class="cur"><td>2026-05<span style="font-family:'IBM Plex Mono';font-size:10px;background:var(--accent-soft);color:var(--accent);border-radius:4px;padding:1px 6px;margin-left:6px;">real</span></td><td>102,328</td><td>3,705</td><td>2,768,041</td><td>€89,247,043</td><td><span class="pos">+€5,926,078</span></td><td><span class="pos">+€8,066,078</span></td><td>6.64%</td><td>€32.2</td><td>1.99</td></tr><tr class="total"><td>Total <span style="font-size:10px;color:var(--hint)">(incl. sim)</span></td><td>-</td><td>10,455</td><td>7,738,041</td><td>€247,547,043</td><td><span class="pos">+€7,966,078</span></td><td>-</td><td>3.22%</td><td>-</td><td>-</td></tr></tbody>
       </table>
     </div>
     <p class="caption">Monthly profit · dashed line = period average</p>
@@ -172,14 +236,9 @@
 
   <!-- 3. PARTNER -->
   <section class="report" id="r3">
-    <div class="rhead"><span class="rnum">03</span><h2>Partner (B2B) Performance</h2></div>
-    <p class="rpurpose"><b>Compare B2B partners</b> over a selected period. Revenue share = 10% of GGR, zeroed when negative. Audience: account managers, B2B team, management.</p>
-    <div class="filters">
-      <span class="lbl">Filters</span>
-      <select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select>
-      <select><option>This month</option><option>Today</option><option>Last 7 days</option><option>Custom range…</option></select>
-      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option></select>
-    </div>
+    <div class="rhead"><span class="rnum">03</span><h2>Partner (B2B) Performance</h2><span class="rbadges"><span class="rbadge freq-dl">daily</span><span class="rbadge crit-l">low</span></span></div>
+    <p class="rpurpose"><b>Compare B2B partners</b> over a selected period. Revenue share = 10% of GGR, zeroed when negative. Audience: account managers, B2B team, management.</p><p class="dnote na">Not available on this dataset - single client (Betboom RU), no partners to compare</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><select><option>This month</option><option>Today</option><option>Last 7 days</option><option>Custom range</option></select><span class="demo-badge">demo - not wired</span></div>
     <div class="scroll">
       <table>
         <thead><tr><th>Partner</th><th>Active</th><th>Matches</th><th>Bets</th><th>Stake</th><th>GGR</th><th>NGR</th><th>Hold %</th><th>Rev share</th></tr></thead>
@@ -201,16 +260,9 @@
 
   <!-- 4. TOURNAMENT -->
   <section class="report" id="r4">
-    <div class="rhead"><span class="rnum">04</span><h2>Tournament Performance</h2></div>
-    <p class="rpurpose"><b>Per-tournament results ranked biggest to smallest.</b> Click any column header to sort. Audience: trading, analytics, management.</p>
-    <div class="filters">
-      <span class="lbl">Filters</span>
-      <select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select>
-      <select><option>This month</option><option>Today</option><option>Last 7 days</option></select>
-      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>eSports</option></select>
-      <select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select>
-      <select><option>All tournaments</option><option>Champions League</option><option>Premier League</option><option>NBA</option></select>
-    </div>
+    <div class="rhead"><span class="rnum">04</span><h2>Tournament Performance</h2><span class="rbadges"><span class="rbadge freq-hr">hourly</span><span class="rbadge crit-n">normal</span></span></div>
+    <p class="rpurpose"><b>Per-tournament results ranked biggest to smallest.</b> Click any column header to sort. Audience: trading, analytics, management.</p><p class="dnote real">Real data - top tournaments by stake - 2026-05-07 to 25 - tier not in export (shown as -)</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><select><option>This month</option><option>Today</option><option>Last 7 days</option></select><span class="demo-badge">demo - not wired</span></div>
     <div class="scroll">
       <table id="t_tourn">
         <thead><tr>
@@ -239,14 +291,9 @@
 
   <!-- 5. DISCIPLINE -->
   <section class="report" id="r5">
-    <div class="rhead"><span class="rnum">05</span><h2>Discipline Performance</h2></div>
-    <p class="rpurpose"><b>Top-down entry point into sports results</b> — click a discipline to drill into its tournaments. Audience: trading, analytics, management.</p>
-    <div class="filters">
-      <span class="lbl">Filters</span>
-      <select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select>
-      <select><option>This month</option><option>Today</option><option>Last 7 days</option></select>
-      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>eSports</option></select>
-    </div>
+    <div class="rhead"><span class="rnum">05</span><h2>Discipline Performance</h2><span class="rbadges"><span class="rbadge freq-hr">hourly</span><span class="rbadge crit-n">normal</span></span></div>
+    <p class="rpurpose"><b>Top-down entry point into sports results</b> - click a discipline to drill into its tournaments. Audience: trading, analytics, management.</p><p class="dnote real">Real data · 2026-05-07 to 2026-05-25 · sport = discipline (all eSports)</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><select><option>This month</option><option>Today</option><option>Last 7 days</option></select><span class="demo-badge">demo - not wired</span></div>
     <div class="scroll">
       <table id="t_disc">
         <thead><tr><th>Discipline / Tournament</th><th>Active</th><th>Matches</th><th>Bets</th><th>Stake</th><th>Profit</th><th>Hold %</th></tr></thead>
@@ -254,55 +301,39 @@
       </table>
     </div>
     <p class="caption">Breakdown by bet type</p>
-    <div class="grid2">
-      <div class="blk"><h4>Single · Prematch</h4><table class="num"><tr><td>Bets</td><td>38,400</td></tr><tr><td>Stake</td><td>€892,300</td></tr><tr><td>Profit</td><td class="pos">+€41,200</td></tr><tr><td>Hold %</td><td>4.6%</td></tr></table></div>
-      <div class="blk"><h4>Single · Live</h4><table class="num"><tr><td>Bets</td><td>26,100</td></tr><tr><td>Stake</td><td>€614,800</td></tr><tr><td>Profit</td><td class="pos">+€19,700</td></tr><tr><td>Hold %</td><td>3.2%</td></tr></table></div>
-      <div class="blk"><h4>Multi · Prematch</h4><table class="num"><tr><td>Bets</td><td>14,800</td></tr><tr><td>Stake</td><td>€398,100</td></tr><tr><td>Profit</td><td class="pos">+€22,400</td></tr><tr><td>Hold %</td><td>5.6%</td></tr></table></div>
-      <div class="blk"><h4>Multi · Live</h4><table class="num"><tr><td>Bets</td><td>8,300</td></tr><tr><td>Stake</td><td>€187,600</td></tr><tr><td>Profit</td><td class="neg">−€8,900</td></tr><tr><td>Hold %</td><td>−4.7%</td></tr></table></div>
-    </div>
+    <div class="grid2"><div class="blk"><h4>Single · Prematch</h4><table class="num"><tr><td>Bets</td><td>154,674</td></tr><tr><td>Stake</td><td>€5,074,198</td></tr><tr><td>Profit</td><td><span class="pos">+€302,329</span></td></tr><tr><td>Hold %</td><td>5.96%</td></tr></table></div><div class="blk"><h4>Single · Live</h4><table class="num"><tr><td>Bets</td><td>2,091,716</td></tr><tr><td>Stake</td><td>€73,714,722</td></tr><tr><td>Profit</td><td><span class="pos">+€4,715,928</span></td></tr><tr><td>Hold %</td><td>6.4%</td></tr></table></div><div class="blk"><h4>Multi · Prematch</h4><table class="num"><tr><td>Bets</td><td>170,925</td></tr><tr><td>Stake</td><td>€3,103,048</td></tr><tr><td>Profit</td><td><span class="pos">+€261,448</span></td></tr><tr><td>Hold %</td><td>8.43%</td></tr></table></div><div class="blk"><h4>Multi · Live</h4><table class="num"><tr><td>Bets</td><td>350,726</td></tr><tr><td>Stake</td><td>€7,355,076</td></tr><tr><td>Profit</td><td><span class="pos">+€646,373</span></td></tr><tr><td>Hold %</td><td>8.79%</td></tr></table></div></div>
+  </div>
   </section>
 
 
   <!-- 6. QUICK PLAYER P&L -->
   <section class="report" id="r6">
-    <div class="rhead"><span class="rnum">06</span><h2>Quick Player P&amp;L</h2></div>
-    <p class="rpurpose"><b>Morning radar</b> — open and instantly see the day's most extreme players by P&amp;L. Two sections: our losses (players who beat us) and our profit. Top 50 each. Audience: risk, trading.</p>
-    <div class="filters"><span class="lbl">Period</span><select><option>Previous day (UTC)</option><option>Last 24h (rolling)</option><option>Last 7 days</option></select></div>
-    <p class="caption" style="color:var(--neg);">Our losses — players who beat us</p>
+    <div class="rhead"><span class="rnum">06</span><h2>Quick Player P&amp;L</h2><span class="rbadges"><span class="rbadge freq-dl">daily</span><span class="rbadge crit-n">normal</span></span></div>
+    <p class="rpurpose"><b>Morning radar</b> - open and instantly see the day's most extreme players by P&amp;L. Two sections: our losses (players who beat us) and our profit. Top 50 each. Audience: risk, trading.</p><p class="dnote real">Real data - top players by operator P&L - 2026-05-07 to 25</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><select><option>Previous day (UTC)</option><option>Last 24h (rolling)</option><option>Last 7 days</option></select><span class="demo-badge">demo - not wired</span></div>
+    <p class="caption" style="color:var(--neg);">Our losses - players who beat us</p>
     <div class="scroll" style="margin-bottom:1.5rem;">
       <table><thead><tr><th>Player</th><th>Client</th><th>Bets</th><th>Total stake</th><th>P&amp;L</th><th>Hold %</th><th>Avg bet</th><th>Avg odds</th></tr></thead>
-      <tbody class="num">
-        <tr><td>#48201 · m.kovac@…</td><td>BetZone</td><td>142</td><td>€38,400</td><td class="neg">−€21,300</td><td class="neg">−55.5%</td><td>€270</td><td>3.42</td></tr>
-        <tr><td>#33915 · sharp_99</td><td>LuckyDome</td><td>88</td><td>€52,100</td><td class="neg">−€18,750</td><td class="neg">−36.0%</td><td>€592</td><td>2.10</td></tr>
-        <tr><td>#51120 · a.ivanov@…</td><td>BetZone</td><td>205</td><td>€29,800</td><td class="neg">−€12,400</td><td class="neg">−41.6%</td><td>€145</td><td>1.88</td></tr>
-      </tbody></table>
+      <tbody class="num"><tr><td>#3089836 · RainyLondon</td><td>Betboom RU</td><td>63</td><td>€324,254</td><td><span class="neg">−€39,628</span></td><td class="neg">-12.2%</td><td>€5147</td><td>1.44</td></tr><tr><td>#6677191 · TestyEmerald2</td><td>Betboom RU</td><td>19</td><td>€68,402</td><td><span class="neg">−€38,533</span></td><td class="neg">-56.3%</td><td>€3600</td><td>1.96</td></tr><tr><td>#5546922 · SpicyPoperinge</td><td>Betboom RU</td><td>19</td><td>€967</td><td><span class="neg">−€34,622</span></td><td class="neg">-3580.4%</td><td>€51</td><td>1.73</td></tr><tr><td>#3023149 · ScarletShamir</td><td>Betboom RU</td><td>417</td><td>€724,205</td><td><span class="neg">−€29,084</span></td><td class="neg">-4.0%</td><td>€1737</td><td>1.75</td></tr><tr><td>#1579005 · ReadyMendel</td><td>Betboom RU</td><td>51</td><td>€89,281</td><td><span class="neg">−€27,991</span></td><td class="neg">-31.4%</td><td>€1751</td><td>1.95</td></tr><tr><td>#6975418 · LikeEngine2</td><td>Betboom RU</td><td>70</td><td>€77,705</td><td><span class="neg">−€27,979</span></td><td class="neg">-36.0%</td><td>€1110</td><td>2.37</td></tr><tr><td>#3453675 · CheapSpeech</td><td>Betboom RU</td><td>80</td><td>€57,798</td><td><span class="neg">−€25,390</span></td><td class="neg">-43.9%</td><td>€722</td><td>1.91</td></tr><tr><td>#586217710 · BronzeAquamarine135</td><td>Betboom RU</td><td>214</td><td>€74,938</td><td><span class="neg">−€24,886</span></td><td class="neg">-33.2%</td><td>€350</td><td>2.19</td></tr><tr><td>#4071028 · SafeFish</td><td>Betboom RU</td><td>346</td><td>€200,817</td><td><span class="neg">−€21,412</span></td><td class="neg">-10.7%</td><td>€580</td><td>2.17</td></tr><tr><td>#678592213 · BlackBhabha30</td><td>Betboom RU</td><td>76</td><td>€123,525</td><td><span class="neg">−€20,528</span></td><td class="neg">-16.6%</td><td>€1625</td><td>1.8</td></tr><tr><td>#5090653 · EmeraldIsmayilli</td><td>Betboom RU</td><td>75</td><td>€123,849</td><td><span class="neg">−€18,653</span></td><td class="neg">-15.1%</td><td>€1651</td><td>2.55</td></tr><tr><td>#659218968 · GreenOlive141</td><td>Betboom RU</td><td>76</td><td>€35,913</td><td><span class="neg">−€14,870</span></td><td class="neg">-41.4%</td><td>€473</td><td>2.08</td></tr><tr><td>#3373578 · WideWilbur</td><td>Betboom RU</td><td>70</td><td>€70,692</td><td><span class="neg">−€14,053</span></td><td class="neg">-19.9%</td><td>€1010</td><td>1.77</td></tr><tr><td>#1872369 · SuddenCattle</td><td>Betboom RU</td><td>50</td><td>€69,226</td><td><span class="neg">−€13,526</span></td><td class="neg">-19.5%</td><td>€1385</td><td>2.1</td></tr><tr><td>#1481167861 · FranticCarlotta</td><td>Betboom RU</td><td>73</td><td>€25,671</td><td><span class="neg">−€12,112</span></td><td class="neg">-47.2%</td><td>€352</td><td>2.74</td></tr><tr><td>#1157130 · GrayMite7</td><td>Betboom RU</td><td>77</td><td>€58,504</td><td><span class="neg">−€11,464</span></td><td class="neg">-19.6%</td><td>€760</td><td>1.97</td></tr><tr><td>#980755266 · MiserableMaroon5</td><td>Betboom RU</td><td>15</td><td>€48,648</td><td><span class="neg">−€11,087</span></td><td class="neg">-22.8%</td><td>€3243</td><td>2.09</td></tr><tr><td>#335892668 · RigidHarriet</td><td>Betboom RU</td><td>276</td><td>€47,830</td><td><span class="neg">−€10,623</span></td><td class="neg">-22.2%</td><td>€173</td><td>2.85</td></tr><tr><td>#3372860 · SurprisingCassandre</td><td>Betboom RU</td><td>136</td><td>€19,097</td><td><span class="neg">−€9,879</span></td><td class="neg">-51.7%</td><td>€140</td><td>1.9</td></tr><tr><td>#889356 · TurquoiseKorry</td><td>Betboom RU</td><td>95</td><td>€15,060</td><td><span class="neg">−€9,410</span></td><td class="neg">-62.5%</td><td>€159</td><td>1.81</td></tr></tbody></table>
     </div>
-    <p class="caption" style="color:var(--pos);">Our profit — players who lost to us</p>
+    <p class="caption" style="color:var(--pos);">Our profit - players who lost to us</p>
     <div class="scroll">
       <table><thead><tr><th>Player</th><th>Client</th><th>Bets</th><th>Total stake</th><th>P&amp;L</th><th>Hold %</th><th>Avg bet</th><th>Avg odds</th></tr></thead>
-      <tbody class="num">
-        <tr><td>#29044 · highroller_7</td><td>BetZone</td><td>318</td><td>€64,200</td><td class="pos">+€19,800</td><td class="pos">30.8%</td><td>€202</td><td>2.55</td></tr>
-        <tr><td>#41882 · d.smith@…</td><td>LuckyDome</td><td>176</td><td>€41,500</td><td class="pos">+€15,200</td><td class="pos">36.6%</td><td>€236</td><td>1.72</td></tr>
-        <tr><td>#37650 · lucky_loser</td><td>BetZone</td><td>94</td><td>€22,900</td><td class="pos">+€11,650</td><td class="pos">50.9%</td><td>€244</td><td>2.95</td></tr>
-      </tbody></table>
+      <tbody class="num"><tr><td>#3637886 · BrownSouderton2</td><td>Betboom RU</td><td>89</td><td>€930,152</td><td><span class="pos">+€70,399</span></td><td class="pos">+7.6%</td><td>€10451</td><td>1.65</td></tr><tr><td>#1525132 · HorribleHolly-Anne</td><td>Betboom RU</td><td>82</td><td>€337,384</td><td><span class="pos">+€69,794</span></td><td class="pos">+20.7%</td><td>€4114</td><td>2.23</td></tr><tr><td>#1000011416 · ChocolateMoccasin74</td><td>Betboom RU</td><td>108</td><td>€270,085</td><td><span class="pos">+€59,629</span></td><td class="pos">+22.1%</td><td>€2501</td><td>2.38</td></tr><tr><td>#990002631 · PeachKhur</td><td>Betboom RU</td><td>21</td><td>€94,886</td><td><span class="pos">+€57,582</span></td><td class="pos">+60.7%</td><td>€4518</td><td>2.23</td></tr><tr><td>#1531173531 · FarCarnegie</td><td>Betboom RU</td><td>60</td><td>€392,153</td><td><span class="pos">+€55,078</span></td><td class="pos">+14.0%</td><td>€6536</td><td>2.19</td></tr><tr><td>#3397715 · StatutoryTan4</td><td>Betboom RU</td><td>235</td><td>€193,584</td><td><span class="pos">+€53,786</span></td><td class="pos">+27.8%</td><td>€824</td><td>1.92</td></tr><tr><td>#3137498 · DirtySapphire</td><td>Betboom RU</td><td>85</td><td>€427,915</td><td><span class="pos">+€46,470</span></td><td class="pos">+10.9%</td><td>€5034</td><td>1.82</td></tr><tr><td>#1514248580 · IncreasedBuckie</td><td>Betboom RU</td><td>204</td><td>€141,007</td><td><span class="pos">+€34,975</span></td><td class="pos">+24.8%</td><td>€691</td><td>2.41</td></tr><tr><td>#2041025188 · ElaborateVoorhees</td><td>Betboom RU</td><td>47</td><td>€326,429</td><td><span class="pos">+€32,362</span></td><td class="pos">+9.9%</td><td>€6945</td><td>1.6</td></tr><tr><td>#1612904967 · CrimsonLyndy2</td><td>Betboom RU</td><td>102</td><td>€107,187</td><td><span class="pos">+€31,641</span></td><td class="pos">+29.5%</td><td>€1051</td><td>2.46</td></tr><tr><td>#1759654 · RealisticCacilie</td><td>Betboom RU</td><td>281</td><td>€224,574</td><td><span class="pos">+€30,744</span></td><td class="pos">+13.7%</td><td>€799</td><td>1.91</td></tr><tr><td>#3816793 · OverseasBose</td><td>Betboom RU</td><td>58</td><td>€110,218</td><td><span class="pos">+€27,892</span></td><td class="pos">+25.3%</td><td>€1900</td><td>1.75</td></tr><tr><td>#527669481 · ElasticYolanda</td><td>Betboom RU</td><td>185</td><td>€50,707</td><td><span class="pos">+€27,128</span></td><td class="pos">+53.5%</td><td>€274</td><td>1.9</td></tr><tr><td>#3590808 · NursingFlitwick</td><td>Betboom RU</td><td>73</td><td>€93,647</td><td><span class="pos">+€22,218</span></td><td class="pos">+23.7%</td><td>€1283</td><td>2.64</td></tr><tr><td>#1283517 · SapphireTurquoise30</td><td>Betboom RU</td><td>18</td><td>€59,785</td><td><span class="pos">+€20,681</span></td><td class="pos">+34.6%</td><td>€3321</td><td>3.05</td></tr><tr><td>#3806858 · AncientBalsa</td><td>Betboom RU</td><td>245</td><td>€148,951</td><td><span class="pos">+€20,319</span></td><td class="pos">+13.6%</td><td>€608</td><td>2.93</td></tr><tr><td>#5263566 · GreenTrident2</td><td>Betboom RU</td><td>361</td><td>€330,829</td><td><span class="pos">+€20,165</span></td><td class="pos">+6.1%</td><td>€916</td><td>1.62</td></tr><tr><td>#7286444 · CurlyBooth</td><td>Betboom RU</td><td>199</td><td>€315,380</td><td><span class="pos">+€17,236</span></td><td class="pos">+5.5%</td><td>€1585</td><td>2.1</td></tr><tr><td>#3212395 · JadeSchaumburg</td><td>Betboom RU</td><td>187</td><td>€243,934</td><td><span class="pos">+€16,915</span></td><td class="pos">+6.9%</td><td>€1304</td><td>1.87</td></tr><tr><td>#2647810 · PurpleRoswell</td><td>Betboom RU</td><td>5</td><td>€33,867</td><td><span class="pos">+€16,809</span></td><td class="pos">+49.6%</td><td>€6773</td><td>1.83</td></tr></tbody></table>
     </div>
   </section>
 
   <!-- 7. PLAYER PROFILING -->
   <section class="report" id="r7">
-    <div class="rhead"><span class="rnum">07</span><h2>Player Profiling</h2></div>
-    <p class="rpurpose"><b>Full per-player analytical view</b> — attributes, volume, accepted vs rejected flow, P&amp;L and the rejected flow's potential cost. Scroll sideways for all columns. Audience: risk, profiling, trading.</p>
-    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option></select><select><option>All disciplines</option></select><select><option>All markets</option></select><select><option>Live + Prematch</option></select><select><option>Single + Multi</option></select><select><option>All tiers</option></select><select><option>Previous day</option></select></div>
+    <div class="rhead"><span class="rnum">07</span><h2>Player Profiling</h2><span class="rbadges"><span class="rbadge freq-hr">hourly</span><span class="rbadge crit-n">normal</span></span></div>
+    <p class="rpurpose"><b>Full per-player analytical view</b> - attributes, volume, accepted vs rejected flow, P&amp;L and the rejected flow's potential cost. Scroll sideways for all columns. Audience: risk, profiling, trading.</p><p class="dnote part">Partial real - volume / accepted / rejected / P&L / CCF real; country, lang, sex, age, fraud, tier, rejected-profit not in export (-)</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>All markets</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select><select><option>Previous day</option></select><span class="demo-badge">demo - not wired</span></div>
     <div class="scroll" style="border:0.5px solid var(--line); border-radius:8px;">
       <table style="min-width:1650px; white-space:nowrap;">
         <thead><tr>
           <th>ID</th><th>Email</th><th>Country</th><th>Lang</th><th>Client</th><th>Cur</th><th>Sex</th><th>Age</th><th>Fraud</th><th>Tier</th><th>Acc</th><th>Rej</th><th>Rej %</th><th>Bets</th><th>Stake</th><th>Profit</th><th>Rej. profit*</th><th>Avg bet</th><th>Avg odds</th>
         </tr></thead>
-        <tbody class="num">
-          <tr><td>#48201</td><td>m.kovac@…</td><td>SK</td><td>SK</td><td>BetZone</td><td>EUR</td><td>M</td><td>34</td><td class="neg">flag</td><td>Sharp</td><td>142</td><td>86</td><td>37.7%</td><td>228</td><td>€38,400</td><td class="neg">−€21,300</td><td class="neg">−€34,800</td><td>€270</td><td>3.42</td></tr>
-          <tr><td>#33915</td><td>sharp_99</td><td>GB</td><td>EN</td><td>LuckyDome</td><td>GBP</td><td>M</td><td>41</td><td>—</td><td>Sharp</td><td>88</td><td>154</td><td>63.6%</td><td>242</td><td>€52,100</td><td class="neg">−€18,750</td><td class="neg">−€61,200</td><td>€592</td><td>2.10</td></tr>
-          <tr><td>#29044</td><td>highroller_7</td><td>DE</td><td>DE</td><td>BetZone</td><td>EUR</td><td>M</td><td>28</td><td>—</td><td>VIP</td><td>318</td><td>12</td><td>3.6%</td><td>330</td><td>€64,200</td><td class="pos">+€19,800</td><td class="pos">+€2,100</td><td>€202</td><td>2.55</td></tr>
-        </tbody>
+        <tbody class="num"><tr><td>#3089836</td><td>RainyLondon</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>244</td><td>0</td><td>0.0%</td><td>63</td><td>€324,254</td><td><span class="neg">−€39,628</span></td><td>-</td><td>€5147</td><td>1.44</td></tr><tr><td>#6677191</td><td>TestyEmerald2</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>22</td><td>6</td><td>21.4%</td><td>27</td><td>€68,402</td><td><span class="neg">−€38,533</span></td><td>-</td><td>€2533</td><td>1.97</td></tr><tr><td>#5546922</td><td>SpicyPoperinge</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>139</td><td>12</td><td>7.9%</td><td>20</td><td>€967</td><td><span class="neg">−€34,622</span></td><td>-</td><td>€48</td><td>1.74</td></tr><tr><td>#3023149</td><td>ScarletShamir</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>437</td><td>296</td><td>40.4%</td><td>713</td><td>€724,205</td><td><span class="neg">−€29,084</span></td><td>-</td><td>€1016</td><td>1.78</td></tr><tr><td>#1579005</td><td>ReadyMendel</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>56</td><td>12</td><td>17.6%</td><td>59</td><td>€89,281</td><td><span class="neg">−€27,991</span></td><td>-</td><td>€1513</td><td>1.87</td></tr><tr><td>#6975418</td><td>LikeEngine2</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>74</td><td>30</td><td>28.8%</td><td>96</td><td>€77,705</td><td><span class="neg">−€27,979</span></td><td>-</td><td>€809</td><td>2.39</td></tr><tr><td>#3453675</td><td>CheapSpeech</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>90</td><td>18</td><td>16.7%</td><td>94</td><td>€57,798</td><td><span class="neg">−€25,390</span></td><td>-</td><td>€615</td><td>1.85</td></tr><tr><td>#586217710</td><td>BronzeAquamarine135</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1,290</td><td>54</td><td>4.0%</td><td>231</td><td>€74,938</td><td><span class="neg">−€24,886</span></td><td>-</td><td>€324</td><td>2.19</td></tr><tr><td>#4071028</td><td>SafeFish</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>380</td><td>224</td><td>37.1%</td><td>544</td><td>€200,817</td><td><span class="neg">−€21,412</span></td><td>-</td><td>€369</td><td>2.18</td></tr><tr><td>#678592213</td><td>BlackBhabha30</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>76</td><td>37</td><td>32.7%</td><td>113</td><td>€123,525</td><td><span class="neg">−€20,528</span></td><td>-</td><td>€1093</td><td>1.8</td></tr><tr><td>#5090653</td><td>EmeraldIsmayilli</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>82</td><td>12</td><td>12.8%</td><td>81</td><td>€123,849</td><td><span class="neg">−€18,653</span></td><td>-</td><td>€1529</td><td>2.49</td></tr><tr><td>#659218968</td><td>GreenOlive141</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>77</td><td>8</td><td>9.4%</td><td>84</td><td>€35,913</td><td><span class="neg">−€14,870</span></td><td>-</td><td>€428</td><td>2.12</td></tr><tr><td>#3373578</td><td>WideWilbur</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>123</td><td>27</td><td>18.0%</td><td>86</td><td>€70,692</td><td><span class="neg">−€14,053</span></td><td>-</td><td>€822</td><td>1.78</td></tr><tr><td>#1872369</td><td>SuddenCattle</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>52</td><td>24</td><td>31.6%</td><td>74</td><td>€69,226</td><td><span class="neg">−€13,526</span></td><td>-</td><td>€935</td><td>2.02</td></tr><tr><td>#1481167861</td><td>FranticCarlotta</td><td>-</td><td>-</td><td>Betboom RU</td><td>EUR</td><td>-</td><td>-</td><td>-</td><td>-</td><td>101</td><td>9</td><td>8.2%</td><td>82</td><td>€25,671</td><td><span class="neg">−€12,112</span></td><td>-</td><td>€313</td><td>2.77</td></tr></tbody>
       </table>
     </div>
     <p style="font-size:11px; color:var(--hint); margin:8px 0 0;">* Rejected profit = hypothetical P&amp;L if rejected bets had been accepted at the moment, by actual outcome.</p>
@@ -310,60 +341,227 @@
 
   <!-- 8. REJECTION MONITOR DAILY -->
   <section class="report" id="r8">
-    <div class="rhead"><span class="rnum">08</span><h2>Rejection Monitor — Daily</h2></div>
-    <p class="rpurpose"><b>Track bet rejection rate day by day</b> within the current month, with reason breakdown, to catch spikes early. Disabled reasons drop out of the rate. Audience: risk, trading, operations.</p>
-    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option></select><select><option>All disciplines</option></select><select><option>All tournaments</option></select><select><option>Live + Prematch</option></select><select><option>Single + Multi</option></select><span class="lbl" style="margin-left:6px;">Reasons</span><span style="font-size:12px;color:var(--muted);">Limit · Odds change · Technical · Other (toggle)</span></div>
+    <div class="rhead"><span class="rnum">08</span><h2>Rejection Monitor - Daily</h2><span class="rbadges"><span class="rbadge freq-hr">hourly</span><span class="rbadge crit-n">normal</span></span></div>
+    <p class="rpurpose"><b>Track bet rejection rate day by day</b> within the current month, with reason breakdown, to catch spikes early. Disabled reasons drop out of the rate. Audience: risk, trading, operations.</p><p class="dnote real">Real data - daily reject rate 2026-05-07 to 25 (selection-level attempts); days 7 & 12 partial coverage</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>All tournaments</option><option>Champions League</option><option>Premier League</option><option>NBA</option></select><select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><span class="lbl" style="margin-left:6px;">Reasons</span><span style="font-size:12px;color:var(--muted);">Limit &middot; Odds change &middot; Technical &middot; Other (toggle)</span><span class="demo-badge">demo - not wired</span></div>
     <div class="scroll">
       <table><thead><tr><th>Date</th><th>Matches</th><th>Attempts</th><th>Accepted</th><th>Rejected</th><th>Limit</th><th>Odds chg</th><th>Tech</th><th>Other</th><th>Reject %</th></tr></thead>
-      <tbody class="num">
-        <tr><td>3 Jun</td><td>412</td><td>9,180</td><td>8,412</td><td>768</td><td>402</td><td>221</td><td>98</td><td>47</td><td>8.4%</td></tr>
-        <tr><td>2 Jun</td><td>528</td><td>13,640</td><td>12,905</td><td>735</td><td>368</td><td>214</td><td>109</td><td>44</td><td>5.4%</td></tr>
-        <tr><td>1 Jun</td><td>486</td><td>11,020</td><td>10,233</td><td>787</td><td>503</td><td>189</td><td>61</td><td>34</td><td>7.1%</td></tr>
-        <tr class="total"><td>Total — June</td><td>1,426</td><td>33,840</td><td>31,550</td><td>2,290</td><td>1,273</td><td>624</td><td>268</td><td>125</td><td>6.8%</td></tr>
-      </tbody></table>
+      <tbody class="num"><tr><td>7 May</td><td>116</td><td>1,593</td><td>1,518</td><td>75</td><td>51</td><td>0</td><td>0</td><td>24</td><td>4.7%</td></tr><tr><td>8 May</td><td>399</td><td>158,066</td><td>141,487</td><td>16,579</td><td>1,752</td><td>9,106</td><td>2</td><td>5,719</td><td>10.5%</td></tr><tr><td>9 May</td><td>316</td><td>141,110</td><td>127,138</td><td>13,972</td><td>1,028</td><td>8,163</td><td>0</td><td>4,781</td><td>9.9%</td></tr><tr><td>10 May</td><td>302</td><td>126,321</td><td>114,265</td><td>12,056</td><td>570</td><td>7,119</td><td>0</td><td>4,367</td><td>9.5%</td></tr><tr><td>12 May</td><td>73</td><td>6,543</td><td>6,276</td><td>267</td><td>20</td><td>31</td><td>0</td><td>216</td><td>4.1%</td></tr><tr><td>13 May</td><td>331</td><td>473,176</td><td>425,683</td><td>47,493</td><td>950</td><td>28,409</td><td>2</td><td>18,132</td><td>10.0%</td></tr><tr><td>14 May</td><td>400</td><td>548,589</td><td>493,914</td><td>54,675</td><td>844</td><td>33,518</td><td>24</td><td>20,289</td><td>10.0%</td></tr><tr><td>15 May</td><td>267</td><td>374,957</td><td>332,149</td><td>42,808</td><td>741</td><td>28,154</td><td>6</td><td>13,907</td><td>11.4%</td></tr><tr><td>16 May</td><td>291</td><td>434,383</td><td>395,144</td><td>39,239</td><td>769</td><td>24,564</td><td>0</td><td>13,906</td><td>9.0%</td></tr><tr><td>17 May</td><td>294</td><td>278,789</td><td>251,246</td><td>27,543</td><td>376</td><td>16,066</td><td>0</td><td>11,101</td><td>9.9%</td></tr><tr><td>18 May</td><td>350</td><td>201,329</td><td>178,610</td><td>22,719</td><td>2,018</td><td>13,138</td><td>7</td><td>7,556</td><td>11.3%</td></tr><tr><td>19 May</td><td>402</td><td>373,955</td><td>335,664</td><td>38,291</td><td>1,837</td><td>24,392</td><td>180</td><td>11,882</td><td>10.2%</td></tr><tr><td>20 May</td><td>400</td><td>325,200</td><td>288,626</td><td>36,574</td><td>800</td><td>21,436</td><td>0</td><td>14,338</td><td>11.2%</td></tr><tr><td>21 May</td><td>435</td><td>362,116</td><td>325,391</td><td>36,725</td><td>683</td><td>24,750</td><td>0</td><td>11,292</td><td>10.1%</td></tr><tr><td>22 May</td><td>450</td><td>347,397</td><td>304,775</td><td>42,622</td><td>1,376</td><td>26,238</td><td>6</td><td>15,002</td><td>12.3%</td></tr><tr><td>23 May</td><td>434</td><td>303,429</td><td>269,441</td><td>33,988</td><td>1,068</td><td>23,886</td><td>0</td><td>9,034</td><td>11.2%</td></tr><tr><td>24 May</td><td>368</td><td>280,473</td><td>251,779</td><td>28,694</td><td>769</td><td>18,931</td><td>21</td><td>8,973</td><td>10.2%</td></tr><tr><td>25 May</td><td>252</td><td>136,308</td><td>133,938</td><td>2,370</td><td>580</td><td>1,060</td><td>0</td><td>730</td><td>1.7%</td></tr><tr class="total"><td>Total - May</td><td>3,822</td><td>4,873,734</td><td>4,377,044</td><td>496,690</td><td>16,232</td><td>308,961</td><td>248</td><td>171,249</td><td>10.2%</td></tr></tbody></table>
     </div>
   </section>
 
   <!-- 9. REJECTION MONITOR MONTHLY -->
   <section class="report" id="r9">
-    <div class="rhead"><span class="rnum">09</span><h2>Rejection Monitor — Monthly</h2></div>
-    <p class="rpurpose"><b>Long-term trend of bet rejection rate</b>, rolled up to months to avoid daily clutter over long periods. Audience: risk, trading, operations.</p>
-    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option></select><select><option>All disciplines</option></select><select><option>Live + Prematch</option></select><select><option>Single + Multi</option></select><select><option>Last 6 months</option></select></div>
+    <div class="rhead"><span class="rnum">09</span><h2>Rejection Monitor - Monthly</h2><span class="rbadges"><span class="rbadge freq-dl">daily</span><span class="rbadge crit-l">low</span></span></div>
+    <p class="rpurpose"><b>Long-term trend of bet rejection rate</b>, rolled up to months to avoid daily clutter over long periods. Audience: risk, trading, operations.</p><p class="dnote part">May 2026 = REAL data (reject 10.2%, period 2026-05-07 to 25). Mar &amp; Apr 2026 = SIMULATED for visual trend (lower / higher reject). Tagged per row.</p>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><select><option>Last 6 months</option></select><span class="lbl" style="margin-left:6px;">Reasons</span><span style="font-size:12px;color:var(--muted);">Limit &middot; Odds change &middot; Technical &middot; Other (toggle)</span><span class="demo-badge">demo - not wired</span></div>
     <div class="scroll">
       <table><thead><tr><th>Month</th><th>Matches</th><th>Attempts</th><th>Accepted</th><th>Rejected</th><th>Limit</th><th>Odds chg</th><th>Tech</th><th>Other</th><th>Reject %</th></tr></thead>
-      <tbody class="num">
-        <tr><td>2026-06</td><td>1,426</td><td>33,840</td><td>31,550</td><td>2,290</td><td>1,273</td><td>624</td><td>268</td><td>125</td><td>6.8%</td></tr>
-        <tr><td>2026-05</td><td>4,180</td><td>104,200</td><td>98,420</td><td>5,780</td><td>3,010</td><td>1,640</td><td>812</td><td>318</td><td>5.5%</td></tr>
-        <tr><td>2026-04</td><td>3,920</td><td>97,600</td><td>91,180</td><td>6,420</td><td>3,890</td><td>1,510</td><td>694</td><td>326</td><td>6.6%</td></tr>
-        <tr class="total"><td>Total</td><td>9,526</td><td>235,640</td><td>221,150</td><td>14,490</td><td>8,173</td><td>3,774</td><td>1,774</td><td>769</td><td>6.1%</td></tr>
-      </tbody></table>
+      <tbody class="num"><tr class=""><td>2026-03<span style="font-family:'IBM Plex Mono';font-size:10px;background:#eef0ec;color:var(--hint);border-radius:4px;padding:1px 6px;margin-left:6px;">sim</span></td><td>3,360</td><td>4,180,000</td><td>3,829,000</td><td>351,000</td><td>11,800</td><td>214,000</td><td>210</td><td>124,990</td><td>8.4%</td></tr><tr class=""><td>2026-04<span style="font-family:'IBM Plex Mono';font-size:10px;background:#eef0ec;color:var(--hint);border-radius:4px;padding:1px 6px;margin-left:6px;">sim</span></td><td>3,590</td><td>4,520,000</td><td>3,973,000</td><td>547,000</td><td>18,900</td><td>352,000</td><td>300</td><td>175,800</td><td>12.1%</td></tr><tr class="cur"><td>2026-05<span style="font-family:'IBM Plex Mono';font-size:10px;background:var(--accent-soft);color:var(--accent);border-radius:4px;padding:1px 6px;margin-left:6px;">real</span></td><td>3,822</td><td>4,873,734</td><td>4,377,044</td><td>496,690</td><td>16,232</td><td>308,961</td><td>248</td><td>171,249</td><td>10.2%</td></tr><tr class="total"><td>Total <span style="font-size:10px;color:var(--hint)">(incl. sim)</span></td><td>10,772</td><td>13,573,734</td><td>12,179,044</td><td>1,394,690</td><td>46,932</td><td>874,961</td><td>758</td><td>472,039</td><td>10.3%</td></tr></tbody></table>
     </div>
   </section>
 
   <!-- 10. RISK ALERTS -->
   <section class="report" id="r10">
-    <div class="rhead"><span class="rnum">10</span><h2>Risk Alerts</h2></div>
-    <p class="rpurpose"><b>Anomaly detectors</b> to catch suspicious players by specific patterns — one report with switchable trigger tabs. Default period: last 12h (rolling). Audience: risk, integrity.</p>
+    <div class="rhead"><span class="rnum">10</span><h2>Risk Alerts</h2><span class="rbadges"><span class="rbadge freq-rt">real-time</span><span class="rbadge crit-c">critical</span></span></div>
+    <p class="rpurpose"><b>Anomaly detectors</b> to catch suspicious players by specific patterns - one report with switchable trigger tabs. Default period: last 12h (rolling). Audience: risk, integrity.</p><p class="dnote part">REAL (May 2026): Opposite bets / Cashouts / Strategy change computed from data. Sample: New-demo flags, Odds-above-market, Late bets (need sex-age / market-odds feed)</p>
     <div id="ra-tabs" style="display:flex; gap:4px; flex-wrap:wrap; border-bottom:1px solid var(--line); margin-bottom:16px;">
       <button class="ra-tab" data-t="opp">Opposite bets</button>
-      <button class="ra-tab" data-t="flags">New / demo flags</button>
+      <button class="ra-tab" data-t="flags">New player flags</button>
       <button class="ra-tab" data-t="odds">Odds above market</button>
       <button class="ra-tab" data-t="cash">Cashouts</button>
       <button class="ra-tab" data-t="late">Late bets</button>
       <button class="ra-tab" data-t="strat">Strategy change</button>
     </div>
-    <div class="filters" style="margin-bottom:14px;">
-      <select><option>All clients</option></select>
-      <select><option>All disciplines</option></select>
-      <select><option>All tournaments</option></select>
-      <select><option>Live + Prematch</option></select>
-      <select><option>Single + Multi</option></select>
-      <select><option>Last 12h</option><option>Last 24h</option></select>
-    </div>
+    <div class="filters"><span class="lbl">Filters</span><select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select><select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select><select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option><option>LoL</option></select><select><option>All tournaments</option><option>Champions League</option><option>Premier League</option><option>NBA</option></select><select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select><select><option>Timing: All</option><option>Prematch</option><option>Live</option></select><select><option>Type: All</option><option>Single</option><option>Multi</option></select><select><option>Last 12h</option><option>Last 24h</option></select><span class="demo-badge">demo - not wired</span></div>
     <div id="ra-body"></div>
   </section>
 
-  <footer>BI Reports — Trading &amp; Risk Analytics · mockups with sample data</footer>
+  
+  <!-- 11. P&L BREAKDOWN -->
+  <section class="report" id="r11">
+    <div class="rhead"><span class="rnum">11</span><h2>P&amp;L Breakdown by Market</h2><span class="rbadges"><span class="rbadge freq-hr">hourly</span><span class="rbadge crit-n">normal</span></span></div>
+    <p class="rpurpose"><b>Per-market profitability across the book.</b> Spot which market types leak (sharp-friendly props, handicaps) versus which carry the margin (correct score, scorer markets). Provider, client, tournament and tier sit in the filters; the table breaks down by market. Audience: trading, head of trading, risk.</p><p class="dnote real">Real data · 82 markets · 2026-05-07 to 2026-05-25 · bet-type 2x2 split modeled from real market totals</p>
+
+    <div class="filters">
+      <span class="lbl">Filters</span>
+      <select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select>
+      <select><option>All providers</option><option>Provider A</option><option>Provider B</option><option>In-house</option></select>
+      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>eSports</option></select>
+      <select><option>All tournaments</option><option>Champions League</option><option>Premier League</option><option>NBA</option></select>
+      <select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select>
+      <select><option>Timing: All</option><option>Prematch</option><option>Live</option></select>
+      <select><option>Type: All</option><option>Single</option><option>Multi</option></select>
+      <select><option>This month</option><option>Last 7 days</option><option>Today</option><option>Custom range…</option></select>
+    <span class="demo-badge">demo - not wired</span></div>
+
+    <div class="scroll">
+      <table id="t_mkt">
+        <thead><tr>
+          <th class="l sortable" data-k="market" data-t="s">Market</th>
+          <th class="l sortable" data-k="discipline" data-t="s">Discipline</th>
+          <th class="sortable" data-k="bets" data-t="n">Bets</th>
+          <th class="sortable" data-k="stake" data-t="n">Stake</th>
+          <th class="sortable" data-k="pnl" data-t="n">P&amp;L</th>
+          <th class="sortable" data-k="hold" data-t="n">Hold %</th>
+          <th class="sortable" data-k="avgbet" data-t="n">Avg bet</th>
+          <th class="sortable" data-k="avgodds" data-t="n">Avg odds</th>
+        </tr></thead>
+        <tbody class="num" id="tb_mkt"></tbody>
+      </table>
+    </div>
+
+    <p class="caption">Bet-type breakdown - <b id="bd_name">-</b></p>
+    <div class="grid2" id="bd_grid"></div>
+
+    <p class="hint">Mockup on illustrative figures. Requires a <code>market</code> (market-type) field in the source data; to be confirmed against the bets export.</p>
+  </section>
+
+
+  <!-- 12. INTEGRITY -->
+  <section class="report" id="r12">
+    <div class="rhead"><span class="rnum">12</span><h2>Integrity Alerts</h2><span class="rbadges"><span class="rbadge freq-rt">real-time</span><span class="rbadge crit-c">critical</span></span></div>
+    <p class="rpurpose"><b>Detect event-level anomalies</b>: coordinated betting and unexplained line moves on low-liquidity matches, where manipulation is cheapest. One report, switchable detector tabs; each row expands into the contributing signals.</p><p class="dnote part">REAL (May 2026): Outsized single bet & Synchronized (relative to match baseline, low-volume matches). Sample: Suspicious line movement (needs line-history feed)</p>
+
+    <div class="tabs" id="int-tabs">
+      <button class="tab active" data-t="sync">Synchronized bets</button>
+      <button class="tab" data-t="single">Outsized single bet</button>
+      <button class="tab" data-t="line">Suspicious line movement</button>
+    </div>
+
+    <div class="filters">
+      <span class="lbl">Filters</span>
+      <select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select>
+      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option></select>
+      <select><option>All tournaments</option></select>
+      <select><option>All tiers</option><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option></select>
+      <select><option>Min score: 50</option><option>Min score: 0</option><option>Min score: 70</option><option>Min score: 85</option></select>
+      <select><option>Last 24h</option><option>Last 12h</option><option>Last 7 days</option></select>
+    <span class="demo-badge">demo - not wired</span></div>
+
+    <div id="int-body"></div>
+
+    <p class="note" id="int-note"></p>
+  </section>
+
+
+  <!-- 13. FEED & PLATFORM HEALTH -->
+  <section class="report" id="r13">
+    <div class="rhead"><span class="rnum">13</span><h2>Feed &amp; Platform Health</h2><span class="rbadges"><span class="rbadge freq-rt">real-time</span><span class="rbadge crit-c">critical</span></span></div>
+    <p class="rpurpose"><b>Spot platform problems before they cost money.</b> A feed outage or a latency spike means stale prices and exposure; mass suspends mean lost turnover. Status tiles up top, per-provider detail below, recent incidents at the bottom.</p><p class="dnote na">Not available - needs platform telemetry, absent from bets export</p>
+
+    <div class="filters">
+      <span class="lbl">Filters</span>
+      <select><option>All feeds / providers</option><option>Provider A</option><option>Provider B</option><option>In-house</option><option>eSports feed</option></select>
+      <select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select>
+      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option></select>
+      <select><option>Last 24h</option><option>Last 1h</option><option>Last 7 days</option></select>
+    <span class="demo-badge">demo - not wired</span></div>
+
+    <div class="tiles">
+      <div class="tile ok"><div class="k">Feed uptime</div><div class="v">99.82%</div><div class="s">SLA 99.5%</div></div>
+      <div class="tile ok"><div class="k">Median latency</div><div class="v">240 ms</div><div class="s">price push</div></div>
+      <div class="tile warn"><div class="k">p95 latency</div><div class="v">820 ms</div><div class="s">target &lt; 600 ms</div></div>
+      <div class="tile warn"><div class="k">Suspended now</div><div class="v">38</div><div class="s">markets open: 4,210</div></div>
+      <div class="tile ok"><div class="k">Technical reject %</div><div class="v">0.6%</div><div class="s">of all attempts</div></div>
+      <div class="tile bad"><div class="k">Open incidents</div><div class="v">1</div><div class="s">eSports feed</div></div>
+    </div>
+
+    <p class="caption">By feed / provider</p>
+    <div class="scroll">
+      <table id="t_hc">
+        <thead><tr>
+          <th class="l">Status</th>
+          <th class="l sortable" data-k="provider" data-t="s">Provider</th>
+          <th class="sortable" data-k="uptime" data-t="n">Uptime %</th>
+          <th class="sortable" data-k="med" data-t="n">Median latency</th>
+          <th class="sortable" data-k="p95" data-t="n">p95 latency</th>
+          <th class="sortable" data-k="suspends" data-t="n">Suspends 24h</th>
+          <th class="sortable" data-k="avgdur" data-t="n">Avg suspend</th>
+          <th class="sortable" data-k="techrej" data-t="n">Tech reject %</th>
+        </tr></thead>
+        <tbody class="num" id="tb_hc"></tbody>
+      </table>
+    </div>
+
+    <p class="caption">Recent incidents</p>
+    <ul class="log" id="hc_log"></ul>
+
+    <p class="note">Needs platform telemetry, not the bets export: <code>feed_uptime</code>, <code>price_latency</code>, <code>market_suspend/resume events</code>, <code>technical_reject</code>. Thresholds (SLA, latency targets) are placeholders. This report is unlikely to be buildable from the xlsx alone - flagged depends-on-telemetry.</p>
+  </section>
+
+
+  <!-- 14. SETTLEMENT & LIABILITY -->
+  <section class="report" id="r14">
+    <div class="rhead"><span class="rnum">14</span><h2>Settlement health</h2><span class="rbadges"><span class="rbadge freq-dl">daily</span><span class="rbadge crit-n">normal</span></span></div>
+    <p class="rpurpose"><b>Catch stuck or wrong settlements.</b> Pending bets ageing past threshold tie up player funds and hide P&amp;L; resettlements and cancellations are manual-intervention signals worth watching. Status tiles, status breakdown, and a needs-attention queue.</p><p class="dnote part">Real status breakdown & open-bet liability (2026-05-07 to 25); top status tiles indicative</p>
+
+    <div class="filters">
+      <span class="lbl">Filters</span>
+      <select><option>All clients</option><option>BetZone</option><option>LuckyDome</option></select>
+      <select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select>
+      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option><option>CS2</option></select>
+      <select><option>Last 24h</option><option>Today</option><option>Last 7 days</option></select>
+    <span class="demo-badge">demo - not wired</span></div>
+
+    <div class="tiles">
+      <div class="tile ok"><div class="k">Settled 24h</div><div class="v">241,800</div><div class="s">bets</div></div>
+      <div class="tile ok"><div class="k">Median lag</div><div class="v">38 s</div><div class="s">event end → settled</div></div>
+      <div class="tile warn"><div class="k">Pending now</div><div class="v">1,640</div><div class="s">oldest 4h 12m</div></div>
+      <div class="tile warn"><div class="k">Resettled 24h</div><div class="v">312</div><div class="s">0.13% of settled</div></div>
+      <div class="tile bad"><div class="k">Cancelled 24h</div><div class="v">86</div><div class="s">manual / void errors</div></div>
+      <div class="tile ok"><div class="k">Settlement errors</div><div class="v">4</div><div class="s">failed jobs</div></div>
+    </div>
+
+    <p class="caption">By settlement status (last 24h)</p>
+    <div class="scroll">
+      <table id="t_set">
+        <thead><tr>
+          <th class="l sortable" data-k="status" data-t="s">Status</th>
+          <th class="sortable" data-k="bets" data-t="n">Bets</th>
+          <th class="sortable" data-k="stake" data-t="n">Stake</th>
+          <th class="sortable" data-k="payout" data-t="n">Payout</th>
+          <th class="sortable" data-k="share" data-t="n">Share of bets</th>
+        </tr></thead>
+        <tbody class="num" id="tb_set"></tbody>
+      </table>
+    </div>
+
+    <p class="caption">Needs attention</p>
+    <ul class="log" id="set_log"></ul>
+
+    <p class="note">From the bets data if it carries settlement fields: <code>status</code>, <code>settlement_time</code>, <code>resettled_flag</code>, <code>payout</code>. Lag = settlement_time − event_end. Thresholds (pending age, resettle %) are placeholders.</p>
+  </section>
+  <section class="report" id="r14b">
+    <div class="rhead"><span class="rnum">LIA</span><h2>Open liability</h2><span class="rbadges"><span class="rbadge freq-rt">real-time</span><span class="rbadge crit-c">critical</span></span></div>
+    <p class="rpurpose"><b>What we could pay out right now.</b> Per live event, the worst-case exposure: the outcome that, if it lands, costs us the most across all open bets. Formula reference: Metrics &amp; Formulas, section 5. <b>Note:</b> this view is best as a real-time BO page and/or chat-bot push alert when an event's worst-case crosses a limit - to be specced separately.</p>
+
+    <div class="filters">
+      <span class="lbl">Filters</span>
+      <select><option>Sport type: All</option><option>Sport</option><option>eSports</option></select>
+      <select><option>All disciplines</option><option>Football</option><option>Tennis</option><option>Basketball</option><option>Dota 2</option></select>
+      <select><option>All</option><option>Prematch</option><option>Live</option></select>
+      <select><option>Worst-case &gt; €5,000</option><option>All</option><option>Worst-case &gt; €20,000</option></select>
+    <span class="demo-badge">demo - not wired</span></div>
+
+    <div class="scroll">
+      <table id="t_liab">
+        <thead><tr>
+          <th class="l sortable" data-k="match" data-t="s">Event</th>
+          <th class="l">Worst outcome</th>
+          <th class="sortable" data-k="openbets" data-t="n">Open bets</th>
+          <th class="sortable" data-k="openstake" data-t="n">Open stake</th>
+          <th class="sortable" data-k="worst" data-t="n">Worst-case liability</th>
+          <th class="l">Status</th>
+        </tr></thead>
+        <tbody class="num" id="tb_liab"></tbody>
+      </table>
+    </div>
+
+    <p class="note">Needs <b>open (unsettled) bets in real time</b>: <code>open_bets</code>, <code>potential_payout per outcome</code>. Worst-case = max over outcomes of (payouts if that outcome wins) − total open stake on the event. Not periodic - this is a live exposure view.</p>
+  </section>
+
+  <footer>BI Reports - Trading &amp; Risk Analytics · mockups with sample data</footer>
 
 </div>
 
@@ -373,16 +571,7 @@ const nf = (n) => n.toLocaleString('en-US');
 
 /* 4. Tournament: sortable */
 (function(){
-  const rows = [
-    {discipline:'Football', tournament:'Champions League', tier:1, active:9840, matches:124, bets:18420, stake:512300, ggr:28100},
-    {discipline:'Football', tournament:'Premier League', tier:1, active:8210, matches:98, bets:14200, stake:421800, ggr:19400},
-    {discipline:'Tennis', tournament:'ATP Masters', tier:2, active:3120, matches:210, bets:6890, stake:184600, ggr:-5200},
-    {discipline:'Basketball', tournament:'NBA', tier:1, active:5640, matches:142, bets:11200, stake:298400, ggr:14800},
-    {discipline:'Football', tournament:'Serie A', tier:2, active:2980, matches:76, bets:5310, stake:142900, ggr:6700},
-    {discipline:'Tennis', tournament:'Wimbledon', tier:1, active:4220, matches:64, bets:7800, stake:201500, ggr:9100},
-    {discipline:'eSports', tournament:'CS2 Major', tier:3, active:1840, matches:88, bets:3120, stake:62400, ggr:-1900},
-    {discipline:'Basketball', tournament:'EuroLeague', tier:3, active:1210, matches:54, bets:2040, stake:48700, ggr:2300}
-  ];
+  const rows = [{"discipline": "dota2", "tournament": "DreamLeague Season 29", "tier": null, "active": 92409, "matches": 78, "bets": 2135023, "stake": 68315519, "ggr": 4191984}, {"discipline": "dota2", "tournament": "BB Streamers Battle 13", "tier": null, "active": 48419, "matches": 24, "bets": 396812, "stake": 10112634, "ggr": 552519}, {"discipline": "dota2", "tournament": "1W Essence I", "tier": null, "active": 28912, "matches": 14, "bets": 249690, "stake": 7615723, "ggr": 647577}, {"discipline": "dota2", "tournament": "European Pro League Season 37", "tier": null, "active": 9259, "matches": 13, "bets": 33018, "stake": 731958, "ggr": 86106}, {"discipline": "csgo", "tournament": "CS Asia Championships 2026", "tier": null, "active": 19115, "matches": 30, "bets": 59944, "stake": 581678, "ggr": 53217}, {"discipline": "csgo", "tournament": "PGL Astana 2026", "tier": null, "active": 20704, "matches": 35, "bets": 65550, "stake": 551902, "ggr": 81385}, {"discipline": "csgo", "tournament": "Intel Extreme Masters Atlanta 2026", "tier": null, "active": 15146, "matches": 26, "bets": 42547, "stake": 326142, "ggr": 58040}, {"discipline": "dota2", "tournament": "BLAST Slam VII", "tier": null, "active": 7607, "matches": 34, "bets": 12594, "stake": 241241, "ggr": 137624}, {"discipline": "dota2", "tournament": "EPL World Series: Southeast Asia Season 15", "tier": null, "active": 3863, "matches": 11, "bets": 8283, "stake": 132838, "ggr": 1568}, {"discipline": "csgo", "tournament": "NODWIN Clutch Series #8", "tier": null, "active": 6786, "matches": 43, "bets": 18929, "stake": 99325, "ggr": 11324}, {"discipline": "dota2", "tournament": "Lunar Horse Trophy 7", "tier": null, "active": 2385, "matches": 13, "bets": 4417, "stake": 90358, "ggr": 4768}, {"discipline": "csgo", "tournament": "CCT Europe 2026 Series #1", "tier": null, "active": 4516, "matches": 21, "bets": 10965, "stake": 54118, "ggr": 16346}];
   const tb = document.getElementById('tb_tourn');
   if(!tb) return;
   let sortK='stake', dir=-1;
@@ -390,7 +579,7 @@ const nf = (n) => n.toLocaleString('en-US');
     rows.sort((a,b)=>{ let av=a[sortK], bv=b[sortK]; if(typeof av==='string') return dir*av.localeCompare(bv); return dir*(av-bv); });
     tb.innerHTML = rows.map(r=>{
       const avg=Math.round(r.stake/r.bets), hold=(r.ggr/r.stake*100).toFixed(1), pc=r.ggr>=0?'pos':'neg';
-      return '<tr><td>'+r.discipline+'</td><td>'+r.tournament+'</td><td>T'+r.tier+'</td><td>'+nf(r.active)+'</td><td>'+r.matches+'</td><td>'+nf(r.bets)+'</td><td>'+fmt(r.stake)+'</td><td class="'+pc+'">'+(r.ggr>=0?'+':'')+fmt(r.ggr)+'</td><td>'+hold+'%</td><td>'+fmt(avg)+'</td></tr>';
+      return '<tr><td>'+r.discipline+'</td><td>'+r.tournament+'</td><td>'+(r.tier!=null?('T'+r.tier):'-')+'</td><td>'+nf(r.active)+'</td><td>'+r.matches+'</td><td>'+nf(r.bets)+'</td><td>'+fmt(r.stake)+'</td><td class="'+pc+'">'+(r.ggr>=0?'+':'')+fmt(r.ggr)+'</td><td>'+hold+'%</td><td>'+fmt(avg)+'</td></tr>';
     }).join('');
     document.querySelectorAll('#t_tourn th').forEach(th=>{ th.textContent=th.textContent.replace(/ [▼▲]$/,''); if(th.dataset.k===sortK) th.textContent+=dir===-1?' ▼':' ▲'; });
   }
@@ -402,17 +591,7 @@ const nf = (n) => n.toLocaleString('en-US');
 
 /* 5. Discipline: drill-down */
 (function(){
-  const data = [
-    {discipline:'Football', active:21300, matches:362, bets:48200, stake:1198400, ggr:62100, open:true, kids:[
-      {t:'Champions League', active:9840, matches:124, bets:18420, stake:512300, ggr:28100},
-      {t:'Premier League', active:8210, matches:98, bets:14200, stake:421800, ggr:19400},
-      {t:'Serie A', active:2980, matches:76, bets:5310, stake:142900, ggr:6700}]},
-    {discipline:'Tennis', active:8120, matches:412, bets:16400, stake:402800, ggr:-7300, open:false, kids:[
-      {t:'ATP Masters', active:3120, matches:210, bets:6890, stake:184600, ggr:-5200},
-      {t:'Wimbledon', active:4220, matches:64, bets:7800, stake:201500, ggr:9100}]},
-    {discipline:'eSports', active:4210, matches:184, bets:7800, stake:142600, ggr:3900, open:false, kids:[
-      {t:'CS2 Major', active:1840, matches:88, bets:3120, stake:62400, ggr:-1900}]}
-  ];
+  const data = [{"discipline": "dota2", "active": 102328, "matches": 191, "bets": 2768041, "stake": 87247757, "ggr": 5626131, "open": true, "kids": [{"t": "DreamLeague Season 29", "active": 92409, "matches": 78, "bets": 2135023, "stake": 68315519, "ggr": 4191984}, {"t": "BB Streamers Battle 13", "active": 48419, "matches": 24, "bets": 396812, "stake": 10112634, "ggr": 552519}, {"t": "1W Essence I", "active": 28912, "matches": 14, "bets": 249690, "stake": 7615723, "ggr": 647577}, {"t": "European Pro League Season 37", "active": 9259, "matches": 13, "bets": 33018, "stake": 731958, "ggr": 86106}]}, {"discipline": "csgo", "active": 35830, "matches": 666, "bets": 196907, "stake": 1833471, "ggr": 272486, "open": false, "kids": [{"t": "CS Asia Championships 2026", "active": 19115, "matches": 30, "bets": 59944, "stake": 581678, "ggr": 53217}, {"t": "PGL Astana 2026", "active": 20704, "matches": 35, "bets": 65550, "stake": 551902, "ggr": 81385}, {"t": "Intel Extreme Masters Atlanta 2026", "active": 15146, "matches": 26, "bets": 42547, "stake": 326142, "ggr": 58040}, {"t": "NODWIN Clutch Series #8", "active": 6786, "matches": 43, "bets": 18929, "stake": 99325, "ggr": 11324}]}, {"discipline": "lol", "active": 3446, "matches": 230, "bets": 12254, "stake": 69850, "ggr": 9868, "open": false, "kids": [{"t": "LCK 2026 Rounds 1-2", "active": 1567, "matches": 28, "bets": 4142, "stake": 16623, "ggr": 2993}, {"t": "LPL 2026 Split 2", "active": 884, "matches": 18, "bets": 1987, "stake": 8307, "ggr": 2221}, {"t": "Esports World Cup 2026 Online Qualifier: EMEA", "active": 528, "matches": 9, "bets": 1018, "stake": 6193, "ggr": -328}, {"t": "LEC 2026 Spring", "active": 548, "matches": 6, "bets": 1088, "stake": 5819, "ggr": 2446}]}, {"discipline": "valorant", "active": 3474, "matches": 136, "bets": 11731, "stake": 68551, "ggr": 10617, "open": false, "kids": [{"t": "VCT 2026: EMEA Stage 1", "active": 1624, "matches": 10, "bets": 4147, "stake": 24177, "ggr": 7187}, {"t": "VALORANT Challengers 2026 EMEA: Stage 2", "active": 917, "matches": 20, "bets": 1709, "stake": 12673, "ggr": 86}, {"t": "VCT 2026: Americas Stage 1", "active": 953, "matches": 18, "bets": 2538, "stake": 9944, "ggr": 461}, {"t": "VCT 2026: Pacific Stage 1", "active": 792, "matches": 8, "bets": 1602, "stake": 5304, "ggr": -492}]}, {"discipline": "csgo_wingman", "active": 901, "matches": 999, "bets": 1928, "stake": 9047, "ggr": 2936, "open": false, "kids": [{"t": "Berserk CS2 League 2026 Week #21", "active": 532, "matches": 535, "bets": 1037, "stake": 5005, "ggr": 1477}, {"t": "Berserk CS2 League 2026 Week #19", "active": 205, "matches": 183, "bets": 366, "stake": 1576, "ggr": 361}, {"t": "Berserk CS2 League 2026 Week #20", "active": 296, "matches": 246, "bets": 479, "stake": 1572, "ggr": 469}, {"t": "Berserk CS2 League 2026 Week #22", "active": 39, "matches": 35, "bets": 46, "stake": 894, "ggr": 629}]}, {"discipline": "dota2_duels", "active": 997, "matches": 580, "bets": 2072, "stake": 8359, "ggr": 2393, "open": false, "kids": [{"t": "Berserk Dota 2 League 2026 Week #21", "active": 599, "matches": 285, "bets": 1141, "stake": 5330, "ggr": 1834}, {"t": "Berserk Dota 2 League 2026 Week #20", "active": 316, "matches": 162, "bets": 498, "stake": 1456, "ggr": 201}, {"t": "Berserk Dota 2 League 2026 Week #19", "active": 236, "matches": 118, "bets": 397, "stake": 1204, "ggr": 217}, {"t": "Berserk Dota 2 League 2026 Week #22", "active": 32, "matches": 15, "bets": 36, "stake": 368, "ggr": 142}]}, {"discipline": "mobile_legends", "active": 919, "matches": 103, "bets": 2173, "stake": 5577, "ggr": 857, "open": false, "kids": [{"t": "MPL Indonesia Season 17", "active": 456, "matches": 24, "bets": 926, "stake": 1744, "ggr": -13}, {"t": "BetBoom Rise of Legends Season 10: Division 2", "active": 219, "matches": 14, "bets": 290, "stake": 1088, "ggr": -3}, {"t": "MLBB Continental Championships Season 7", "active": 280, "matches": 20, "bets": 477, "stake": 820, "ggr": 488}, {"t": "MPL Philippines Season 17", "active": 260, "matches": 16, "bets": 467, "stake": 716, "ggr": -25}]}, {"discipline": "rush_soccer", "active": 130, "matches": 446, "bets": 407, "stake": 2174, "ggr": -48, "open": false, "kids": [{"t": "Valhalla Cup 2026 Week #21", "active": 68, "matches": 170, "bets": 167, "stake": 688, "ggr": 222}, {"t": "Valkyrie Cup 2026 Week #21", "active": 38, "matches": 61, "bets": 65, "stake": 406, "ggr": -752}, {"t": "Valhalla Cup 2026 Week #20", "active": 30, "matches": 61, "bets": 57, "stake": 245, "ggr": 134}, {"t": "Valhalla Cup 3 2026 Week #21", "active": 25, "matches": 38, "bets": 37, "stake": 219, "ggr": 185}]}];
   const tb=document.getElementById('tb_disc');
   if(!tb) return;
   function render(){
@@ -433,15 +612,15 @@ const nf = (n) => n.toLocaleString('en-US');
 function makeDaily(el){
   return new Chart(el, {
     type:'line',
-    data:{ labels:Array.from({length:30},function(_,i){return i+1;}), datasets:[{ data:[-7920,18650,11240].concat(Array(27).fill(null)), borderColor:'#0f6e56', backgroundColor:'rgba(15,110,86,.08)', borderWidth:2, tension:.35, pointRadius:3, pointBackgroundColor:'#0f6e56', spanGaps:false, fill:true }] },
+    data:{ labels:[7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25], datasets:[{ data:[5025, 618312, 103724, 110398, 1104, 53649, 465497, 308535, 570416, -129052, -106312, -500829, 950887, 620258, 447675, 1063323, 1223169, 120301], borderColor:'#0f6e56', backgroundColor:'rgba(15,110,86,.08)', borderWidth:2, tension:.35, pointRadius:3, pointBackgroundColor:'#0f6e56', spanGaps:false, fill:true }] },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ font:{ size:10 } } }, y:{ ticks:{ callback:function(v){return (v<0?'−':'')+'€'+Math.abs(v/1000)+'k';}, font:{ size:11 } }, grid:{ color:'rgba(0,0,0,.06)' } } } }
   });
 }
 function makeMonthly(el){
-  var mp=[-48200,132400,21970], avg=mp.reduce(function(a,b){return a+b;},0)/mp.length;
+  var mp=[4180000,-2140000,5926078], avg=mp.reduce(function(a,b){return a+b;},0)/mp.length;
   return new Chart(el, {
     type:'bar',
-    data:{ labels:['2026-04','2026-05','2026-06'], datasets:[{ data:mp, backgroundColor:mp.map(function(v){return v>=0?'#0f6e56':'#b5322e';}), borderRadius:4, barPercentage:.5 }] },
+    data:{ labels:['2026-03','2026-04','2026-05'], datasets:[{ data:mp, backgroundColor:mp.map(function(v){return v>=0?'#0f6e56':'#b5322e';}), borderRadius:4, barPercentage:.5 }] },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{ display:false }, ticks:{ font:{ size:11 } } }, y:{ ticks:{ callback:function(v){return (v<0?'−':'')+'€'+Math.abs(Math.round(v/1000))+'k';}, font:{ size:11 } }, grid:{ color:'rgba(0,0,0,.06)' } } } },
     plugins:[{ id:'avg', afterDraw:function(c){ var a=c.chartArea, s=c.scales, ctx=c.ctx, y=s.y.getPixelForValue(avg); ctx.save(); ctx.setLineDash([6,4]); ctx.lineWidth=1.5; ctx.strokeStyle='#9a9c96'; ctx.beginPath(); ctx.moveTo(a.left,y); ctx.lineTo(a.right,y); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle='#9a9c96'; ctx.font='11px sans-serif'; ctx.textAlign='right'; ctx.fillText('avg €'+Math.round(avg/1000)+'k', a.right-4, y-5); ctx.restore(); } }]
   });
@@ -459,36 +638,30 @@ if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded
 (function(){
   var fmt=function(n){return (n<0?'\u2212':'')+'\u20ac'+Math.abs(n).toLocaleString('en-US');};
   var data={
-    opp:{cap:'Opposite bets \u2014 players who bet opposite outcomes on one market and beat us overall (P&L \u2264 \u2212200)',
+    opp:{cap:'Opposite bets (REAL 2026) - same player, opposite sides of one map, we lost (P&L \u2264 \u2212200)',
       head:['Player','Market','Bets','Total stake','Our P&L','Hold %'],
-      rows:[['#48201 \u00b7 m.kovac@\u2026','CHE\u2013ARS \u00b7 1X2','3','\u20ac6,400','<span class="neg">\u2212\u20ac420</span>','<span class="neg">\u22126.6%</span>'],
-            ['#33915 \u00b7 sharp_99','NADAL\u2013ALC \u00b7 Winner','2','\u20ac5,200','<span class="neg">\u2212\u20ac280</span>','<span class="neg">\u22125.4%</span>'],
-            ['#51120 \u00b7 a.ivanov@\u2026','LAL\u2013BOS \u00b7 Total 220.5','2','\u20ac4,100','<span class="neg">\u2212\u20ac210</span>','<span class="neg">\u22125.1%</span>']]},
-    flags:{cap:'New / demo flags \u2014 catch drops & bonus abusers by first-bet / sex / age flags and combinations',
+      rows:[["#3320197 \u00b7 DreadfulWasp", "Team Liquid vs Xtreme Gaming \u00b7 Match winner - twoway", "2", "\u20ac10,382", "<span class=\"neg\">\u2212\u20ac5,321</span>", "<span class=\"neg\">-51.3%</span>"], ["#3227131 \u00b7 AmaranthBug", "Travoman Team vs Miposhka Team \u00b7 Map 1 winner - twoway", "2", "\u20ac6,045", "<span class=\"neg\">\u2212\u20ac4,987</span>", "<span class=\"neg\">-82.5%</span>"], ["#464019351 \u00b7 DifferentBlack8", "Team Falcons vs PlayTime \u00b7 Map 2 winner - twoway", "4", "\u20ac3,551", "<span class=\"neg\">\u2212\u20ac4,495</span>", "<span class=\"neg\">-126.6%</span>"], ["#7286444 \u00b7 CurlyBooth", "Nigma Galaxy vs Xtreme Gaming \u00b7 Map 2 winner - twoway", "2", "\u20ac3,538", "<span class=\"neg\">\u2212\u20ac2,830</span>", "<span class=\"neg\">-80.0%</span>"], ["#2021450 \u00b7 AmaranthGagarin2", "GamerLegion vs Team Spirit \u00b7 Map 1 winner - twoway", "3", "\u20ac755", "<span class=\"neg\">\u2212\u20ac2,724</span>", "<span class=\"neg\">-360.8%</span>"], ["#5731636 \u00b7 ExperiencedVevay", "PARIVISION vs BetBoom Team \u00b7 Map 2 winner - twoway", "4", "\u20ac4,163", "<span class=\"neg\">\u2212\u20ac2,668</span>", "<span class=\"neg\">-64.1%</span>"], ["#1884513 \u00b7 HugePodium", "ex-Heroic vs Virtus.pro \u00b7 Map 1 winner - twoway", "3", "\u20ac2,244", "<span class=\"neg\">\u2212\u20ac2,484</span>", "<span class=\"neg\">-110.7%</span>"], ["#5731636 \u00b7 ExperiencedVevay", "Aurora Gaming vs ex-Heroic \u00b7 Map 2 winner - twoway", "2", "\u20ac5,979", "<span class=\"neg\">\u2212\u20ac2,264</span>", "<span class=\"neg\">-37.9%</span>"], ["#3212395 \u00b7 JadeSchaumburg", "Tundra vs Virtus.pro \u00b7 Map 1 winner - twoway", "2", "\u20ac5,801", "<span class=\"neg\">\u2212\u20ac2,238</span>", "<span class=\"neg\">-38.6%</span>"], ["#2006987 \u00b7 CertainElbakyan", "PARIVISION vs Xtreme Gaming \u00b7 Map 2 winner - twoway", "2", "\u20ac2,730", "<span class=\"neg\">\u2212\u20ac2,131</span>", "<span class=\"neg\">-78.1%</span>"], ["#1791496569 \u00b7 CoffeeTulip6", "Team Spirit vs Aurora Gaming \u00b7 Map 2 winner - twoway", "2", "\u20ac2,017", "<span class=\"neg\">\u2212\u20ac2,125</span>", "<span class=\"neg\">-105.4%</span>"], ["#3212395 \u00b7 JadeSchaumburg", "PARIVISION vs Team Liquid \u00b7 Map 2 winner - twoway", "2", "\u20ac4,433", "<span class=\"neg\">\u2212\u20ac2,101</span>", "<span class=\"neg\">-47.4%</span>"]]},
+    flags:{cap:'New player flags - first bet / gender / age flags (sample - gender & age not in this dataset)',
       head:['Player','Flags','Bet time','Stake','Odds','Market'],
       rows:[['#62890 \u00b7 new_user_1','<span class="neg">First bet \u00b7 Female \u00b7 18</span>','08:42','\u20ac500','1.95','CHE\u2013ARS \u00b7 1X2'],
             ['#62914 \u00b7 j.doe@\u2026','<span class="neg">First bet \u00b7 50+</span>','09:05','\u20ac1,200','2.40','Totals 2.5'],
             ['#62950 \u00b7 anon_77','Female \u00b7 50+','10:11','\u20ac300','3.10','Winner']]},
-    odds:{cap:'Odds above market \u2014 our price higher than market average (depends on a market-odds feed)',
+    odds:{cap:'Odds above market - our price higher than market average (depends on a market-odds feed)',
       head:['Player','Bet / settle','Stake','Our odds','Market odds','Diff %','Market'],
       rows:[['#48201 \u00b7 m.kovac@\u2026','09:12 / 11:00','\u20ac3,200','2.50','2.20','<span class="neg">+13.6%</span>','CHE\u2013ARS \u00b7 1X2'],
             ['#33915 \u00b7 sharp_99','10:01 / 12:30','\u20ac2,600','1.95','1.80','<span class="neg">+8.3%</span>','Winner'],
             ['#51120 \u00b7 a.ivanov@\u2026','11:20 / 13:15','\u20ac2,100','2.05','1.92','<span class="neg">+6.8%</span>','Totals 220.5']]},
-    cash:{cap:'Cashouts \u2014 negative cashouts (amount limit available as a filter)',
+    cash:{cap:'Cashouts (REAL 2026) - negative cashouts only (we lost), worst first',
       head:['Player','Bet time','Cashout time','Settle time','Stake','Cashout','P&L'],
-      rows:[['#41001 \u00b7 cash_king','08:00','08:45','11:00','\u20ac1,000','\u20ac1,800','<span class="neg">\u2212\u20ac800</span>'],
-            ['#41205 \u00b7 p.novak@\u2026','09:30','09:52','12:00','\u20ac600','\u20ac1,150','<span class="neg">\u2212\u20ac550</span>'],
-            ['#41330 \u00b7 quick_out','10:15','10:40','13:00','\u20ac400','\u20ac720','<span class="neg">\u2212\u20ac320</span>']]},
-    late:{cap:'Late bets \u2014 decisive markets bet shortly before settlement (\u2264 5 min)',
+      rows:[["#3212395 \u00b7 JadeSchaumburg", "05-21 18:42", "05-21 19:15", "05-21 19:32", "\u20ac4,228", "\u20ac721,700", "<span class=\"neg\">\u2212\u20ac4,490</span>"], ["#5263566 \u00b7 GreenTrident2", "05-21 20:13", "05-21 20:20", "05-21 21:10", "\u20ac2,175", "\u20ac429,480", "<span class=\"neg\">\u2212\u20ac3,015</span>"], ["#49425788 \u00b7 RedAntelope10", "05-24 12:35", "05-24 12:50", "05-24 13:27", "\u20ac1,080", "\u20ac316,260", "<span class=\"neg\">\u2212\u20ac2,716</span>"], ["#3246968 \u00b7 StrategicInfant", "05-23 12:33", "05-23 13:12", "05-23 13:25", "\u20ac1,200", "\u20ac326,200", "<span class=\"neg\">\u2212\u20ac2,715</span>"], ["#3397715 \u00b7 StatutoryTan4", "05-21 20:21", "05-22 10:35", "05-22 12:50", "\u20ac8,340", "\u20ac856,072", "<span class=\"neg\">\u2212\u20ac2,006</span>"], ["#1000011416 \u00b7 ChocolateMoccasin74", "05-14 13:39", "05-14 14:02", "05-14 14:23", "\u20ac2,686", "\u20ac375,705", "<span class=\"neg\">\u2212\u20ac1,702</span>"], ["#1325692812 \u00b7 AzureEuclid19", "05-16 18:32", "05-16 19:21", "05-16 19:41", "\u20ac1,594", "\u20ac278,118", "<span class=\"neg\">\u2212\u20ac1,693</span>"], ["#3227131 \u00b7 AmaranthBug", "05-18 21:12", "05-18 21:18", "05-18 21:52", "\u20ac1,511", "\u20ac262,865", "<span class=\"neg\">\u2212\u20ac1,587</span>"], ["#1000011416 \u00b7 ChocolateMoccasin74", "05-14 13:39", "05-14 14:02", "05-14 14:23", "\u20ac2,336", "\u20ac326,700", "<span class=\"neg\">\u2212\u20ac1,480</span>"], ["#156919 \u00b7 AmaranthHalibut10", "05-08 10:35", "05-08 18:21", "05-08 18:58", "\u20ac686", "\u20ac184,620", "<span class=\"neg\">\u2212\u20ac1,425</span>"], ["#6923949 \u00b7 StaticLlama", "05-13 18:18", "05-13 19:56", "05-13 20:02", "\u20ac1,152", "\u20ac223,000", "<span class=\"neg\">\u2212\u20ac1,417</span>"], ["#3985590 \u00b7 ApricotJaquith", "05-16 10:21", "05-16 10:33", "05-16 11:04", "\u20ac2,112", "\u20ac296,741", "<span class=\"neg\">\u2212\u20ac1,396</span>"]]},
+    late:{cap:'Late bets - decisive markets bet shortly before settlement (\u2264 5 min)',
       head:['Player','Bet time','Settle time','Diff (min)','Market','Stake','Odds','P&L'],
       rows:[['#55012 \u00b7 late_larry','20:43','20:46','3','Next goal','\u20ac900','1.85','<span class="neg">\u2212\u20ac765</span>'],
             ['#55090 \u00b7 m.weber@\u2026','21:10','21:14','4','Total goals 2.5','\u20ac1,500','2.10','<span class="neg">\u2212\u20ac1,650</span>'],
             ['#55141 \u00b7 timing_99','19:58','20:01','3','Winner','\u20ac700','1.70','<span class="neg">\u2212\u20ac490</span>']]},
-    strat:{cap:'Strategy change \u2014 sharp shift vs the player\u2019s baseline',
+    strat:{cap:'Strategy change (REAL 2026) - avg stake late vs early, x10+ jump; vs the player\u2019s baseline',
       head:['Player','Metric','Baseline','Current','Change'],
-      rows:[['#48201 \u00b7 m.kovac@\u2026','Avg stake','\u20ac1','\u20ac50','<span class="neg">\u00d750</span>'],
-            ['#33915 \u00b7 sharp_99','Bet type mix','90% Multi','85% Single','<span class="neg">flipped</span>'],
-            ['#51120 \u00b7 a.ivanov@\u2026','Avg odds','3.40','1.85','<span class="neg">\u221246%</span>']]}
+      rows:[["#1557032572 \u00b7 ProudEsta", "Avg stake", "\u20ac0", "\u20ac29", "<span class=\"neg\">\u00d7250</span>"], ["#4036537 \u00b7 MaroonAdelheid", "Avg stake", "\u20ac1", "\u20ac144", "<span class=\"neg\">\u00d7220</span>"], ["#1669360211 \u00b7 YellowRosalind32", "Avg stake", "\u20ac0", "\u20ac2", "<span class=\"neg\">\u00d788</span>"], ["#2835414 \u00b7 ExcellentClarion", "Avg stake", "\u20ac0", "\u20ac6", "<span class=\"neg\">\u00d784</span>"], ["#2382661 \u00b7 CriticalHyacintha", "Avg stake", "\u20ac0", "\u20ac25", "<span class=\"neg\">\u00d778</span>"], ["#1121493313 \u00b7 ColonialNewton3", "Avg stake", "\u20ac0", "\u20ac3", "<span class=\"neg\">\u00d774</span>"], ["#3477071 \u00b7 ValidChocolate", "Avg stake", "\u20ac0", "\u20ac4", "<span class=\"neg\">\u00d774</span>"], ["#1858021 \u00b7 OrangeTsetserleg", "Avg stake", "\u20ac0", "\u20ac5", "<span class=\"neg\">\u00d762</span>"], ["#1043128 \u00b7 WearySaint", "Avg stake", "\u20ac0", "\u20ac2", "<span class=\"neg\">\u00d760</span>"], ["#1012914848 \u00b7 ScarletEstaimpuis2", "Avg stake", "\u20ac1", "\u20ac43", "<span class=\"neg\">\u00d753</span>"], ["#1468841 \u00b7 EndlessPayette", "Avg stake", "\u20ac1", "\u20ac42", "<span class=\"neg\">\u00d752</span>"], ["#1665305014 \u00b7 BlushEthelind", "Avg stake", "\u20ac0", "\u20ac14", "<span class=\"neg\">\u00d742</span>"]]}
   };
   var body=document.getElementById('ra-body');
   var tabs=document.querySelectorAll('.ra-tab');
@@ -504,6 +677,413 @@ if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded
   }
   tabs.forEach(function(t){ t.addEventListener('click', function(){ render(t.dataset.t); }); });
   render('opp');
+})();
+</script>
+<script>
+
+/* ---- generic column sorter (delegated: survives re-renders, covers dynamic tables) ---- */
+(function(){
+  function parseVal(txt){
+    var t=(txt||'').replace(/\u2212/g,'-').replace(/[,%\s]/g,'').replace(/[^0-9.\-+]/g,'');
+    if(t!=='' && !isNaN(parseFloat(t)) && /[0-9]/.test(t)) return parseFloat(t);
+    return (txt||'').trim().toLowerCase();
+  }
+  function eligible(tbl, thead){
+    if(!tbl || !thead) return false;
+    if(!tbl.closest('section.report')) return false;
+    if(tbl.id==='t_disc') return false;                 // drill-down handled separately
+    if(thead.querySelector('th.sortable')) return false; // table has its own sorter
+    return true;
+  }
+  document.addEventListener('click', function(ev){
+    var th=ev.target && ev.target.closest ? ev.target.closest('th') : null;
+    if(!th) return;
+    var thead=th.closest('thead'); var tbl=th.closest('table');
+    if(!eligible(tbl, thead)) return;
+    var tbody=tbl.querySelector('tbody'); if(!tbody) return;
+    var ths=Array.prototype.slice.call(thead.querySelectorAll('th'));
+    var idx=ths.indexOf(th); if(idx<0) return;
+    var dir = (tbl.__gcol===idx) ? -tbl.__gdir : -1;     // first click desc, then toggle
+    tbl.__gcol=idx; tbl.__gdir=dir;
+    var rows=Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+    var totals=rows.filter(function(r){return r.classList.contains('total');});
+    var body=rows.filter(function(r){return !r.classList.contains('total') && !r.classList.contains('kid');});
+    body.sort(function(a,b){
+      var av=parseVal(a.cells[idx]?a.cells[idx].textContent:''), bv=parseVal(b.cells[idx]?b.cells[idx].textContent:'');
+      if(typeof av==='number' && typeof bv==='number') return dir*(av-bv);
+      return dir*String(av).localeCompare(String(bv));
+    });
+    body.concat(totals).forEach(function(r){tbody.appendChild(r);});
+    ths.forEach(function(t){var a=t.querySelector('.ar'); if(a)a.remove();});
+    var ar=document.createElement('span'); ar.className='ar'; ar.textContent=dir===-1?'\u25BC':'\u25B2'; th.appendChild(ar);
+  }, true);
+  // pointer cursor on eligible headers (also re-applied for dynamic tables via a light observer)
+  function hint(){
+    document.querySelectorAll('section.report thead th').forEach(function(th){
+      var tbl=th.closest('table'), thead=th.closest('thead');
+      if(eligible(tbl, thead)) th.style.cursor='pointer';
+    });
+  }
+  hint();
+  var mo=new MutationObserver(function(){ hint(); });
+  mo.observe(document.body, {childList:true, subtree:true});
+})();
+
+/* ===== 11. P&L Breakdown ===== */
+(function(){
+
+// ---- illustrative data (operator P&L: + = our profit, - = our loss) ----
+const markets = [{"market": "MatchTeamTotalKills", "discipline": "dota2", "bets": 6069, "stake": 117494, "pnl": -39469, "avgBet": 19.4, "avgOdds": 1.78}, {"market": "MatchNumberOfMaps", "discipline": "dota2", "bets": 43151, "stake": 354250, "pnl": -28485, "avgBet": 8.2, "avgOdds": 1.95}, {"market": "MapFirstTormentor", "discipline": "dota2", "bets": 2855, "stake": 71858, "pnl": -7204, "avgBet": 25.2, "avgOdds": 1.82}, {"market": "MatchTotalKills", "discipline": "dota2", "bets": 2814, "stake": 43699, "pnl": -6080, "avgBet": 15.5, "avgOdds": 1.78}, {"market": "BeyondGodlike", "discipline": "dota2", "bets": 5350, "stake": 93601, "pnl": -4097, "avgBet": 17.5, "avgOdds": 1.92}, {"market": "FirstHalfWinner", "discipline": "csgo", "bets": 426, "stake": 5908, "pnl": -2224, "avgBet": 13.9, "avgOdds": 1.89}, {"market": "MapPlayerTotalHeadshots", "discipline": "csgo", "bets": 300, "stake": 3399, "pnl": -666, "avgBet": 11.3, "avgOdds": 1.69}, {"market": "FirstTower", "discipline": "dota2", "bets": 587, "stake": 9191, "pnl": -590, "avgBet": 15.7, "avgOdds": 1.77}, {"market": "TotalTurrets", "discipline": "lol", "bets": 32, "stake": 278, "pnl": -503, "avgBet": 8.7, "avgOdds": 1.8}, {"market": "MapTeamTotalRounds", "discipline": "csgo", "bets": 590, "stake": 2622, "pnl": -462, "avgBet": 4.4, "avgOdds": 1.63}, {"market": "MatchTotalGoals", "discipline": "rush_soccer", "bets": 179, "stake": 763, "pnl": -461, "avgBet": 4.3, "avgOdds": 1.8}, {"market": "FirstAegis", "discipline": "dota2", "bets": 176, "stake": 1458, "pnl": -313, "avgBet": 8.3, "avgOdds": 1.7}, {"market": "MapPistolRoundsCorrectScore", "discipline": "csgo", "bets": 48, "stake": 329, "pnl": -243, "avgBet": 6.9, "avgOdds": 3.0}, {"market": "Overtime", "discipline": "csgo", "bets": 61, "stake": 304, "pnl": -172, "avgBet": 5.0, "avgOdds": 2.66}, {"market": "MapAtLeastOneGrenadeKill", "discipline": "csgo", "bets": 160, "stake": 451, "pnl": -158, "avgBet": 2.8, "avgOdds": 1.65}, {"market": "MapWinnerAndMapFirstPistolRoundWinner", "discipline": "csgo", "bets": 51, "stake": 135, "pnl": -135, "avgBet": 2.6, "avgOdds": 2.45}, {"market": "MatchNumberOfMapsParity", "discipline": "csgo", "bets": 17, "stake": 28, "pnl": -84, "avgBet": 1.6, "avgOdds": 1.87}, {"market": "PistolRoundWinner", "discipline": "csgo", "bets": 111, "stake": 329, "pnl": -41, "avgBet": 3.0, "avgOdds": 1.77}, {"market": "MatchFirstHalfBothTeamsToScore", "discipline": "rush_soccer", "bets": 2, "stake": 2, "pnl": -17, "avgBet": 1.0, "avgOdds": 1.68}, {"market": "MapCorrectRoundScore", "discipline": "csgo", "bets": 50, "stake": 195, "pnl": -16, "avgBet": 3.9, "avgOdds": 5.54}, {"market": "MatchQuarterTotalPoints", "discipline": "rush_basketball", "bets": 5, "stake": 7, "pnl": -14, "avgBet": 1.4, "avgOdds": 1.83}, {"market": "MatchTeamTotalPoints", "discipline": "rush_basketball", "bets": 4, "stake": 4, "pnl": -7, "avgBet": 1.0, "avgOdds": 1.85}, {"market": "MatchWinnerDoubleChance", "discipline": "rush_soccer", "bets": 18, "stake": 123, "pnl": -7, "avgBet": 6.8, "avgOdds": 1.36}, {"market": "MatchTotalPoints", "discipline": "rush_basketball", "bets": 8, "stake": 11, "pnl": -5, "avgBet": 1.4, "avgOdds": 1.84}, {"market": "MatchFirstHalfTeamTotalGoals", "discipline": "rush_soccer", "bets": 9, "stake": 27, "pnl": -3, "avgBet": 3.0, "avgOdds": 1.64}, {"market": "MatchFirstHalfWinnerDoubleChance", "discipline": "rush_soccer", "bets": 3, "stake": 3, "pnl": -2, "avgBet": 1.0, "avgOdds": 1.3}, {"market": "FirstInhibitor", "discipline": "lol", "bets": 1, "stake": 1, "pnl": -1, "avgBet": 1.0, "avgOdds": 1.17}, {"market": "QuadraKill", "discipline": "lol", "bets": 2, "stake": 1, "pnl": 1, "avgBet": 0.5, "avgOdds": 6.3}, {"market": "MatchQuarterPointHandicap", "discipline": "rush_basketball", "bets": 1, "stake": 2, "pnl": 2, "avgBet": 2.0, "avgOdds": 1.85}, {"market": "MatchNthGoal", "discipline": "rush_soccer", "bets": 5, "stake": 10, "pnl": 2, "avgBet": 2.0, "avgOdds": 1.8}, {"market": "MatchPointHandicap", "discipline": "rush_basketball", "bets": 1, "stake": 3, "pnl": 3, "avgBet": 3.0, "avgOdds": 1.9}, {"market": "MapFirstHalfRoundHandicap", "discipline": "csgo", "bets": 78, "stake": 607, "pnl": 7, "avgBet": 7.8, "avgOdds": 1.79}, {"market": "MapAtLeastOneZeusKill", "discipline": "csgo", "bets": 3, "stake": 10, "pnl": 10, "avgBet": 3.3, "avgOdds": 12.0}, {"market": "MatchQuarterWinnerNoDraw", "discipline": "rush_basketball", "bets": 21, "stake": 43, "pnl": 12, "avgBet": 2.0, "avgOdds": 1.53}, {"market": "MatchQuarterTeamTotalPoints", "discipline": "rush_basketball", "bets": 3, "stake": 13, "pnl": 13, "avgBet": 4.3, "avgOdds": 1.92}, {"market": "MatchTeamTotalGoals", "discipline": "rush_soccer", "bets": 6, "stake": 35, "pnl": 16, "avgBet": 5.8, "avgOdds": 1.54}, {"market": "MapTotalElementalDragons", "discipline": "lol", "bets": 15, "stake": 43, "pnl": 30, "avgBet": 2.9, "avgOdds": 1.77}, {"market": "TournamentWinner", "discipline": "dota2", "bets": 23, "stake": 48, "pnl": 39, "avgBet": 2.1, "avgOdds": 5.75}, {"market": "MapTotalBarons", "discipline": "lol", "bets": 5, "stake": 45, "pnl": 45, "avgBet": 9.0, "avgOdds": 1.71}, {"market": "MatchFirstHalfWinner", "discipline": "rush_soccer", "bets": 7, "stake": 55, "pnl": 55, "avgBet": 7.9, "avgOdds": 1.89}, {"market": "FirstToReachRounds", "discipline": "csgo", "bets": 298, "stake": 3099, "pnl": 57, "avgBet": 10.4, "avgOdds": 1.8}, {"market": "MapFirstHalfCorrectRoundScore", "discipline": "csgo", "bets": 15, "stake": 67, "pnl": 65, "avgBet": 4.5, "avgOdds": 4.22}, {"market": "NumberOfRoundsParity", "discipline": "csgo", "bets": 17, "stake": 71, "pnl": 71, "avgBet": 4.2, "avgOdds": 1.86}, {"market": "MapAtLeastOneMolotovOrIncendiaryKill", "discipline": "csgo", "bets": 141, "stake": 465, "pnl": 97, "avgBet": 3.3, "avgOdds": 1.86}, {"market": "MapAtLeastOneKnifeKill", "discipline": "csgo", "bets": 60, "stake": 298, "pnl": 127, "avgBet": 5.0, "avgOdds": 6.42}, {"market": "MatchFirstHalfTotalGoals", "discipline": "rush_soccer", "bets": 21, "stake": 309, "pnl": 208, "avgBet": 14.7, "avgOdds": 1.75}, {"market": "MapWinnerAndMapFirstHalfWinnerDraw", "discipline": "csgo", "bets": 108, "stake": 749, "pnl": 273, "avgBet": 6.9, "avgOdds": 3.54}, {"market": "MatchTotalRounds", "discipline": "csgo", "bets": 656, "stake": 2041, "pnl": 302, "avgBet": 3.1, "avgOdds": 1.53}, {"market": "RoundWinner", "discipline": "csgo", "bets": 754, "stake": 5405, "pnl": 358, "avgBet": 7.2, "avgOdds": 1.78}, {"market": "MapOvertimeWinner", "discipline": "csgo", "bets": 168, "stake": 1676, "pnl": 400, "avgBet": 10.0, "avgOdds": 1.99}, {"market": "MapWinnerAndMapWinningMargin", "discipline": "csgo", "bets": 143, "stake": 735, "pnl": 459, "avgBet": 5.1, "avgOdds": 3.11}, {"market": "SecondHalfWinner", "discipline": "csgo", "bets": 176, "stake": 1756, "pnl": 658, "avgBet": 10.0, "avgOdds": 1.9}, {"market": "MatchKillsHandicap", "discipline": "dota2", "bets": 1287, "stake": 62259, "pnl": 827, "avgBet": 48.4, "avgOdds": 1.82}, {"market": "MatchRoundHandicap", "discipline": "csgo", "bets": 595, "stake": 3668, "pnl": 1197, "avgBet": 6.2, "avgOdds": 1.65}, {"market": "FirstBarracks", "discipline": "dota2", "bets": 813, "stake": 11925, "pnl": 1516, "avgBet": 14.7, "avgOdds": 1.89}, {"market": "NumberOfRounds", "discipline": "csgo", "bets": 5975, "stake": 31186, "pnl": 1931, "avgBet": 5.2, "avgOdds": 1.51}, {"market": "FirstBlood", "discipline": "dota2", "bets": 1599, "stake": 18736, "pnl": 1940, "avgBet": 11.7, "avgOdds": 1.84}, {"market": "ToWinAtLeastOneMap", "discipline": "dota2", "bets": 12735, "stake": 119397, "pnl": 2256, "avgBet": 9.4, "avgOdds": 1.38}, {"market": "MapWinnerAndMapTotalRounds", "discipline": "csgo", "bets": 4120, "stake": 28818, "pnl": 2568, "avgBet": 7.0, "avgOdds": 2.14}, {"market": "MatchWinnerAndMapWinner", "discipline": "dota2", "bets": 3300, "stake": 38246, "pnl": 4974, "avgBet": 11.6, "avgOdds": 3.67}, {"market": "Rampage", "discipline": "dota2", "bets": 1905, "stake": 113728, "pnl": 7050, "avgBet": 59.7, "avgOdds": 7.63}, {"market": "TotalTowers", "discipline": "dota2", "bets": 4101, "stake": 94130, "pnl": 8177, "avgBet": 23.0, "avgOdds": 1.57}, {"market": "MapTotalRoshans", "discipline": "dota2", "bets": 2268, "stake": 51777, "pnl": 8229, "avgBet": 22.8, "avgOdds": 2.05}, {"market": "RoundHandicap", "discipline": "csgo", "bets": 7055, "stake": 65514, "pnl": 8579, "avgBet": 9.3, "avgOdds": 1.72}, {"market": "NthKill", "discipline": "dota2", "bets": 2637, "stake": 39429, "pnl": 8579, "avgBet": 15.0, "avgOdds": 1.87}, {"market": "TotalKillsParity", "discipline": "dota2", "bets": 5132, "stake": 107459, "pnl": 10243, "avgBet": 20.9, "avgOdds": 1.85}, {"market": "MapTotalHeroAbilityHits", "discipline": "dota2", "bets": 7569, "stake": 105747, "pnl": 10277, "avgBet": 14.0, "avgOdds": 2.02}, {"market": "MapPlayerKillsDuelDrawNoBet", "discipline": "dota2", "bets": 7613, "stake": 220801, "pnl": 14803, "avgBet": 29.0, "avgOdds": 1.92}, {"market": "Megacreeps", "discipline": "dota2", "bets": 9023, "stake": 149222, "pnl": 16532, "avgBet": 16.5, "avgOdds": 1.94}, {"market": "MapPlayerTotalKills", "discipline": "dota2", "bets": 25660, "stake": 634562, "pnl": 25555, "avgBet": 24.7, "avgOdds": 1.83}, {"market": "KillsFirstToReach", "discipline": "dota2", "bets": 27197, "stake": 669364, "pnl": 27782, "avgBet": 24.6, "avgOdds": 1.85}, {"market": "UltraKill", "discipline": "dota2", "bets": 6702, "stake": 79779, "pnl": 32614, "avgBet": 11.9, "avgOdds": 3.99}, {"market": "MapKillsHandicap", "discipline": "dota2", "bets": 35322, "stake": 1230755, "pnl": 74207, "avgBet": 34.8, "avgOdds": 1.85}, {"market": "MapTeamTotalKills", "discipline": "dota2", "bets": 43861, "stake": 1240541, "pnl": 84209, "avgBet": 28.3, "avgOdds": 1.82}, {"market": "TotalKills", "discipline": "dota2", "bets": 191340, "stake": 5121985, "pnl": 84371, "avgBet": 26.8, "avgOdds": 1.8}, {"market": "CorrectMatchScore", "discipline": "dota2", "bets": 33894, "stake": 377404, "pnl": 93425, "avgBet": 11.1, "avgOdds": 2.73}, {"market": "MapWinnerAndMapTotalKills", "discipline": "dota2", "bets": 87709, "stake": 1714083, "pnl": 157794, "avgBet": 19.5, "avgOdds": 2.93}, {"market": "MatchHandicap", "discipline": "dota2", "bets": 138360, "stake": 2397957, "pnl": 184743, "avgBet": 17.3, "avgOdds": 1.67}, {"market": "MapDuration", "discipline": "dota2", "bets": 178465, "stake": 4866048, "pnl": 244006, "avgBet": 27.3, "avgOdds": 1.76}, {"market": "MapWinnerAndMapDuration", "discipline": "dota2", "bets": 177298, "stake": 3798522, "pnl": 428034, "avgBet": 21.4, "avgOdds": 2.87}, {"market": "MatchWinner", "discipline": "dota2", "bets": 601464, "stake": 15902103, "pnl": 1281725, "avgBet": 26.4, "avgOdds": 1.68}, {"market": "MapWinner", "discipline": "dota2", "bets": 1373348, "stake": 49227842, "pnl": 3186080, "avgBet": 35.8, "avgOdds": 2.23}];
+
+// derive a 4-cell bet-type breakdown that reconciles to each market's totals
+const cells = [
+  {key:"sp", label:"Single · Prematch", wS:0.34, wB:0.36, off:0.8},
+  {key:"sl", label:"Single · Live",     wS:0.28, wB:0.30, off:-0.6},
+  {key:"mp", label:"Multi · Prematch",  wS:0.21, wB:0.20, off:0.3},
+  {key:"ml", label:"Multi · Live",      wS:0.17, wB:0.14, off:null} // remainder
+];
+function breakdown(m){
+  let out=[], stakeUsed=0, betsUsed=0, pnlUsed=0;
+  cells.forEach((c,i)=>{
+    const last = i===cells.length-1;
+    const stake = last ? m.stake-stakeUsed : Math.round(m.stake*c.wS);
+    const bets  = last ? m.bets-betsUsed   : Math.round(m.bets*c.wB);
+    const holdM = m.pnl/m.stake*100;
+    const pnl   = last ? m.pnl-pnlUsed : Math.round(stake*(holdM+c.off)/100);
+    stakeUsed+=stake; betsUsed+=bets; pnlUsed+=pnl;
+    out.push({label:c.label, bets, stake, pnl, hold:pnl/stake*100});
+  });
+  return out;
+}
+
+// ---- formatting ----
+const MINUS="\u2212"; // real minus sign, matches the other reports
+function int(n){return Math.round(n).toLocaleString("en-US");}
+function eur(n){return "€"+int(Math.abs(n));}
+function money(n){ // signed, colored
+  if(n===0) return '<span>€0</span>';
+  const cls=n>0?"pos":"neg", sgn=n>0?"+":MINUS;
+  return '<span class="'+cls+'">'+sgn+eur(n)+'</span>';
+}
+function stakeF(n){return "€"+int(n);}
+function pct(n){const sgn=n<0?MINUS:""; return sgn+Math.abs(n).toFixed(1)+"%";}
+function pctC(n){const cls=n<0?"neg":(n>0?"pos":""); return '<span class="'+cls+'">'+pct(n)+'</span>';}
+
+// ---- state ----
+let sortKey="pnl", sortDir="asc", selected=null;
+
+function sorted(){
+  const arr=markets.slice();
+  arr.sort((a,b)=>{
+    let av,bv;
+    if(sortKey==="market"){av=a.market;bv=b.market;}
+    else if(sortKey==="discipline"){av=a.discipline;bv=b.discipline;}
+    else if(sortKey==="avgbet"){av=a.avgBet;bv=b.avgBet;}
+    else if(sortKey==="avgodds"){av=a.avgOdds;bv=b.avgOdds;}
+    else if(sortKey==="hold"){av=a.pnl/a.stake;bv=b.pnl/b.stake;}
+    else {av=a[sortKey];bv=b[sortKey];}
+    if(typeof av==="string"){return sortDir==="asc"?av.localeCompare(bv):bv.localeCompare(av);}
+    return sortDir==="asc"?av-bv:bv-av;
+  });
+  return arr;
+}
+
+function renderTable(){
+  const rows=sorted();
+  const tb=document.getElementById("tb_mkt");
+  let tot={bets:0,stake:0,pnl:0};
+  let html="";
+  rows.forEach(m=>{
+    tot.bets+=m.bets; tot.stake+=m.stake; tot.pnl+=m.pnl;
+    const hold=m.pnl/m.stake*100;
+    const sel = selected===m.market ? " sel" : "";
+    html+='<tr class="row'+sel+'" data-m="'+m.market+'">'
+      +'<td>'+m.market+'</td>'
+      +'<td class="l"><span class="disc">'+m.discipline+'</span></td>'
+      +'<td>'+int(m.bets)+'</td>'
+      +'<td>'+stakeF(m.stake)+'</td>'
+      +'<td>'+money(m.pnl)+'</td>'
+      +'<td>'+pctC(hold)+'</td>'
+      +'<td>'+eur(m.avgBet)+'</td>'
+      +'<td>'+m.avgOdds.toFixed(2)+'</td>'
+      +'</tr>';
+  });
+  const totHold=tot.pnl/tot.stake*100;
+  html+='<tr class="total"><td>Total</td><td class="l">'+rows.length+' markets</td>'
+    +'<td>'+int(tot.bets)+'</td><td>'+stakeF(tot.stake)+'</td>'
+    +'<td>'+(tot.pnl>0?"+":MINUS)+eur(tot.pnl)+'</td><td>'+pct(totHold)+'</td><td></td><td></td></tr>';
+  tb.innerHTML=html;
+  tb.querySelectorAll("tr.row").forEach(tr=>{
+    tr.addEventListener("click",()=>{ selectMarket(tr.getAttribute("data-m")); });
+  });
+  // header arrows
+  document.querySelectorAll("th.sortable").forEach(th=>{
+    const k=th.getAttribute("data-k");
+    th.querySelector(".ar")?.remove();
+    if(k===sortKey){const s=document.createElement("span");s.className="ar";s.textContent=sortDir==="asc"?"▲":"▼";th.appendChild(s);}
+  });
+}
+
+function selectMarket(name){
+  selected=name;
+  const m=markets.find(x=>x.market===name);
+  document.getElementById("bd_name").textContent=m.discipline+" · "+m.market;
+  const bd=breakdown(m);
+  document.getElementById("bd_grid").innerHTML=bd.map(c=>(
+    '<div class="blk"><h4>'+c.label+'</h4><table class="num">'
+    +'<tr><td>Bets</td><td>'+int(c.bets)+'</td></tr>'
+    +'<tr><td>Stake</td><td>'+stakeF(c.stake)+'</td></tr>'
+    +'<tr><td>P&amp;L</td><td>'+money(c.pnl)+'</td></tr>'
+    +'<tr><td>Hold %</td><td>'+pctC(c.hold)+'</td></tr>'
+    +'</table></div>'
+  )).join("");
+  document.querySelectorAll("tr.row").forEach(tr=>{
+    tr.classList.toggle("sel", tr.getAttribute("data-m")===name);
+  });
+}
+
+document.querySelectorAll("th.sortable").forEach(th=>{
+  th.addEventListener("click",()=>{
+    const k=th.getAttribute("data-k");
+    if(k===sortKey){ sortDir = sortDir==="asc"?"desc":"asc"; }
+    else { sortKey=k; sortDir = (th.getAttribute("data-t")==="s") ? "asc" : "asc"; }
+    renderTable();
+  });
+});
+
+// init: P&L ascending (worst first), worst market selected
+renderTable();
+selectMarket(sorted()[0].market);
+
+})();
+/* ===== 12. Integrity ===== */
+(function(){
+
+const nf=(n)=>n.toLocaleString('en-US');
+const eur=(n)=>'€'+nf(n);
+function scoreCell(s){const c=s>=80?'hi':(s>=50?'md':'lo'); return '<span class="score '+c+'">'+s+'</span>';}
+
+/* ---------- Synchronized bets ---------- */
+// accounts loading the SAME outcome in a tight window, vs the match's own baseline
+const sync=[{"match": "MODUS vs Power Rangers", "ctx": "dota2 \u00b7 European Pro League Season 37", "market": "Match winner - twoway", "outcome": "away", "win": 60, "accts": 41, "stake": 224, "base": 56, "score": 91, "kids": [{"a": "#3882418 \u00b7 OrangeIvory153", "st": 52, "t": "21:34", "c": "-", "nb": 0}, {"a": "#3684551 \u00b7 RedFukuyoshi", "st": 52, "t": "21:10", "c": "-", "nb": 0}, {"a": "#980370635 \u00b7 RedCamel20", "st": 36, "t": "21:07", "c": "-", "nb": 0}, {"a": "#604660244 \u00b7 MisleadingEvangelin", "st": 23, "t": "21:57", "c": "-", "nb": 0}, {"a": "#34929861 \u00b7 PreferredTheressa", "st": 13, "t": "21:23", "c": "-", "nb": 0}]}, {"match": "GLYPH vs Grind Back", "ctx": "dota2 \u00b7 EPL World Series: Southeast Asia Season 15", "market": "Match winner - twoway", "outcome": "home", "win": 60, "accts": 35, "stake": 320, "base": 51, "score": 86, "kids": [{"a": "#1321511047 \u00b7 FondBank", "st": 58, "t": "06:51", "c": "-", "nb": 0}, {"a": "#1257937426 \u00b7 PlumSelle2", "st": 46, "t": "06:53", "c": "-", "nb": 0}, {"a": "#6961665 \u00b7 GiganticKosonsoy", "st": 28, "t": "06:53", "c": "-", "nb": 0}, {"a": "#3680885 \u00b7 CoffeeSugar7", "st": 23, "t": "06:53", "c": "-", "nb": 0}, {"a": "#3417081 \u00b7 VeryCody", "st": 23, "t": "06:52", "c": "-", "nb": 0}]}, {"match": "Eternal Fire Academy vs NeverPlay", "ctx": "csgo \u00b7 Exort Series 26", "market": "Map 2 winner - twoway", "outcome": "home", "win": 60, "accts": 34, "stake": 97, "base": 42, "score": 77, "kids": [{"a": "#7374460 \u00b7 AquamarineMongo", "st": 21, "t": "19:40", "c": "-", "nb": 0}, {"a": "#4922064 \u00b7 WanderingMilan", "st": 14, "t": "19:37", "c": "-", "nb": 0}, {"a": "#3060722 \u00b7 ApricotCheetah", "st": 8, "t": "19:08", "c": "-", "nb": 0}, {"a": "#890038390 \u00b7 IncGrasshopper2", "st": 7, "t": "19:42", "c": "-", "nb": 0}, {"a": "#1458659 \u00b7 EmeraldOlive105", "st": 6, "t": "19:39", "c": "-", "nb": 0}]}, {"match": "Imperial vs UNO MILLE", "ctx": "csgo \u00b7 Odyssey Cup Brazil 2026", "market": "Match winner - twoway", "outcome": "home", "win": 60, "accts": 32, "stake": 44, "base": 52, "score": 87, "kids": [{"a": "#3134089 \u00b7 ScarletKamaishi", "st": 14, "t": "18:13", "c": "-", "nb": 0}, {"a": "#3771344 \u00b7 ScarletRoundworm4", "st": 6, "t": "18:13", "c": "-", "nb": 0}, {"a": "#1666768949 \u00b7 FlexibleNominal", "st": 5, "t": "18:26", "c": "-", "nb": 0}, {"a": "#1541419078 \u00b7 BlackBrown137", "st": 5, "t": "18:15", "c": "-", "nb": 0}, {"a": "#7701805 \u00b7 NiftyNiimi", "st": 4, "t": "18:39", "c": "-", "nb": 0}]}, {"match": "Melilla Titans vs KUUSAMO.gg", "ctx": "csgo \u00b7 Exort series 27", "market": "Match winner - twoway", "outcome": "away", "win": 60, "accts": 31, "stake": 29, "base": 48, "score": 83, "kids": [{"a": "#2020065706 \u00b7 TurquoiseBlue143", "st": 15, "t": "16:22", "c": "-", "nb": 0}, {"a": "#2657878 \u00b7 UnitedEric", "st": 8, "t": "16:48", "c": "-", "nb": 0}, {"a": "#998232643 \u00b7 ApricotGuru4", "st": 2, "t": "16:37", "c": "-", "nb": 0}, {"a": "#1486742875 \u00b7 VividDubinsky", "st": 1, "t": "16:18", "c": "-", "nb": 0}, {"a": "#1970897 \u00b7 RedLavender112", "st": 1, "t": "16:23", "c": "-", "nb": 0}]}, {"match": "Isurus vs Vexa", "ctx": "csgo \u00b7 BB Storm #3", "market": "Match winner - twoway", "outcome": "home", "win": 60, "accts": 30, "stake": 28, "base": 49, "score": 84, "kids": [{"a": "#1634753322 \u00b7 YellowCoffee126", "st": 10, "t": "16:58", "c": "-", "nb": 0}, {"a": "#3019666 \u00b7 DynamicTan", "st": 8, "t": "16:50", "c": "-", "nb": 0}, {"a": "#2719285 \u00b7 CyanJazz", "st": 3, "t": "16:41", "c": "-", "nb": 0}, {"a": "#4174576 \u00b7 StupidSerpent", "st": 2, "t": "16:44", "c": "-", "nb": 0}, {"a": "#3567135 \u00b7 CyanGray12", "st": 1, "t": "16:43", "c": "-", "nb": 0}]}, {"match": "WW Team vs PsychoFace", "ctx": "csgo \u00b7 CIS LAN Championship #5", "market": "Match winner - twoway", "outcome": "home", "win": 60, "accts": 25, "stake": 144, "base": 62, "score": 97, "kids": [{"a": "#2037518 \u00b7 IvoryIndigo44", "st": 64, "t": "21:15", "c": "-", "nb": 0}, {"a": "#1412479 \u00b7 TemporaryBrattain", "st": 22, "t": "21:54", "c": "-", "nb": 0}, {"a": "#2743398 \u00b7 WhiteTomato4", "st": 13, "t": "21:33", "c": "-", "nb": 0}, {"a": "#3059532 \u00b7 CoralAudy", "st": 11, "t": "21:17", "c": "-", "nb": 0}, {"a": "#6912670 \u00b7 AmaranthGray59", "st": 10, "t": "21:16", "c": "-", "nb": 0}]}, {"match": "KOLESIE vs Inner Circle", "ctx": "csgo \u00b7 Game Masters Championship #2", "market": "Match winner - twoway", "outcome": "away", "win": 60, "accts": 23, "stake": 32, "base": 43, "score": 78, "kids": [{"a": "#7312155 \u00b7 ExceptionalWilson2", "st": 13, "t": "12:44", "c": "-", "nb": 0}, {"a": "#5763579 \u00b7 StillRoundworm", "st": 5, "t": "12:53", "c": "-", "nb": 0}, {"a": "#3485743 \u00b7 UnawareAzure", "st": 5, "t": "12:50", "c": "-", "nb": 0}, {"a": "#1482677407 \u00b7 AquaDog44", "st": 2, "t": "12:41", "c": "-", "nb": 0}, {"a": "#1234854200 \u00b7 PureIndigo10", "st": 1, "t": "12:49", "c": "-", "nb": 0}]}, {"match": "Senshi eSports vs mCon esports", "ctx": "lol \u00b7 Road Of Legends 2026 Spring Playoffs", "market": "Match winner - twoway", "outcome": "home", "win": 60, "accts": 23, "stake": 65, "base": 40, "score": 75, "kids": [{"a": "#1671986848 \u00b7 HarshRose6", "st": 15, "t": "19:56", "c": "-", "nb": 0}, {"a": "#3583765 \u00b7 CyanCattle7", "st": 13, "t": "19:44", "c": "-", "nb": 0}, {"a": "#3454562 \u00b7 JadeChocolate39", "st": 9, "t": "19:53", "c": "-", "nb": 0}, {"a": "#3002506 \u00b7 DisappointedHigashine", "st": 6, "t": "19:56", "c": "-", "nb": 0}, {"a": "#4385672 \u00b7 RobustStarla", "st": 4, "t": "19:41", "c": "-", "nb": 0}]}, {"match": "basement bobs vs Diamant Esports", "ctx": "csgo \u00b7 Exort series 27", "market": "Match winner - twoway", "outcome": "away", "win": 60, "accts": 21, "stake": 11, "base": 54, "score": 89, "kids": [{"a": "#7464808 \u00b7 GoldSwordtail18", "st": 3, "t": "10:40", "c": "-", "nb": 0}, {"a": "#2680768 \u00b7 GoldSilver53", "st": 2, "t": "10:08", "c": "-", "nb": 0}, {"a": "#1541419078 \u00b7 BlackBrown137", "st": 2, "t": "10:05", "c": "-", "nb": 0}, {"a": "#1954510024 \u00b7 IvoryKubrat2", "st": 1, "t": "10:26", "c": "-", "nb": 0}, {"a": "#5249266 \u00b7 VioletYellow10", "st": 1, "t": "10:36", "c": "-", "nb": 0}]}];
+
+/* ---------- Suspicious line movement ---------- */
+// our price drifting hard without a known reason; depends on line history + news feed
+const line=[
+  {match:"Akron vs Ural", ctx:"Football · RPL · T2", market:"Match winner", outcome:"Akron", from:2.10, to:1.45, ttl:"22 min", vol:9, news:"none", score:88},
+  {match:"Dota: BetBoom vs Spirit", ctx:"Dota 2 · DreamLeague · T2", market:"Map 1 winner", outcome:"BetBoom", from:2.35, to:1.70, ttl:"14 min", vol:7, news:"none", score:81},
+  {match:"Verona vs Empoli", ctx:"Football · Serie A · T2", market:"Match winner", outcome:"Draw", from:3.40, to:2.90, ttl:"35 min", vol:4, news:"none", score:64},
+  {match:"Real Madrid vs Sevilla", ctx:"Football · La Liga · T1", market:"Match winner", outcome:"Sevilla", from:2.50, to:2.20, ttl:"40 min", vol:3, news:"lineup", score:22}
+];
+
+/* ---------- Outsized single bet ---------- */
+// a single player/bet abnormally large vs THIS match's baseline (lone whale on a shady match)
+// matchVol = typical total turnover on the match; stakeX = stake / matchVol; playerX = stake / player's own avg
+const single=[{"player": "#3637886 \u00b7 BrownSouderton2", "match": "Xtreme Gaming vs Tundra", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Match winner - twoway", "outcome": "away", "stake": 80000, "matchVol": 39.4, "stakeX": 2028, "playerAvg": 10221.5, "playerX": 8, "tier": null, "score": 91}, {"player": "#1531173531 \u00b7 FarCarnegie", "match": "Tundra vs Xtreme Gaming", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Map 1 winner - twoway", "outcome": "away", "stake": 49537, "matchVol": 26.4, "stakeX": 1875, "playerAvg": 5523.3, "playerX": 9, "tier": null, "score": 91}, {"player": "#3637886 \u00b7 BrownSouderton2", "match": "Vici Gaming vs Team Falcons", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Map 2 winner - twoway", "outcome": "away", "stake": 29418, "matchVol": 16.8, "stakeX": 1748, "playerAvg": 10221.5, "playerX": 3, "tier": null, "score": 90}, {"player": "#3089836 \u00b7 RainyLondon", "match": "PARIVISION vs Team Spirit", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Match winner - twoway", "outcome": "away", "stake": 42431, "matchVol": 29.3, "stakeX": 1449, "playerAvg": 1328.9, "playerX": 32, "tier": null, "score": 89}, {"player": "#3637886 \u00b7 BrownSouderton2", "match": "Team Liquid vs ex-Heroic", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Map duration 33 - map 1", "outcome": "over", "stake": 13846, "matchVol": 9.7, "stakeX": 1434, "playerAvg": 10221.5, "playerX": 1, "tier": null, "score": 89}, {"player": "#3637886 \u00b7 BrownSouderton2", "match": "Team Falcons vs GamerLegion", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "home Total kills 31.5 - map 2", "outcome": "over", "stake": 23641, "matchVol": 18.0, "stakeX": 1311, "playerAvg": 10221.5, "playerX": 2, "tier": null, "score": 89}, {"player": "#1531173531 \u00b7 FarCarnegie", "match": "Virtus.pro vs Team Spirit", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Map 2 winner - twoway", "outcome": "home", "stake": 18866, "matchVol": 14.9, "stakeX": 1263, "playerAvg": 5523.3, "playerX": 3, "tier": null, "score": 88}, {"player": "#3637886 \u00b7 BrownSouderton2", "match": "Team Falcons vs PlayTime", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Map 2 winner - twoway", "outcome": "away", "stake": 35543, "matchVol": 28.4, "stakeX": 1253, "playerAvg": 10221.5, "playerX": 3, "tier": null, "score": 88}, {"player": "#2041025188 \u00b7 ElaborateVoorhees", "match": "BetBoom Team vs Vici Gaming", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Match winner - twoway", "outcome": "home", "stake": 36376, "matchVol": 29.4, "stakeX": 1239, "playerAvg": 5726.8, "playerX": 6, "tier": null, "score": 88}, {"player": "#1531173531 \u00b7 FarCarnegie", "match": "Team Spirit vs Aurora Gaming", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Map 2 winner - twoway", "outcome": "away", "stake": 40726, "matchVol": 32.9, "stakeX": 1238, "playerAvg": 5523.3, "playerX": 7, "tier": null, "score": 88}, {"player": "#1531173531 \u00b7 FarCarnegie", "match": "Team Falcons vs PARIVISION", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Map 2 winner - twoway", "outcome": "away", "stake": 36907, "matchVol": 29.9, "stakeX": 1234, "playerAvg": 5523.3, "playerX": 7, "tier": null, "score": 88}, {"player": "#2041025188 \u00b7 ElaborateVoorhees", "match": "Team Liquid vs Xtreme Gaming", "ctx": "dota2 \u00b7 DreamLeague Season 29", "market": "Match winner - twoway", "outcome": "home", "stake": 39863, "matchVol": 32.8, "stakeX": 1214, "playerAvg": 5726.8, "playerX": 7, "tier": null, "score": 88}];
+
+const tabs={
+  sync(){
+    let sortK='score', dir=-1, openRow=null;
+    const head='<div class="scroll"><table id="t_sync"><thead><tr>'
+      +'<th class="l sortable" data-k="match" data-t="s">Match</th>'
+      +'<th class="l">Market / outcome</th>'
+      +'<th class="sortable" data-k="win" data-t="n">Window</th>'
+      +'<th class="sortable" data-k="accts" data-t="n">Accounts</th>'
+      +'<th class="sortable" data-k="stake" data-t="n">Stake on outcome</th>'
+      +'<th class="sortable" data-k="base" data-t="n">vs baseline</th>'
+      +'<th class="sortable" data-k="score" data-t="n">Score</th>'
+      +'<th class="l">Status</th>'
+      +'</tr></thead><tbody class="num" id="tb_sync"></tbody></table></div>';
+    document.getElementById('int-body').innerHTML=head;
+    document.getElementById('int-note').innerHTML='<b>Signals combined into the score:</b> number of independent accounts in the window, total stake vs the match baseline, share of accounts that are new / first-bet, and shared geo. A single signal never alerts. Top-tier / popular matches are damped (see Arsenal vs Chelsea: 22 accounts but only ~2x baseline = public money, low score).';
+    function render(){
+      const rows=sync.slice().sort((a,b)=>{let av=a[sortK],bv=b[sortK]; if(typeof av==='string')return dir*av.localeCompare(bv); return dir*(av-bv);});
+      const tb=document.getElementById('tb_sync');
+      tb.innerHTML=rows.map((r,idx)=>{
+        let h='<tr class="alert exp'+(openRow===r.match?' open':'')+'" data-m="'+r.match+'">'
+          +'<td class="l"><b>'+r.match+'</b><div class="ctx">'+r.ctx+'</div></td>'
+          +'<td class="l">'+r.market+'<div class="ctx">'+r.outcome+'</div></td>'
+          +'<td>'+r.win+' min</td><td>'+r.accts+'</td><td>'+eur(r.stake)+'</td>'
+          +'<td><span class="x">'+r.base+'% of match</span></td><td>'+scoreCell(r.score)+'</td>'
+          +'<td class="l"><span class="pill">Review</span></td></tr>';
+        if(openRow===r.match){
+          h+=r.kids.map(k=>'<tr class="kid"><td class="l">'+k.a+'</td><td class="l">'+(k.st?eur(k.st):'')+'</td>'
+            +'<td>'+(k.st?'bet '+k.t:'')+'</td><td>'+(k.c!=='-'?k.c:'')+'</td><td>'+(k.nb?'first bet':'')+'</td><td colspan="3"></td></tr>').join('');
+        }
+        return h;
+      }).join('');
+      tb.querySelectorAll('tr.alert').forEach(tr=>tr.addEventListener('click',()=>{const m=tr.dataset.m; openRow=openRow===m?null:m; render();}));
+      document.querySelectorAll('#t_sync th.sortable').forEach(th=>{th.querySelector('.ar')?.remove(); if(th.dataset.k===sortK){const s=document.createElement('span');s.className='ar';s.textContent=dir===-1?'▼':'▲';th.appendChild(s);}});
+    }
+    document.querySelectorAll('#t_sync th.sortable').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k; if(k===sortK)dir*=-1; else{sortK=k;dir=th.dataset.t==='s'?1:-1;} render();}));
+    render();
+  },
+  single(){
+    let sortK='score', dir=-1;
+    const head='<div class="scroll"><table id="t_single"><thead><tr>'
+      +'<th class="l sortable" data-k="player" data-t="s">Player</th>'
+      +'<th class="l sortable" data-k="match" data-t="s">Match</th>'
+      +'<th class="l">Market / outcome</th>'
+      +'<th class="sortable" data-k="stake" data-t="n">Stake</th>'
+      +'<th class="sortable" data-k="stakeX" data-t="n">vs match base</th>'
+      +'<th class="sortable" data-k="playerX" data-t="n">vs player avg</th>'
+      +'<th class="sortable" data-k="tier" data-t="n">Tier</th>'
+      +'<th class="sortable" data-k="score" data-t="n">Score</th>'
+      +'<th class="l">Status</th>'
+      +'</tr></thead><tbody class="num" id="tb_single"></tbody></table></div>';
+    document.getElementById('int-body').innerHTML=head;
+    document.getElementById('int-note').innerHTML='<b>Lone whale on a shady match.</b> Unit is a single bet/player, but scored against the <b>match</b>: stake vs the match\'s typical turnover (<code>vs match base</code>) is the lead signal, boosted by low tier, a narrow market, and the bet being unusual for that player (<code>vs player avg</code>, overlaps the Strategy-change risk trigger). A big stake on a liquid top match is damped (Liverpool vs Man City: €9,000 is 0.1x the match base = normal, score 18). This catches what Synchronized bets misses by design - one account, not a ring.';
+    function render(){
+      const rows=single.slice().sort((a,b)=>{let av=a[sortK],bv=b[sortK]; if(typeof av==='string')return dir*av.localeCompare(bv); return dir*(av-bv);});
+      document.getElementById('tb_single').innerHTML=rows.map(r=>(
+        '<tr class="alert"><td class="l"><b>'+r.player+'</b></td>'
+        +'<td class="l">'+r.match+'<div class="ctx">'+r.ctx+'</div></td>'
+        +'<td class="l">'+r.market+'<div class="ctx">'+r.outcome+'</div></td>'
+        +'<td>'+eur(r.stake)+'</td>'
+        +'<td>'+(r.stakeX>=2?'<span class="x">'+r.stakeX+'×</span>':r.stakeX+'×')+'</td>'
+        +'<td>'+(r.playerX>=10?'<span class="x">'+r.playerX+'×</span>':r.playerX+'×')+'</td>'
+        +'<td>T'+r.tier+'</td><td>'+scoreCell(r.score)+'</td>'
+        +'<td class="l"><span class="pill">Review</span></td></tr>'
+      )).join('');
+      document.querySelectorAll('#t_single th.sortable').forEach(th=>{th.querySelector('.ar')?.remove(); if(th.dataset.k===sortK){const s=document.createElement('span');s.className='ar';s.textContent=dir===-1?'▼':'▲';th.appendChild(s);}});
+    }
+    document.querySelectorAll('#t_single th.sortable').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k; if(k===sortK)dir*=-1; else{sortK=k;dir=th.dataset.t==='s'?1:-1;} render();}));
+    render();
+  },
+  line(){
+    let sortK='score', dir=-1;
+    const head='<div class="scroll"><table id="t_line"><thead><tr>'
+      +'<th class="l sortable" data-k="match" data-t="s">Match</th>'
+      +'<th class="l">Market / outcome</th>'
+      +'<th class="l">Move</th>'
+      +'<th class="sortable" data-k="ttl" data-t="s">Time to event</th>'
+      +'<th class="sortable" data-k="vol" data-t="n">Volume vs base</th>'
+      +'<th class="l">Known reason</th>'
+      +'<th class="sortable" data-k="score" data-t="n">Score</th>'
+      +'<th class="l">Status</th>'
+      +'</tr></thead><tbody class="num" id="tb_line"></tbody></table></div>';
+    document.getElementById('int-body').innerHTML=head;
+    document.getElementById('int-note').innerHTML='<b>Depends on a line-history feed</b> (our price over time) <b>and a news feed</b> (lineups, injuries) to explain moves. Without news, an unexplained drift on thin volume scores high (Akron vs Ural). A move with a known reason is damped (Real Madrid vs Sevilla: lineup news = low score). Marked depends-on-feed: <code>line_history</code>, <code>news</code>.';
+    function render(){
+      const rows=line.slice().sort((a,b)=>{let av=a[sortK],bv=b[sortK]; if(typeof av==='string')return dir*av.localeCompare(bv); return dir*(av-bv);});
+      document.getElementById('tb_line').innerHTML=rows.map(r=>{
+        const moved='<span class="x">'+r.from.toFixed(2)+' → '+r.to.toFixed(2)+'</span>';
+        const reason=r.news==='none'?'<span class="x">none</span>':r.news;
+        return '<tr class="alert"><td class="l"><b>'+r.match+'</b><div class="ctx">'+r.ctx+'</div></td>'
+          +'<td class="l">'+r.market+'<div class="ctx">'+r.outcome+'</div></td>'
+          +'<td class="l">'+moved+'</td><td>'+r.ttl+'</td><td><span class="x">'+r.vol+'×</span></td>'
+          +'<td class="l">'+reason+'</td><td>'+scoreCell(r.score)+'</td>'
+          +'<td class="l"><span class="pill">Review</span></td></tr>';
+      }).join('');
+      document.querySelectorAll('#t_line th.sortable').forEach(th=>{th.querySelector('.ar')?.remove(); if(th.dataset.k===sortK){const s=document.createElement('span');s.className='ar';s.textContent=dir===-1?'▼':'▲';th.appendChild(s);}});
+    }
+    document.querySelectorAll('#t_line th.sortable').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k; if(k===sortK)dir*=-1; else{sortK=k;dir=th.dataset.t==='s'?1:-1;} render();}));
+    render();
+  }
+};
+
+document.querySelectorAll('#int-tabs .tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('#int-tabs .tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); tabs[t.dataset.t]();
+}));
+tabs.sync();
+
+})();
+/* ===== 13. Feed & Platform Health ===== */
+(function(){
+
+const nf=(n)=>n.toLocaleString('en-US');
+function statusOf(p){
+  if(p.uptime<99.0 || p.p95>1500) return 'bad';
+  if(p.p95>600 || p.suspends>800 || p.techrej>1.0) return 'warn';
+  return 'ok';
+}
+const providers=[
+  {provider:"Provider A", uptime:99.97, med:180, p95:430, suspends:540, avgdur:42, techrej:0.3},
+  {provider:"Provider B", uptime:99.71, med:260, p95:910, suspends:880, avgdur:65, techrej:0.8},
+  {provider:"In-house pricing", uptime:99.99, med:120, p95:300, suspends:210, avgdur:30, techrej:0.2},
+  {provider:"eSports feed", uptime:98.40, med:420, p95:1680, suspends:1120, avgdur:88, techrej:1.6}
+];
+const incidents=[
+  {tm:"Today 03:14", ty:"Latency spike", ds:"Provider B - p95 to 2.1s for 6 min, ~120 markets stale"},
+  {tm:"Today 01:50", ty:"Feed outage", ds:"eSports feed down 11 min - all CS2 / Dota markets auto-suspended (open incident)"},
+  {tm:"Yest. 22:30", ty:"Mass suspend", ds:"Provider A - 3 min suspend across Premier League at kickoff"},
+  {tm:"Yest. 18:05", ty:"Technical rejects", ds:"Spike to 2.4% rejects for 9 min during NBA tip-offs"}
+];
+
+let sortK='uptime', dir=1;
+function render(){
+  const rows=providers.slice().sort((a,b)=>{let av=a[sortK],bv=b[sortK]; if(typeof av==='string')return dir*av.localeCompare(bv); return dir*(av-bv);});
+  document.getElementById('tb_hc').innerHTML=rows.map(p=>{
+    const st=statusOf(p);
+    const upc = p.uptime<99.0?'neg':(p.uptime<99.5?'warnc':'pos');
+    const p95c = p.p95>1500?'neg':(p.p95>600?'warnc':'');
+    const rejc = p.techrej>1.0?'neg':(p.techrej>0.7?'warnc':'');
+    return '<tr><td class="l"><span class="dot '+st+'"></span></td><td class="l">'+p.provider+'</td>'
+      +'<td class="'+upc+'">'+p.uptime.toFixed(2)+'%</td>'
+      +'<td>'+p.med+' ms</td><td class="'+p95c+'">'+p.p95+' ms</td>'
+      +'<td>'+nf(p.suspends)+'</td><td>'+p.avgdur+' s</td>'
+      +'<td class="'+rejc+'">'+p.techrej.toFixed(1)+'%</td></tr>';
+  }).join('');
+  document.querySelectorAll('#t_hc th.sortable').forEach(th=>{th.querySelector('.ar')?.remove(); if(th.dataset.k===sortK){const s=document.createElement('span');s.className='ar';s.textContent=dir===-1?'▼':'▲';th.appendChild(s);}});
+}
+document.querySelectorAll('#t_hc th.sortable').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k; if(k===sortK)dir*=-1; else{sortK=k;dir=th.dataset.t==='s'?1:-1;} render();}));
+render();
+document.getElementById('hc_log').innerHTML=incidents.map(i=>'<li><span class="tm">'+i.tm+'</span><span class="ty">'+i.ty+'</span><span class="ds">'+i.ds+'</span></li>').join('');
+
+})();
+/* ===== 14. Settlement & Liability ===== */
+(function(){
+
+const nf=(n)=>n.toLocaleString('en-US');
+const eur=(n)=>'€'+nf(Math.round(n));
+
+/* ----- settlement status breakdown ----- */
+const setRows=[{"status": "Lost", "bets": 1581616, "stake": 44133147, "payout": 1972081}, {"status": "Won", "bets": 1186425, "stake": 45113896, "payout": 81348884}, {"status": "Void / Push", "bets": 12133, "stake": 0, "payout": 0}, {"status": "Pending", "bets": 721, "stake": 5591, "payout": 38}];
+(function(){
+  let sortK='bets', dir=-1;
+  const totBets=setRows.reduce((s,r)=>s+r.bets,0);
+  function tagFor(s){ if(s==='Pending')return ' <span class="tag pend">queue</span>'; if(s==='Resettled')return ' <span class="tag rs">manual</span>'; if(s==='Cancelled')return ' <span class="tag cx">manual</span>'; return ''; }
+  function render(){
+    const rows=setRows.slice().sort((a,b)=>{let av=a[sortK],bv=b[sortK]; if(typeof av==='string')return dir*av.localeCompare(bv); return dir*(av-bv);});
+    let tb=document.getElementById('tb_set');
+    let tS=0,tP=0;
+    let html=rows.map(r=>{tS+=r.stake;tP+=r.payout; const sh=(r.bets/totBets*100).toFixed(1);
+      return '<tr><td class="l">'+r.status+tagFor(r.status)+'</td><td>'+nf(r.bets)+'</td><td>'+eur(r.stake)+'</td><td>'+eur(r.payout)+'</td><td>'+sh+'%</td></tr>';
+    }).join('');
+    html+='<tr class="total"><td>Total</td><td>'+nf(totBets)+'</td><td>'+eur(tS)+'</td><td>'+eur(tP)+'</td><td>100%</td></tr>';
+    tb.innerHTML=html;
+    document.querySelectorAll('#t_set th.sortable').forEach(th=>{th.querySelector('.ar')?.remove(); if(th.dataset.k===sortK){const s=document.createElement('span');s.className='ar';s.textContent=dir===-1?'▼':'▲';th.appendChild(s);}});
+  }
+  document.querySelectorAll('#t_set th.sortable').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k; if(k===sortK)dir*=-1; else{sortK=k;dir=th.dataset.t==='s'?1:-1;} render();}));
+  render();
+})();
+
+document.getElementById('set_log').innerHTML=[
+  {tm:"4h 12m", ds:"<b>Pending</b> - Dota 2 ESL Map 3, 210 bets / €5,400 awaiting result feed"},
+  {tm:"2h 40m", ds:"<b>Pending</b> - Tennis ATP retired mid-match, 64 bets / €1,900 need manual rule"},
+  {tm:"38 min", ds:"<b>Resettled</b> - Football Serie A, goal disallowed by VAR, 1,240 bets re-graded"},
+  {tm:"12 min", ds:"<b>Cancelled</b> - Basketball, market priced on wrong line, 86 bets voided / refunded"}
+].map(i=>'<li><span class="tm">'+i.tm+'</span><span class="ds">'+i.ds+'</span></li>').join('');
+
+/* ----- open liability ----- */
+const liab=[{"match": "BLAST Slam VII \u00b7 (outright / no match id)", "ctx": "dota2", "worstOut": "-", "openbets": 247, "openstake": 1536, "worst": 10847, "live": true}, {"match": "Magic vs Team Falcons", "ctx": "csgo", "worstOut": "-", "openbets": 7, "openstake": 50, "worst": 117, "live": true}, {"match": "9z Team vs KR\u00dc Blaze", "ctx": "valorant", "worstOut": "-", "openbets": 5, "openstake": 263, "worst": 79, "live": true}, {"match": "B8 vs TYLOO", "ctx": "csgo", "worstOut": "-", "openbets": 81, "openstake": 114, "worst": 75, "live": true}, {"match": "MIBR vs THUNDERdOWNUNDER", "ctx": "csgo", "worstOut": "-", "openbets": 100, "openstake": 154, "worst": 68, "live": true}, {"match": "FaZe vs Alliance", "ctx": "csgo", "worstOut": "-", "openbets": 173, "openstake": 118, "worst": 63, "live": true}, {"match": "PARIVISION vs Team Spirit", "ctx": "dota2", "worstOut": "-", "openbets": 33, "openstake": 46, "worst": 60, "live": true}, {"match": "MOUZ vs MIBR", "ctx": "csgo", "worstOut": "-", "openbets": 18, "openstake": 32, "worst": 54, "live": true}, {"match": "Legacy vs TYLOO", "ctx": "csgo", "worstOut": "-", "openbets": 8, "openstake": 40, "worst": 52, "live": true}, {"match": "Team Falcons vs Legacy", "ctx": "csgo", "worstOut": "-", "openbets": 20, "openstake": 36, "worst": 50, "live": true}, {"match": "BIG vs Team Liquid", "ctx": "csgo", "worstOut": "-", "openbets": 47, "openstake": 67, "worst": 49, "live": true}, {"match": "BetBoom Team vs Gaimin Gladiators", "ctx": "csgo", "worstOut": "-", "openbets": 132, "openstake": 116, "worst": 46, "live": true}];
+(function(){
+  let sortK='worst', dir=-1;
+  function render(){
+    const rows=liab.slice().sort((a,b)=>{let av=a[sortK],bv=b[sortK]; if(typeof av==='string')return dir*av.localeCompare(bv); return dir*(av-bv);});
+    document.getElementById('tb_liab').innerHTML=rows.map(r=>(
+      '<tr><td class="l">'+r.match+'<div style="color:var(--muted);font-size:12px;font-weight:400;">'+r.ctx+'</div></td>'
+      +'<td class="l">'+r.worstOut+'</td><td>'+nf(r.openbets)+'</td><td>'+eur(r.openstake)+'</td>'
+      +'<td class="liab-x">'+eur(r.worst)+'</td>'
+      +'<td class="l">'+(r.live?'<span class="tag cx">LIVE</span>':'<span class="tag rs">pre</span>')+'</td></tr>'
+    )).join('');
+    document.querySelectorAll('#t_liab th.sortable').forEach(th=>{th.querySelector('.ar')?.remove(); if(th.dataset.k===sortK){const s=document.createElement('span');s.className='ar';s.textContent=dir===-1?'▼':'▲';th.appendChild(s);}});
+  }
+  document.querySelectorAll('#t_liab th.sortable').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k; if(k===sortK)dir*=-1; else{sortK=k;dir=th.dataset.t==='s'?1:-1;} render();}));
+  render();
+})();
+
 })();
 </script>
 </body>
