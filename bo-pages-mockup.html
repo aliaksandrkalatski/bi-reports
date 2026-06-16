@@ -89,6 +89,10 @@ h1{font-size:22px;font-weight:700;margin:0;letter-spacing:-.01em}
 .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .tbl thead th{position:sticky;top:0;background:var(--surface);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--hint);font-weight:600;text-align:left;padding:10px 11px;white-space:nowrap;border-bottom:1px solid var(--line-strong);z-index:2}
 .tbl thead th.r{text-align:right}
+#tblMonitor thead th{cursor:grab;user-select:none}
+#tblMonitor thead th.dragging{opacity:.4;cursor:grabbing}
+#tblMonitor thead th.drop-l{box-shadow:inset 2px 0 0 var(--blue)}
+#tblMonitor thead th.drop-r{box-shadow:inset -2px 0 0 var(--blue)}
 .tbl tbody td{padding:9px 11px;white-space:nowrap;border-top:1px solid var(--line);vertical-align:middle}
 .tbl tbody td.r{text-align:right}
 .tbl tbody tr.row{cursor:pointer}
@@ -368,7 +372,7 @@ function cell(b,k){switch(k){
   case 'score':return `<td class="mono tnum">${b.score}</td>`;
   case 'startdate':return `<td class="muted mono tnum">${b.startdate}</td>`;
   case 'betEur':return `<td class="r mono tnum">\u20ac${eur(b.betEur)}</td>`;
-  case 'potwin2':return `<td class="r mono tnum">\u20ac${eur(b.potEur)}</td>`;
+  case 'potwin2':return `<td class="r mono tnum">${b.sym}${eur(b.origStake*b.odds)}</td>`;
   case 'betid':return `<td class="mono muted">${b.betid}</td>`;
 }return '<td></td>';}
 function detail(b){const span=COLS.length-hidden.size;return `<tr class="detail"><td colspan="${span}"><div class="det">
@@ -383,7 +387,21 @@ function detail(b){const span=COLS.length-hidden.size;return `<tr class="detail"
   ${b.rej?`<div class="f" style="grid-column:span 2"><div class="k">Reject reason</div><div class="v neg">${b.rej}</div></div>`:''}
   <button class="btn blue" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>View player</button>
 </div></td></tr>`;}
-function head(){$('m-head').innerHTML=COLS.filter(c=>!hidden.has(c.k)).map(c=>`<th class="${c.r?'r':''}">${c.t}</th>`).join('');}
+let dragKey=null;
+function head(){
+  const vis=COLS.filter(c=>!hidden.has(c.k));
+  $('m-head').innerHTML=vis.map(c=>`<th class="${c.r?'r':''}" draggable="true" data-k="${c.k}">${c.t||'&nbsp;'}</th>`).join('');
+  $('m-head').querySelectorAll('th').forEach(th=>{
+    th.addEventListener('dragstart',e=>{dragKey=th.dataset.k;th.classList.add('dragging');e.dataTransfer.effectAllowed='move';try{e.dataTransfer.setData('text/plain',dragKey);}catch(_){}});
+    th.addEventListener('dragend',()=>{dragKey=null;$('m-head').querySelectorAll('th').forEach(x=>x.classList.remove('dragging','drop-l','drop-r'));});
+    th.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';const rc=th.getBoundingClientRect();const after=e.clientX>rc.left+rc.width/2;th.classList.toggle('drop-r',after);th.classList.toggle('drop-l',!after);});
+    th.addEventListener('dragleave',()=>th.classList.remove('drop-l','drop-r'));
+    th.addEventListener('drop',e=>{e.preventDefault();const tk=th.dataset.k;th.classList.remove('drop-l','drop-r');if(!dragKey||dragKey===tk)return;
+      const rc=th.getBoundingClientRect();const after=e.clientX>rc.left+rc.width/2;
+      const from=COLS.findIndex(c=>c.k===dragKey);const moved=COLS.splice(from,1)[0];
+      let to=COLS.findIndex(c=>c.k===tk);if(after)to++;COLS.splice(to,0,moved);head();rows();});
+  });
+}
 function rows(newId){
   const rs=visible(),vis=COLS.filter(c=>!hidden.has(c.k));
   $('m-rows').innerHTML=rs.map(b=>`<tr class="row ${b.id===newId?'new':''}" data-id="${b.id}">${vis.map(c=>cell(b,c.k)).join('')}</tr>`+(openRows.has(b.id)?detail(b):'')).join('');
@@ -392,7 +410,7 @@ function rows(newId){
   $('m-footCount').textContent=`${rs.length} bets shown / ${DATA.length} in feed / ${open} open`;
   $('m-live').textContent=`${open} open`; $('m-footTime').textContent=clk(new Date());
 }
-function colMenu(){$('m-colMenu').innerHTML=COLS.filter(c=>c.opt).map(c=>`<label><input type="checkbox" data-k="${c.k}" ${hidden.has(c.k)?'':'checked'}> ${c.t}</label>`).join('');
+function colMenu(){$('m-colMenu').innerHTML=COLS.map(c=>`<label><input type="checkbox" data-k="${c.k}" ${hidden.has(c.k)?'':'checked'}> ${c.t||'Tools'}</label>`).join('');
   $('m-colMenu').querySelectorAll('input').forEach(i=>i.addEventListener('change',e=>{const k=e.target.dataset.k;e.target.checked?hidden.delete(k):hidden.add(k);head();rows();}));}
 $('m-colBtn').addEventListener('click',e=>{e.stopPropagation();$('m-colMenu').classList.toggle('open');});
 document.addEventListener('click',()=>$('m-colMenu').classList.remove('open'));
@@ -403,8 +421,8 @@ $('m-value').addEventListener('change',e=>{fValue=e.target.checked;rows();});
 const sw=$('m-auto');function toggle(){autoOn=!autoOn;sw.classList.toggle('on',autoOn);sw.setAttribute('aria-checked',autoOn);$('m-livedot').style.animationPlayState=autoOn?'running':'paused';}
 sw.addEventListener('click',toggle);sw.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle();}});
 $('m-refresh').addEventListener('click',function(){this.classList.add('spin');setTimeout(()=>this.classList.remove('spin'),1000);rows();});
-$('m-export').addEventListener('click',()=>{const rs=visible();const cols=['time','type','sport','project','category','tournament','event','market','outcome','odds','betEur','potEur','value','status','score','startdate','betid'];
-  const body=rs.map(b=>[clk(b.time),b.type,b.sport,b.project,b.category,b.tournament,b.event,b.market,b.outcome,b.odds,b.betEur,b.potEur,(b.value==null?'':b.value),b.status,b.score,b.startdate,b.betid].map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
+$('m-export').addEventListener('click',()=>{const rs=visible();const cols=['time','type','sport','project','category','tournament','event','market','outcome','odds','currency','bet_orig','bet_eur','potwin_orig','potwin_eur','value','status','score','startdate','betid'];
+  const body=rs.map(b=>[clk(b.time),b.type,b.sport,b.project,b.category,b.tournament,b.event,b.market,b.outcome,b.odds,b.cur,b.origStake,b.betEur,+(b.origStake*b.odds).toFixed(2),b.potEur,(b.value==null?'':b.value),b.status,b.score,b.startdate,b.betid].map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob=new Blob([cols.join(',')+'\n'+body],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bet-monitor.csv';a.click();});
 function push(){if(!autoOn)return;const b=makeBet(new Date());DATA.unshift(b);if(DATA.length>45)DATA.pop();rows(b.id);}
 head();colMenu();rows();
