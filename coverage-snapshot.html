@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coverage Snapshot - 3 Providers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f8fa; --panel:#ffffff; --ink:#1a1d23; --muted:#6b7280;
+    --line:#e4e7ec; --line-strong:#cfd4dc;
+    --bc:#4f46e5; --bc-bg:#eef0fe;
+    --rd:#b45309; --rd-bg:#fdf4e7;
+    --gn:#15803d; --gn-bg:#ecf7ef;
+    --cell:#fbfcfd; --lo:#e7f6ec; --hi:#fdeaea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:13px;line-height:1.45;
+    padding:28px 22px 60px;}
+  .wrap{max-width:1280px;margin:0 auto}
+
+  .stamp{background:var(--ink);color:#fff;border-radius:10px;padding:18px 20px;
+    display:flex;flex-wrap:wrap;gap:22px 36px;align-items:flex-end;margin-bottom:8px}
+  .stamp h1{font-size:15px;font-weight:600;letter-spacing:.02em;margin:0;
+    font-family:'IBM Plex Mono',monospace;text-transform:uppercase;flex:1 1 100%}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#9aa1ad}
+  .field input{background:transparent;border:none;border-bottom:1px solid #3a3f49;
+    color:#fff;font-family:'IBM Plex Mono',monospace;font-size:14px;padding:2px 0;min-width:120px}
+  .field input:focus{outline:none;border-bottom-color:#fff}
+  .stamp-btn{background:#fff;color:var(--ink);border:none;border-radius:6px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.04em;
+    padding:8px 14px;cursor:pointer;text-transform:uppercase}
+  .stamp-btn:hover{background:#e8eaee}
+  .sub{color:var(--muted);font-size:12px;margin:0 2px 20px}
+
+  .legend{display:flex;gap:10px;flex-wrap:wrap;margin:18px 2px 10px}
+  .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px}
+  .tag.bc{background:var(--bc-bg);color:var(--bc)}
+  .tag.rd{background:var(--rd-bg);color:var(--rd)}
+  .tag.gn{background:var(--gn-bg);color:var(--gn)}
+
+  h2{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);
+    font-weight:600;margin:30px 2px 8px;font-family:'IBM Plex Mono',monospace}
+
+  .board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .card.bc{border-top:3px solid var(--bc)} .card.rd{border-top:3px solid var(--rd)} .card.gn{border-top:3px solid var(--gn)}
+  .card .name{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;margin-bottom:10px}
+  .card.bc .name{color:var(--bc)} .card.rd .name{color:var(--rd)} .card.gn .name{color:var(--gn)}
+  .metric{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-top:1px solid var(--line)}
+  .metric:first-of-type{border-top:none}
+  .metric .lbl{font-size:11px;color:var(--muted)}
+  .metric .val{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;min-width:46px;text-align:right;
+    outline:none;padding:1px 4px;border-radius:4px}
+  .metric .val:focus{background:#fff7d6;box-shadow:inset 0 0 0 1.5px var(--rd)}
+  .hint{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;margin-left:6px}
+
+  .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  table{border-collapse:collapse;width:100%;min-width:880px}
+  thead th{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+    font-weight:600;padding:9px 10px;text-align:center;border-bottom:1px solid var(--line-strong);
+    white-space:nowrap;background:var(--panel)}
+  .grp{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;border-bottom:2px solid;padding:8px 10px}
+  .grp.bc{color:var(--bc);border-color:var(--bc)}
+  .grp.rd{color:var(--rd);border-color:var(--rd)}
+  .grp.gn{color:var(--gn);border-color:var(--gn)}
+  .disc{text-align:left;font-weight:500;padding:0 12px;white-space:nowrap;
+    border-right:1px solid var(--line);position:sticky;left:0;background:var(--panel);z-index:1}
+  tbody td{border-bottom:1px solid var(--line);padding:0;text-align:center;height:34px}
+  tbody td.num{font-family:'IBM Plex Mono',monospace;background:var(--cell)}
+  .sep-bc{border-left:1px solid var(--bc-bg)}
+  .sep-rd{border-left:1px solid var(--rd-bg)}
+  .sep-gn{border-left:1px solid var(--gn-bg)}
+  [contenteditable]{padding:7px 8px;min-width:46px;outline:none}
+  [contenteditable]:focus{background:#fff7d6;box-shadow:inset 0 0 0 1.5px var(--rd)}
+  .mk{font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:var(--ink);text-align:left}
+  tbody tr.total td{font-weight:700;border-top:2px solid var(--line-strong);background:#f0f2f5}
+  tbody tr.total .disc{background:#f0f2f5}
+  tbody tr.total td.num{background:#f0f2f5}
+  td.lo{background:var(--lo)!important} td.hi{background:var(--hi)!important}
+
+  .actions{display:flex;gap:10px;margin-top:18px}
+  .btn{background:var(--panel);border:1px solid var(--line-strong);border-radius:7px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.03em;
+    padding:9px 16px;cursor:pointer;color:var(--ink);text-transform:uppercase}
+  .btn:hover{background:#eef0f3}
+  .note{color:var(--muted);font-size:11.5px;margin-top:14px;max-width:780px;line-height:1.55}
+  .note b{color:var(--ink)}
+  @media print{.actions,.stamp-btn{display:none}body{background:#fff;padding:0}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="stamp">
+    <h1>Live Coverage Snapshot // 3-Provider Run</h1>
+    <div class="field"><label>Date</label><input id="d" placeholder="2026-06-23"></div>
+    <div class="field"><label>Time (local)</label><input id="t" placeholder="00:00"></div>
+    <div class="field"><label>Geo / VPN</label><input id="g" placeholder="-"></div>
+    <div class="field"><label>Analyst</label><input id="a" placeholder="Alex"></div>
+    <button class="stamp-btn" onclick="stampNow()">Stamp now</button>
+  </div>
+  <p class="sub">Single-moment snapshot. Counts are read by eye from the live front-ends. All cells are editable; totals and overround highlighting compute automatically.</p>
+
+  <div class="legend">
+    <span class="tag bc">VBET = BetConstruct (own feed)</span>
+    <span class="tag rd">qbet = Betradar (~30k/mo, long tail)</span>
+    <span class="tag gn">Hard Rock = Betgenius (official-data depth)</span>
+  </div>
+
+  <h2>1 // Breadth in the moment</h2>
+  <div class="board">
+    <div class="card bc"><div class="name">VBET</div>
+      <div class="metric"><span class="lbl">Disciplines LIVE</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Disciplines PRE</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Live events (total)</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Prematch events (total)</span><span class="val" contenteditable></span></div>
+      <div class="hint">from table (live): <span data-auto="2">0</span> disc.</div>
+    </div>
+    <div class="card rd"><div class="name">qbet</div>
+      <div class="metric"><span class="lbl">Disciplines LIVE</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Disciplines PRE</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Live events (total)</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Prematch events (total)</span><span class="val" contenteditable></span></div>
+      <div class="hint">from table (live): <span data-auto="5">0</span> disc.</div>
+    </div>
+    <div class="card gn"><div class="name">Hard Rock</div>
+      <div class="metric"><span class="lbl">Disciplines LIVE</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Disciplines PRE</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Live events (total)</span><span class="val" contenteditable></span></div>
+      <div class="metric"><span class="lbl">Prematch events (total)</span><span class="val" contenteditable></span></div>
+      <div class="hint">from table (live): <span data-auto="8">0</span> disc.</div>
+    </div>
+  </div>
+  <p class="note"><b>Disciplines LIVE</b> = how many distinct sports are actually running in the moment (take the full live menu, long tail included). The "from table" field is an auto cross-check: it counts disciplines with Live &gt; 0 from the table below.</p>
+
+  <h2>2 // Coverage by discipline</h2>
+  <div class="scroll">
+  <table id="cov">
+    <thead>
+      <tr>
+        <th rowspan="2" class="disc" style="border-bottom:2px solid var(--line-strong)">Discipline</th>
+        <th colspan="3" class="grp bc">VBET</th>
+        <th colspan="3" class="grp rd">qbet</th>
+        <th colspan="3" class="grp gn">Hard Rock</th>
+      </tr>
+      <tr>
+        <th class="sep-bc">Pre</th><th>Live</th><th>Mkts*</th>
+        <th class="sep-rd">Pre</th><th>Live</th><th>Mkts*</th>
+        <th class="sep-gn">Pre</th><th>Live</th><th>Mkts*</th>
+      </tr>
+    </thead>
+    <tbody id="covbody"></tbody>
+  </table>
+  </div>
+  <p class="note">* <b>Mkts</b> = average market depth per live event (estimate over 2-3 matches). Pre = prematch, Live = in the moment.</p>
+
+  <h2>3 // Market-depth deep-dive (one live match per discipline)</h2>
+  <div class="scroll">
+  <table id="depth">
+    <thead>
+      <tr>
+        <th class="disc" style="border-bottom:2px solid var(--line-strong);min-width:230px;text-align:left">Live match</th>
+        <th class="grp bc">VBET mkts</th>
+        <th class="grp rd">qbet mkts</th>
+        <th class="grp gn">Hard Rock mkts</th>
+        <th style="border-bottom:2px solid var(--line-strong);text-align:left;min-width:200px">Notes</th>
+      </tr>
+    </thead>
+    <tbody id="depthbody"></tbody>
+  </table>
+  </div>
+  <p class="note">Thesis: <b>Betradar wins on breadth</b> (long tail of disciplines), <b>Betgenius on depth</b> of markets on its official leagues (NFL / top football). Count markets on the same match wherever it exists on all three.</p>
+
+  <h2>4 // Overround / margin (same market across all three)</h2>
+  <div class="scroll">
+  <table id="or">
+    <thead>
+      <tr>
+        <th class="disc" style="border-bottom:2px solid var(--line-strong);min-width:230px;text-align:left">Market</th>
+        <th class="grp bc">VBET %</th>
+        <th class="grp rd">qbet %</th>
+        <th class="grp gn">Hard Rock %</th>
+        <th style="border-bottom:2px solid var(--line-strong)">Spread</th>
+      </tr>
+    </thead>
+    <tbody id="orbody"></tbody>
+  </table>
+  </div>
+  <p class="note">Overround = Σ(1/odds) − 1, in %. Enter the margin per book on the <b>same market / same event</b>. The tightest auto-highlights green, the fattest red; <b>Spread</b> = max − min (the markup spread between providers, same idea as the Corwyn case).</p>
+
+  <div class="actions">
+    <button class="btn" onclick="copyTSV()">Copy as TSV</button>
+    <button class="btn" onclick="window.print()">Print / PDF</button>
+    <span id="msg" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gn);align-self:center"></span>
+  </div>
+
+</div>
+
+<script>
+  const discs=["Football","Tennis","Basketball","Ice Hockey","Baseball","American Football",
+    "eSports (CS2/Dota/LoL)","Volleyball","Handball","Table Tennis","Snooker","Darts",
+    "MMA / Boxing","Cricket","Horse Racing","Other"];
+  const matches=["Football (top league)","Tennis (ATP/WTA)","Basketball (NBA/Euroleague)",
+    "American Football (NFL)","eSports (CS2 major)"];
+  const orRows=["Football top - 1X2","Football top - O/U 2.5","Football top - BTTS",
+    "Tennis - Match winner","Basketball - Moneyline","Basketball - Total points",
+    "American Football - Spread","eSports CS2 - Map winner"];
+  const seps=["sep-bc","","","sep-rd","","","sep-gn","",""];
+
+  const cb=document.getElementById('covbody');
+  discs.forEach(d=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td class="disc">'+d+'</td>'+seps.map(s=>'<td class="num '+s+'" contenteditable="true"></td>').join('');
+    cb.appendChild(tr);
+  });
+  const tot=document.createElement('tr');tot.className='total';
+  tot.innerHTML='<td class="disc">TOTAL</td>'+seps.map(s=>'<td class="num '+s+'" data-sum></td>').join('');
+  cb.appendChild(tot);
+
+  const db=document.getElementById('depthbody');
+  matches.forEach(m=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td class="disc mk" contenteditable="true">'+m+'</td>'+
+      '<td class="num sep-bc" contenteditable="true"></td>'+
+      '<td class="num sep-rd" contenteditable="true"></td>'+
+      '<td class="num sep-gn" contenteditable="true"></td>'+
+      '<td class="mk" contenteditable="true" style="padding:7px 10px"></td>';
+    db.appendChild(tr);
+  });
+
+  const ob=document.getElementById('orbody');
+  orRows.forEach(m=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td class="disc mk" contenteditable="true">'+m+'</td>'+
+      '<td class="num sep-bc" contenteditable="true"></td>'+
+      '<td class="num sep-rd" contenteditable="true"></td>'+
+      '<td class="num sep-gn" contenteditable="true"></td>'+
+      '<td class="num" data-spread></td>';
+    ob.appendChild(tr);
+  });
+
+  const num=t=>{const v=parseFloat(String(t).replace(/[^0-9.\-]/g,''));return isNaN(v)?null:v;};
+
+  function recalcCov(){
+    const rows=[...cb.querySelectorAll('tr')].filter(r=>!r.classList.contains('total'));
+    document.querySelectorAll('#covbody .total [data-sum]').forEach((cell,i)=>{
+      let s=0,any=false;
+      rows.forEach(r=>{const v=num(r.children[i+1].textContent);if(v!==null){s+=v;any=true;}});
+      cell.textContent=any?Math.round(s*100)/100:'';
+    });
+    document.querySelectorAll('[data-auto]').forEach(sp=>{
+      const idx=+sp.dataset.auto;let c=0;
+      rows.forEach(r=>{const v=num(r.children[idx].textContent);if(v!==null&&v>0)c++;});
+      sp.textContent=c;
+    });
+  }
+  cb.addEventListener('input',recalcCov);
+
+  function recalcOR(){
+    [...ob.querySelectorAll('tr')].forEach(tr=>{
+      const cells=[tr.children[1],tr.children[2],tr.children[3]];
+      const vals=cells.map(c=>num(c.textContent));
+      cells.forEach(c=>c.classList.remove('lo','hi'));
+      const present=vals.filter(v=>v!==null);
+      const sp=tr.children[4];
+      if(present.length>=2){
+        const mn=Math.min(...present),mx=Math.max(...present);
+        sp.textContent=(Math.round((mx-mn)*100)/100)+' pp';
+        if(mx!==mn){vals.forEach((v,i)=>{if(v===mn)cells[i].classList.add('lo');if(v===mx)cells[i].classList.add('hi');});}
+      } else sp.textContent='';
+    });
+  }
+  ob.addEventListener('input',recalcOR);
+
+  function stampNow(){
+    const n=new Date(),p=x=>String(x).padStart(2,'0');
+    document.getElementById('d').value=n.getFullYear()+'-'+p(n.getMonth()+1)+'-'+p(n.getDate());
+    document.getElementById('t').value=p(n.getHours())+':'+p(n.getMinutes());
+  }
+
+  function copyTSV(){
+    let out='COVERAGE SNAPSHOT\t'+document.getElementById('d').value+' '+document.getElementById('t').value+
+      '\tgeo:'+document.getElementById('g').value+'\n\nBREADTH\tVBET\tqbet\tHard Rock\n';
+    const labels=['Disciplines LIVE','Disciplines PRE','Live events','Prematch events'];
+    const cards=document.querySelectorAll('.card');
+    labels.forEach((l,i)=>{
+      out+=l+'\t'+[...cards].map(c=>c.querySelectorAll('.val')[i].textContent.trim()).join('\t')+'\n';
+    });
+    out+='\nCOVERAGE BY DISCIPLINE\n';
+    document.querySelectorAll('#cov tr').forEach(tr=>{out+=[...tr.children].map(c=>c.textContent.trim()).join('\t')+'\n';});
+    out+='\nMARKET DEPTH\n';
+    document.querySelectorAll('#depth tr').forEach(tr=>{out+=[...tr.children].map(c=>c.textContent.trim()).join('\t')+'\n';});
+    out+='\nOVERROUND\n';
+    document.querySelectorAll('#or tr').forEach(tr=>{out+=[...tr.children].map(c=>c.textContent.trim()).join('\t')+'\n';});
+    navigator.clipboard.writeText(out).then(()=>{
+      const m=document.getElementById('msg');m.textContent='Copied to clipboard';setTimeout(()=>m.textContent='',2200);
+    });
+  }
+</script>
+</body>
+</html>
