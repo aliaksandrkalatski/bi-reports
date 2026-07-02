@@ -93,6 +93,39 @@ h1{font-size:22px;font-weight:700;margin:0;letter-spacing:-.01em}
 #tblMonitor thead th.dragging{opacity:.4;cursor:grabbing}
 #tblMonitor thead th.drop-l{box-shadow:inset 2px 0 0 var(--blue)}
 #tblMonitor thead th.drop-r{box-shadow:inset -2px 0 0 var(--blue)}
+.fcount{background:var(--blue);color:#fff;border-radius:9px;font-size:10.5px;font-weight:700;padding:1px 7px;margin-left:6px}
+.fpanel{display:none;margin:0 24px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.fpanel.open{display:block}
+.fpanel-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 22px}
+.fpanel select,.fpanel input[type=number]{font-family:inherit;font-size:12.5px;border:1px solid var(--line-strong);border-radius:8px;padding:8px 10px;background:var(--surface);color:var(--ink);width:100%}
+.fpanel select:focus,.fpanel input:focus{outline:2px solid var(--blue);outline-offset:-1px}
+.fp-group{min-width:0}
+.fp-label{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:7px}
+.fp-act{color:var(--hint);font-weight:400}
+.range{display:flex;align-items:center;gap:6px}
+.range input{width:90px}
+.ms{border:1px solid var(--line-strong);border-radius:8px;max-height:132px;overflow:auto;padding:4px}
+.ms label{display:flex;align-items:center;gap:8px;padding:5px 7px;border-radius:6px;font-size:12.5px;cursor:pointer}
+.ms label:hover{background:var(--row-hover)}
+.ms input{accent-color:var(--blue);width:14px;height:14px}
+.ms-actions{display:flex;gap:12px;margin-top:6px}
+.ms-actions button{font-family:inherit;font-size:11.5px;font-weight:600;color:var(--blue-d);background:none;border:0;cursor:pointer;padding:0}
+.cascade{display:flex;flex-direction:column;gap:7px}
+.fpanel-foot{display:flex;align-items:center;gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.st.won{background:var(--pos-bg);color:var(--pos)}.st.won::before{background:var(--pos)}
+.st.lost{background:var(--neg-bg);color:var(--neg)}.st.lost::before{background:var(--neg)}
+.tbl tbody tr.row.rej td{background:var(--void-bg);color:var(--muted)}
+.tbl tbody tr.row.rej:hover td{background:#e6e8ec}
+.plink{color:var(--blue-d);cursor:pointer}.plink:hover{text-decoration:underline}
+#m-ptip{position:fixed;z-index:60;display:none;width:266px;background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;box-shadow:0 12px 34px rgba(20,25,40,.18);padding:13px 14px;font-size:12px}
+.ptip-h{display:flex;justify-content:space-between;align-items:baseline;font-weight:700;font-size:13px;margin-bottom:2px}
+.ptip-age{font-size:10.5px;color:var(--hint);font-weight:500}
+.ptip-em{color:var(--muted);font-size:11px;margin-bottom:10px}
+.ptip-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;margin-bottom:10px}
+.ptip-grid .k{font-size:10px;color:var(--hint);text-transform:uppercase;letter-spacing:.04em}
+.ptip-grid .v{font-weight:600;margin-top:1px}
+.ptip-grid .v.pos{color:var(--pos)}.ptip-grid .v.neg{color:var(--neg)}
+.ptip-flag{background:var(--warn-bg);color:var(--warn);border-radius:6px;padding:5px 8px;font-size:10.5px;font-weight:700;margin-bottom:10px;text-align:center}
 .tbl tbody td{padding:9px 11px;white-space:nowrap;border-top:1px solid var(--line);vertical-align:middle}
 .tbl tbody td.r{text-align:right}
 .tbl tbody tr.row{cursor:pointer}
@@ -139,6 +172,18 @@ tr.detail td{padding:0;border-top:0;background:#fafbfd}
 .det{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:14px 26px;padding:14px 22px;align-items:center}
 .det .f .k{color:var(--hint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;font-size:10px}
 .det .f .v{color:var(--ink);font-weight:500;margin-top:2px;font-size:12px}.det .v.neg{color:var(--neg)}
+.rowtools .exp{transition:transform .15s ease}
+.rowtools .exp.open{transform:rotate(90deg)}
+.legn{font-size:10px;font-weight:700;color:var(--muted);margin:0 3px 0 -2px}
+.legwrap{padding:14px 22px;background:#fafbfd}
+.leghead{display:flex;gap:22px;align-items:baseline;margin-bottom:10px;flex-wrap:wrap}
+.legtype{font-weight:700;font-size:13px}
+.legtbl{width:100%;border-collapse:collapse;font-size:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.legtbl th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--hint);font-weight:600;padding:8px 11px;border-bottom:1px solid var(--line-strong)}
+.legtbl td{padding:8px 11px;border-top:1px solid var(--line)}
+.legtbl td small{display:block;color:var(--hint);font-size:10.5px;margin-top:1px}
+.legtbl .r{text-align:right}
+.legtbl tfoot td{font-weight:700;border-top:1px solid var(--line-strong);background:#fafbfd}
 .foot{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px;background:var(--surface)}
 
 /* KPI tiles (liability) */
@@ -200,12 +245,41 @@ tr.detail td{padding:0;border-top:0;background:#fafbfd}
       </div>
     </div>
     <div class="filters">
-      <div class="fg"><label>Project</label><select id="m-project"><option value="">All projects</option></select></div>
-      <div class="fg"><label>Sport</label><select id="m-sport"><option value="">All sports</option></select></div>
       <div class="fg"><label>Type</label><div class="seg" id="m-type"><button data-v="" aria-pressed="true">All</button><button data-v="live" aria-pressed="false">Live</button><button data-v="pre" aria-pressed="false">Prematch</button></div></div>
-      <div class="fg"><label>Stake from, &euro;</label><input id="m-stake" type="number" value="50" min="0" style="width:92px"></div>
-      <div class="fg"><label>Search event / player</label><input id="m-search" type="text" placeholder="Search..." style="width:210px"></div>
+      <div class="fg"><label>Search event / player / bet ID</label><input id="m-search" type="text" placeholder="Search..." style="width:230px"></div>
       <label class="vfilter"><input type="checkbox" id="m-value"> Value bets only</label>
+      <button class="btn ghost" id="m-allBtn" style="margin-left:auto"><svg viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></svg>All filters<span class="fcount" id="m-fcount" style="display:none">0</span></button>
+    </div>
+    <div class="fpanel" id="m-fpanel">
+      <div class="fpanel-grid">
+        <div class="fp-group"><div class="fp-label">Bet type</div><div class="ms" id="m-betType">
+          <label><input type="checkbox" value="single" checked> Single</label>
+          <label><input type="checkbox" value="multi"> Multi</label>
+          <label><input type="checkbox" value="system"> System</label>
+        </div></div>
+        <div class="fp-group"><div class="fp-label">Status</div><div class="ms" id="m-status">
+          <label><input type="checkbox" value="pending" checked> Pending</label>
+          <label><input type="checkbox" value="won" checked> Won</label>
+          <label><input type="checkbox" value="lost" checked> Lost</label>
+          <label><input type="checkbox" value="cashout" checked> Cashout</label>
+          <label><input type="checkbox" value="rejected" checked> Rejected</label>
+          <label><input type="checkbox" value="void" checked> Void</label>
+        </div></div>
+        <div class="fp-group">
+          <div class="fp-label">Stake range, &euro;</div>
+          <div class="range"><input id="m-stakeFrom" type="number" placeholder="from" min="0"><span class="dim">-</span><input id="m-stakeTo" type="number" placeholder="to" min="0"></div>
+          <div class="fp-label" style="margin-top:12px">Clients <span class="fp-act" id="m-cliCount">(all)</span></div>
+          <div class="ms" id="m-clients"></div>
+          <div class="ms-actions"><button id="m-cliAll">Select all</button><button id="m-cliNone">Clear</button></div>
+        </div>
+        <div class="fp-group"><div class="fp-label">Event tree</div><div class="cascade">
+          <select id="m-cSport"><option value="">All sports</option></select>
+          <select id="m-cCat"><option value="">All categories</option></select>
+          <select id="m-cTour"><option value="">All tournaments</option></select>
+          <select id="m-cMkt"><option value="">All markets</option></select>
+        </div></div>
+      </div>
+      <div class="fpanel-foot"><button class="btn ghost" id="m-fReset">Reset all filters</button><span class="dim">Drill the event tree only as deep as you need.</span></div>
     </div>
     <div class="card bleed"><div class="scroll"><table class="tbl" id="tblMonitor"><thead><tr id="m-head"></tr></thead><tbody id="m-rows"></tbody></table></div>
       <div class="foot"><span id="m-footCount">0 bets</span><span>updated <span id="m-footTime" class="mono">--:--:--</span></span></div>
@@ -280,13 +354,15 @@ const COLS=[
  {k:'potEur',t:'Potential win, EUR',r:true,opt:true},
  {k:'category',t:'Category',opt:true},
  {k:'tournament',t:'Tournament',opt:true},
- {k:'event',t:'Event',opt:false},
+ {k:'event',t:'Selection',opt:false},
  {k:'market',t:'Market',opt:true},
  {k:'outcome',t:'Outcome',opt:true},
+ {k:'status',t:'Status',opt:true},
  {k:'odds',t:'Odds',r:true,opt:true},
  {k:'value',t:'Value',r:true,opt:true},
  {k:'project',t:'Project',opt:true},
  {k:'email',t:'Email',opt:true},
+ {k:'handle',t:'Username',opt:true},
  {k:'reject',t:'Reject reason',opt:true},
  {k:'score',t:'Score',opt:true},
  {k:'startdate',t:'Start date',opt:true},
@@ -305,7 +381,7 @@ const MK_1V1=['Match Winner','2 Set Winner','Total Games','Handicap','Correct Sc
 const PROJECTS=['Aurora','Nordic','Vega','Cobra','Lynx','Falcon','Comet'];
 const CATS=['Italy','India','Egypt','France','International','World','Ukraine','Romania','Argentina','England','Spain'];
 const TAGS=['velocity','multi-acc','arb','dump','bonus'];const HI=new Set(['multi-acc','arb']);
-const STATUS=[['accepted',0.60],['pending',0.14],['cashout',0.09],['rejected',0.09],['void',0.08]];
+const STATUS=[['pending',0.58],['rejected',0.10],['won',0.12],['lost',0.10],['cashout',0.06],['void',0.04]];
 const FLAGS=['\u{1F1EE}\u{1F1F9}','\u{1F1EE}\u{1F1F3}','\u{1F1EA}\u{1F1EC}','\u{1F1EB}\u{1F1F7}','\u{1F1FA}\u{1F1E6}','\u{1F1F5}\u{1F1F1}','\u{1F1E9}\u{1F1EA}','\u{1F1EA}\u{1F1F8}','\u{1F1EC}\u{1F1E7}','\u{1F1E7}\u{1F1F7}'];
 const REJ=['failed to accept bet: limit exceeded','odds changed','market suspended','liability cap reached'];
 const SCORES=['0-0','1-0','0-1','1-1','2-1','2-2','1-2','5-1','3-2'];
@@ -327,30 +403,49 @@ function makeBet(when){
   const type=Math.random()<0.55?'live':'pre';
   const d=when||new Date();
   const status=wpick(STATUS);
-  return {id:++SEQ,time:d,type,country:rnd(FLAGS),device:Math.random()<0.6?'mobile':'desktop',sport,
+  const betType=wpick([['single',0.80],['multi',0.15],['system',0.05]]);
+  const nLegs=betType==='single'?1:2+Math.floor(Math.random()*4);
+  let legList=null,fOdds=odds,fPot=potEur;
+  if(betType!=='single'){legList=[];let prod=1;
+    for(let i=0;i<nLegs;i++){const ls=rnd(SPORTS),lpool=ONE.has(ls)?PLAYERS:TEAMS;let la=rnd(lpool),lb=rnd(lpool);while(lb===la)lb=rnd(lpool);
+      const lo=+(1.15+Math.random()*2.6).toFixed(2);prod*=lo;
+      legList.push({event:la+' v '+lb,market:rnd(ONE.has(ls)?MK_1V1:MK_BALL),outcome:Math.random()<0.5?la:lb,odds:lo,tournament:rnd(TOURN[ls])});}
+    fOdds=+prod.toFixed(2);fPot=+(betEur*fOdds).toFixed(2);}
+  return {id:++SEQ,betType,legs:nLegs,legList,betid:betid(),time:d,type,country:rnd(FLAGS),device:Math.random()<0.6?'mobile':'desktop',sport,
     fraud:Math.random()<0.20?rnd(TAGS):null,email:mask(),handle:handle(),project:rnd(PROJECTS),
     category:rnd(CATS),tournament:t,event:a+' v '+b,market:rnd(ONE.has(sport)?MK_1V1:MK_BALL),
-    outcome:Math.random()<0.5?a:b,odds,betEur,potEur,cur,sym,origStake:+(betEur/rate).toFixed(2),
+    outcome:Math.random()<0.5?a:b,odds:fOdds,betEur,potEur:fPot,cur,sym,origStake:+(betEur/rate).toFixed(2),
     value:Math.random()<0.42?+(2+Math.random()*16).toFixed(2):null,status,
     score:type==='live'?rnd(SCORES):'-',startdate:dts(new Date(d.getTime()+Math.floor((Math.random()*6-1)*3600000))),
-    rej:status==='rejected'?rnd(REJ):'',ip:rnd(['DE','PL','UA','IT','ES','FR']),since:Math.floor(1+Math.random()*36)+'m',last24:+(betEur*(2+Math.random()*8)).toFixed(0)};
+    rej:status==='rejected'?rnd(REJ):'',ip:rnd(['DE','PL','UA','IT','ES','FR']),since:Math.floor(1+Math.random()*36)+'m',last24:+(betEur*(2+Math.random()*8)).toFixed(0),pPnl:+(((Math.random()*2-1)*7000)).toFixed(0),pRej:+(2+Math.random()*26).toFixed(1),pStakeLim:(5+Math.round(Math.random()*45))*100,pLiabLim:(20+Math.round(Math.random()*180))*100,pBets:Math.floor(40+Math.random()*3200),acctAge:Math.floor(1+Math.random()*47)+'mo'};
 }
 let DATA=[];(function(){const now=Date.now();for(let i=26;i>=0;i--)DATA.push(makeBet(new Date(now-i*9000)));DATA.reverse();})();
 let autoOn=true,fType='',fValue=false;const openRows=new Set();
 const $=id=>document.getElementById(id);
 const valClass=v=>v==null?'na':v>=10?'hi':v>=6?'mid':'';
 const devIco=d=>d==='mobile'?'<svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>':'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>';
+function selVals(id){return [...$(id).querySelectorAll('input:checked')].map(i=>i.value);}
 function visible(){
-  const proj=$('m-project').value,sport=$('m-sport').value,minS=+$('m-stake').value||0,q=$('m-search').value.trim().toLowerCase();
+  const q=$('m-search').value.trim().toLowerCase();
+  const bt=selVals('m-betType'),sts=selVals('m-status'),cli=selVals('m-clients');
+  const sf=+$('m-stakeFrom').value||0,st=$('m-stakeTo').value===''?Infinity:+$('m-stakeTo').value;
+  const cS=$('m-cSport').value,cC=$('m-cCat').value,cT=$('m-cTour').value,cM=$('m-cMkt').value;
   return DATA.filter(b=>{
-    if(proj&&b.project!==proj)return false; if(sport&&b.sport!==sport)return false;
-    if(fType&&b.type!==fType)return false; if(b.betEur<minS)return false;
+    if(fType&&b.type!==fType)return false;
     if(fValue&&b.value==null)return false;
-    if(q&&!(b.event.toLowerCase().includes(q)||b.email.toLowerCase().includes(q)||b.handle.toLowerCase().includes(q)))return false;
+    if(bt.length&&!bt.includes(b.betType))return false;
+    if(sts.length&&!sts.includes(b.status))return false;
+    if(cli.length&&!cli.includes(b.project))return false;
+    if(b.betEur<sf||b.betEur>st)return false;
+    if(cS&&b.sport!==cS)return false;
+    if(cC&&b.category!==cC)return false;
+    if(cT&&b.tournament!==cT)return false;
+    if(cM&&b.market!==cM)return false;
+    if(q&&!((b.event||'').toLowerCase().includes(q)||(b.email||'').toLowerCase().includes(q)||(b.handle||'').toLowerCase().includes(q)||(b.betid||'').toLowerCase().includes(q)))return false;
     return true;});
 }
 function cell(b,k){switch(k){
-  case 'tools':return '<td><span class="rowtools"><svg viewBox="0 0 24 24" title="copy bet id"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg><svg viewBox="0 0 24 24" title="flag"><path d="M4 21V4h12l-2 4 2 4H4"/></svg></span></td>';
+  case 'tools':return `<td><span class="rowtools">${b.legs>1?`<svg class="exp ${openRows.has(b.id)?'open':''}" viewBox="0 0 24 24" title="expand legs"><path d="M9 6l6 6-6 6"/></svg><span class="legn">${b.legs}</span>`:''}<svg viewBox="0 0 24 24" title="copy bet id"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg><svg viewBox="0 0 24 24" title="flag"><path d="M4 21V4h12l-2 4 2 4H4"/></svg></span></td>`;
   case 'time':return `<td class="t-time mono tnum">${clk(b.time)}</td>`;
   case 'country':return `<td><span class="flag">${b.country}</span></td>`;
   case 'device':return `<td class="dev">${devIco(b.device)}</td>`;
@@ -364,10 +459,12 @@ function cell(b,k){switch(k){
   case 'event':return `<td class="evt">${b.event}<small>${b.market}</small></td>`;
   case 'market':return `<td class="muted">${b.market}</td>`;
   case 'outcome':return `<td>${b.outcome}</td>`;
+  case 'status':return `<td><span class="st ${b.status}">${b.status.charAt(0).toUpperCase()+b.status.slice(1)}</span></td>`;
   case 'odds':return `<td class="r mono tnum">${b.odds.toFixed(2)}</td>`;
   case 'value':return `<td class="r"><span class="val ${valClass(b.value)}">${b.value==null?'n/a':`<span class="d"></span>${b.value.toFixed(2)}%`}</span></td>`;
   case 'project':return `<td>${b.project}</td>`;
-  case 'email':return `<td class="muted">${b.email}</td>`;
+  case 'email':return `<td class="muted"><span class="plink" data-id="${b.id}">${b.email}</span></td>`;
+  case 'handle':return `<td class="muted mono"><span class="plink" data-id="${b.id}">${b.handle}</span></td>`;
   case 'reject':return `<td class="${b.rej?'neg':'dim'}">${b.rej||'-'}</td>`;
   case 'score':return `<td class="mono tnum">${b.score}</td>`;
   case 'startdate':return `<td class="muted mono tnum">${b.startdate}</td>`;
@@ -375,18 +472,49 @@ function cell(b,k){switch(k){
   case 'potwin2':return `<td class="r mono tnum">${b.sym}${eur(b.origStake*b.odds)}</td>`;
   case 'betid':return `<td class="mono muted">${b.betid}</td>`;
 }return '<td></td>';}
-function detail(b){const span=COLS.length-hidden.size;return `<tr class="detail"><td colspan="${span}"><div class="det">
-  <div class="f"><div class="k">Bet ID</div><div class="v mono">${b.betid}</div></div>
-  <div class="f"><div class="k">Placed</div><div class="v mono">${clk(b.time)}</div></div>
-  <div class="f"><div class="k">Player</div><div class="v">${b.email} <span class="dim">(${b.handle})</span></div></div>
-  <div class="f"><div class="k">Signup region</div><div class="v">${b.ip} &middot; ${b.since} old</div></div>
-  <div class="f"><div class="k">Stake / potential</div><div class="v mono">${b.sym}${eur(b.origStake)} (\u20ac${eur(b.betEur)}) &rarr; \u20ac${eur(b.potEur)} @ ${b.odds.toFixed(2)}</div></div>
-  <div class="f"><div class="k">Value</div><div class="v">${b.value==null?'n/a':b.value.toFixed(2)+'% edge'}</div></div>
-  <div class="f"><div class="k">Fraud tags</div><div class="v ${b.fraud?'neg':''}">${b.fraud||'none'}</div></div>
-  <div class="f"><div class="k">24h stake</div><div class="v mono">\u20ac${(+b.last24).toLocaleString('en-US')}</div></div>
-  ${b.rej?`<div class="f" style="grid-column:span 2"><div class="k">Reject reason</div><div class="v neg">${b.rej}</div></div>`:''}
-  <button class="btn blue" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>View player</button>
-</div></td></tr>`;}
+function detail(b){const span=COLS.length-hidden.size;const legs=b.legList||[];
+  return `<tr class="detail"><td colspan="${span}"><div class="legwrap">
+  <div class="leghead"><span class="legtype">${b.betType==='system'?'System':'Multi'} \u00b7 ${b.legs} legs</span>
+    <span class="dim">Bet ID <span class="mono">${b.betid}</span></span>
+    <span class="dim">Stake <span class="mono">${b.sym}${eur(b.origStake)}</span> \u2192 <span class="mono">\u20ac${eur(b.potEur)}</span> @ ${b.odds.toFixed(2)}</span></div>
+  <table class="legtbl"><thead><tr><th>#</th><th>Selection</th><th>Market</th><th>Pick</th><th class="r">Odds</th></tr></thead><tbody>
+  ${legs.map((l,i)=>`<tr><td class="dim">${i+1}</td><td>${l.event}<small>${l.tournament}</small></td><td class="muted">${l.market}</td><td>${l.outcome}</td><td class="r mono tnum">${l.odds.toFixed(2)}</td></tr>`).join('')}
+  </tbody><tfoot><tr><td colspan="4" class="r">Combined odds</td><td class="r mono tnum">${b.odds.toFixed(2)}</td></tr></tfoot></table>
+  </div></td></tr>`;}
+const noHover=window.matchMedia&&window.matchMedia('(hover: none)').matches;
+const ptip=document.createElement('div');ptip.id='m-ptip';document.body.appendChild(ptip);let ptipT;
+function playerCard(b){const opNet=-b.pPnl;return `
+  <div class="ptip-h"><span class="mono">${b.handle}</span><span class="ptip-age">${b.acctAge} old</span></div>
+  <div class="ptip-em">${b.email} \u00b7 ${b.ip}</div>
+  <div class="ptip-grid">
+    <div><div class="k">Net P&L (op.)</div><div class="v ${opNet>=0?'pos':'neg'}">${opNet>=0?'+':'-'}\u20ac${Math.abs(opNet).toLocaleString('en-US')}</div></div>
+    <div><div class="k">Reject rate</div><div class="v">${b.pRej}%</div></div>
+    <div><div class="k">Stake limit</div><div class="v">\u20ac${b.pStakeLim.toLocaleString('en-US')}</div></div>
+    <div><div class="k">Liability limit</div><div class="v">\u20ac${b.pLiabLim.toLocaleString('en-US')}</div></div>
+    <div><div class="k">Bets lifetime</div><div class="v">${b.pBets.toLocaleString('en-US')}</div></div>
+    <div><div class="k">24h stake</div><div class="v">\u20ac${(+b.last24).toLocaleString('en-US')}</div></div>
+  </div>
+  ${b.fraud?`<div class="ptip-flag">flag: ${b.fraud}</div>`:''}
+  <button class="btn blue pbtn" style="width:100%;justify-content:center">Open player</button>`;}
+function showPtip(b,x,y){clearTimeout(ptipT);ptip.innerHTML=playerCard(b);ptip.style.display='block';
+  const w=ptip.offsetWidth,h=ptip.offsetHeight;let px=x+14,py=y+14;
+  if(px+w>innerWidth-8)px=x-w-14;if(py+h>innerHeight-8)py=innerHeight-h-8;if(py<8)py=8;
+  ptip.style.left=px+'px';ptip.style.top=py+'px';
+  const btn=ptip.querySelector('.pbtn');if(btn)btn.addEventListener('click',()=>openPlayer(b));}
+function hidePtip(){ptipT=setTimeout(()=>{ptip.style.display='none';},140);}
+ptip.addEventListener('mouseenter',()=>clearTimeout(ptipT));
+ptip.addEventListener('mouseleave',hidePtip);
+function openPlayer(b){const w=window.open('','_blank','width=560,height=680');if(!w)return;const opNet=-b.pPnl;
+  w.document.write(`<!doctype html><meta charset="utf-8"><title>Player ${b.handle}</title><style>body{font-family:Inter,system-ui,sans-serif;background:#f5f6f8;color:#1f2430;margin:0;padding:24px}h1{font-size:18px;margin:0 0 2px}.em{color:#6b7280;font-size:13px;margin-bottom:18px}.g{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:470px}.c{background:#fff;border:1px solid #e7e9ee;border-radius:10px;padding:12px 14px}.k{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#9aa3af}.v{font-size:16px;font-weight:700;margin-top:3px}.pos{color:#1f8a4c}.neg{color:#c0392b}.note{margin-top:20px;color:#9aa3af;font-size:11px}</style>
+  <h1>${b.handle}</h1><div class="em">${b.email} \u00b7 ${b.ip} \u00b7 ${b.acctAge} old</div>
+  <div class="g">
+    <div class="c"><div class="k">Net P&L (operator)</div><div class="v ${opNet>=0?'pos':'neg'}">${opNet>=0?'+':'-'}\u20ac${Math.abs(opNet).toLocaleString('en-US')}</div></div>
+    <div class="c"><div class="k">Reject rate</div><div class="v">${b.pRej}%</div></div>
+    <div class="c"><div class="k">Stake limit</div><div class="v">\u20ac${b.pStakeLim.toLocaleString('en-US')}</div></div>
+    <div class="c"><div class="k">Liability limit</div><div class="v">\u20ac${b.pLiabLim.toLocaleString('en-US')}</div></div>
+    <div class="c"><div class="k">Bets lifetime</div><div class="v">${b.pBets.toLocaleString('en-US')}</div></div>
+    <div class="c"><div class="k">24h stake</div><div class="v">\u20ac${(+b.last24).toLocaleString('en-US')}</div></div>
+  </div><div class="note">Mock player profile - synthetic data.</div>`);w.document.close();}
 let dragKey=null;
 function head(){
   const vis=COLS.filter(c=>!hidden.has(c.k));
@@ -404,9 +532,13 @@ function head(){
 }
 function rows(newId){
   const rs=visible(),vis=COLS.filter(c=>!hidden.has(c.k));
-  $('m-rows').innerHTML=rs.map(b=>`<tr class="row ${b.id===newId?'new':''}" data-id="${b.id}">${vis.map(c=>cell(b,c.k)).join('')}</tr>`+(openRows.has(b.id)?detail(b):'')).join('');
-  $('m-rows').querySelectorAll('tr.row').forEach(tr=>tr.addEventListener('click',()=>{const id=+tr.dataset.id;openRows.has(id)?openRows.delete(id):openRows.add(id);rows();}));
-  const open=DATA.filter(b=>b.status==='accepted'||b.status==='pending').length;
+  $('m-rows').innerHTML=rs.map(b=>`<tr class="row ${b.id===newId?'new':''} ${b.status==='rejected'?'rej':''}" data-id="${b.id}">${vis.map(c=>cell(b,c.k)).join('')}</tr>`+(openRows.has(b.id)?detail(b):'')).join('');
+  $('m-rows').querySelectorAll('tr.row').forEach(tr=>tr.addEventListener('click',()=>{const id=+tr.dataset.id;const b=DATA.find(x=>x.id===id);if(!b||b.legs<=1)return;openRows.has(id)?openRows.delete(id):openRows.add(id);rows();}));
+  $('m-rows').querySelectorAll('.plink').forEach(el=>{const b=DATA.find(x=>x.id===+el.dataset.id);if(!b)return;
+    el.addEventListener('mouseenter',e=>showPtip(b,e.clientX,e.clientY));
+    el.addEventListener('mouseleave',hidePtip);
+    el.addEventListener('click',e=>{e.stopPropagation();if(noHover)openPlayer(b);});});
+  const open=DATA.filter(b=>b.status==='pending').length;
   $('m-footCount').textContent=`${rs.length} bets shown / ${DATA.length} in feed / ${open} open`;
   $('m-live').textContent=`${open} open`; $('m-footTime').textContent=clk(new Date());
 }
@@ -414,15 +546,58 @@ function colMenu(){$('m-colMenu').innerHTML=COLS.map(c=>`<label><input type="che
   $('m-colMenu').querySelectorAll('input').forEach(i=>i.addEventListener('change',e=>{const k=e.target.dataset.k;e.target.checked?hidden.delete(k):hidden.add(k);head();rows();}));}
 $('m-colBtn').addEventListener('click',e=>{e.stopPropagation();$('m-colMenu').classList.toggle('open');});
 document.addEventListener('click',()=>$('m-colMenu').classList.remove('open'));
-(function(){PROJECTS.forEach(p=>$('m-project').insertAdjacentHTML('beforeend',`<option>${p}</option>`));SPORTS.forEach(s=>$('m-sport').insertAdjacentHTML('beforeend',`<option>${s}</option>`));})();
-['m-project','m-sport','m-stake','m-search'].forEach(id=>$(id).addEventListener('input',()=>rows()));
-$('m-type').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fType=b.dataset.v;$('m-type').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));rows();});
-$('m-value').addEventListener('change',e=>{fValue=e.target.checked;rows();});
+function optFill(sel,all,list){const keep=sel.value;sel.innerHTML=`<option value="">${all}</option>`+list.map(x=>`<option ${x===keep?'selected':''}>${x}</option>`).join('');}
+function fillCascade(){
+  const S=$('m-cSport'),C=$('m-cCat'),T=$('m-cTour'),M=$('m-cMkt');
+  optFill(S,'All sports',[...new Set(DATA.map(b=>b.sport))].sort());
+  const cS=S.value;
+  optFill(C,'All categories',[...new Set(DATA.filter(b=>!cS||b.sport===cS).map(b=>b.category))].sort());
+  const cC=C.value;
+  optFill(T,'All tournaments',[...new Set(DATA.filter(b=>(!cS||b.sport===cS)&&(!cC||b.category===cC)).map(b=>b.tournament))].sort());
+  const cT=T.value;
+  optFill(M,'All markets',[...new Set(DATA.filter(b=>(!cS||b.sport===cS)&&(!cC||b.category===cC)&&(!cT||b.tournament===cT)).map(b=>b.market))].sort());
+}
+function activeCount(){let n=0;
+  const bt=selVals('m-betType');if(!(bt.length===1&&bt[0]==='single'))n++;
+  if(selVals('m-status').length!==6)n++;
+  if($('m-stakeFrom').value||$('m-stakeTo').value)n++;
+  if(selVals('m-clients').length!==PROJECTS.length)n++;
+  if($('m-cSport').value||$('m-cCat').value||$('m-cTour').value||$('m-cMkt').value)n++;
+  return n;}
+function apply(){
+  const n=activeCount(),fc=$('m-fcount');fc.textContent=n;fc.style.display=n?'inline-block':'none';
+  const cli=selVals('m-clients');$('m-cliCount').textContent=cli.length===PROJECTS.length?'(all)':`(${cli.length}/${PROJECTS.length})`;
+  rows();
+}
+PROJECTS.forEach(p=>$('m-clients').insertAdjacentHTML('beforeend',`<label><input type="checkbox" value="${p}" checked> ${p}</label>`));
+fillCascade();
+$('m-allBtn').addEventListener('click',e=>{e.stopPropagation();$('m-fpanel').classList.toggle('open');});
+$('m-fpanel').addEventListener('click',e=>e.stopPropagation());
+$('m-search').addEventListener('input',apply);
+$('m-betType').addEventListener('change',apply);
+$('m-status').addEventListener('change',apply);
+$('m-clients').addEventListener('change',apply);
+['m-stakeFrom','m-stakeTo'].forEach(id=>$(id).addEventListener('input',apply));
+$('m-cliAll').addEventListener('click',()=>{$('m-clients').querySelectorAll('input').forEach(i=>i.checked=true);apply();});
+$('m-cliNone').addEventListener('click',()=>{$('m-clients').querySelectorAll('input').forEach(i=>i.checked=false);apply();});
+$('m-cSport').addEventListener('change',()=>{$('m-cCat').value='';$('m-cTour').value='';$('m-cMkt').value='';fillCascade();apply();});
+$('m-cCat').addEventListener('change',()=>{$('m-cTour').value='';$('m-cMkt').value='';fillCascade();apply();});
+$('m-cTour').addEventListener('change',()=>{$('m-cMkt').value='';fillCascade();apply();});
+$('m-cMkt').addEventListener('change',apply);
+$('m-fReset').addEventListener('click',()=>{
+  $('m-betType').querySelectorAll('input').forEach(i=>i.checked=(i.value==='single'));
+  $('m-status').querySelectorAll('input').forEach(i=>i.checked=true);
+  $('m-clients').querySelectorAll('input').forEach(i=>i.checked=true);
+  $('m-stakeFrom').value='';$('m-stakeTo').value='';
+  $('m-cSport').value='';$('m-cCat').value='';$('m-cTour').value='';$('m-cMkt').value='';
+  fillCascade();apply();});
+$('m-type').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fType=b.dataset.v;$('m-type').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));apply();});
+$('m-value').addEventListener('change',e=>{fValue=e.target.checked;apply();});
 const sw=$('m-auto');function toggle(){autoOn=!autoOn;sw.classList.toggle('on',autoOn);sw.setAttribute('aria-checked',autoOn);$('m-livedot').style.animationPlayState=autoOn?'running':'paused';}
 sw.addEventListener('click',toggle);sw.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle();}});
 $('m-refresh').addEventListener('click',function(){this.classList.add('spin');setTimeout(()=>this.classList.remove('spin'),1000);rows();});
-$('m-export').addEventListener('click',()=>{const rs=visible();const cols=['time','type','sport','project','category','tournament','event','market','outcome','odds','currency','bet_orig','bet_eur','potwin_orig','potwin_eur','value','status','score','startdate','betid'];
-  const body=rs.map(b=>[clk(b.time),b.type,b.sport,b.project,b.category,b.tournament,b.event,b.market,b.outcome,b.odds,b.cur,b.origStake,b.betEur,+(b.origStake*b.odds).toFixed(2),b.potEur,(b.value==null?'':b.value),b.status,b.score,b.startdate,b.betid].map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
+$('m-export').addEventListener('click',()=>{const rs=visible();const cols=['time','type','bet_type','sport','project','category','tournament','event','market','outcome','odds','currency','bet_orig','bet_eur','potwin_orig','potwin_eur','value','status','score','startdate','betid'];
+  const body=rs.map(b=>[clk(b.time),b.type,b.betType,b.sport,b.project,b.category,b.tournament,b.event,b.market,b.outcome,b.odds,b.cur,b.origStake,b.betEur,+(b.origStake*b.odds).toFixed(2),b.potEur,(b.value==null?'':b.value),b.status,b.score,b.startdate,b.betid].map(x=>`"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob=new Blob([cols.join(',')+'\n'+body],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ticket-stream.csv';a.click();});
 function push(){if(!autoOn)return;const b=makeBet(new Date());DATA.unshift(b);if(DATA.length>45)DATA.pop();rows(b.id);}
 head();colMenu();rows();
