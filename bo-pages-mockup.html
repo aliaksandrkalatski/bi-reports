@@ -411,13 +411,14 @@ function makeBet(when){
       const lo=+(1.15+Math.random()*2.6).toFixed(2);prod*=lo;
       legList.push({event:la+' v '+lb,market:rnd(ONE.has(ls)?MK_1V1:MK_BALL),outcome:Math.random()<0.5?la:lb,odds:lo,tournament:rnd(TOURN[ls])});}
     fOdds=+prod.toFixed(2);fPot=+(betEur*fOdds).toFixed(2);}
+  let pBos=1,pOaf=1;{const sf=Math.random();if(sf<0.18)pOaf=rnd([2,5,10]);else if(sf<0.33)pBos=rnd([0.5,0.2,0.1]);}
   return {id:++SEQ,betType,legs:nLegs,legList,betid:betid(),time:d,type,country:rnd(FLAGS),device:Math.random()<0.6?'mobile':'desktop',sport,
     fraud:Math.random()<0.20?rnd(TAGS):null,email:mask(),handle:handle(),project:rnd(PROJECTS),
     category:rnd(CATS),tournament:t,event:a+' v '+b,market:rnd(ONE.has(sport)?MK_1V1:MK_BALL),
     outcome:Math.random()<0.5?a:b,odds:fOdds,betEur,potEur:fPot,cur,sym,origStake:+(betEur/rate).toFixed(2),
     value:Math.random()<0.42?+(2+Math.random()*16).toFixed(2):null,status,
     score:type==='live'?rnd(SCORES):'-',startdate:dts(new Date(d.getTime()+Math.floor((Math.random()*6-1)*3600000))),
-    rej:status==='rejected'?rnd(REJ):'',ip:rnd(['DE','PL','UA','IT','ES','FR']),since:Math.floor(1+Math.random()*36)+'m',last24:+(betEur*(2+Math.random()*8)).toFixed(0),pPnl:+(((Math.random()*2-1)*7000)).toFixed(0),pRej:+(2+Math.random()*26).toFixed(1),pStakeLim:(5+Math.round(Math.random()*45))*100,pLiabLim:(20+Math.round(Math.random()*180))*100,pBets:Math.floor(40+Math.random()*3200),acctAge:Math.floor(1+Math.random()*47)+'mo'};
+    rej:status==='rejected'?rnd(REJ):'',ip:rnd(['DE','PL','UA','IT','ES','FR']),since:Math.floor(1+Math.random()*36)+'m',last24:+(betEur*(2+Math.random()*8)).toFixed(0),pPnl:+(((Math.random()*2-1)*7000)).toFixed(0),pRej:+(2+Math.random()*26).toFixed(1),pStakeLim:(5+Math.round(Math.random()*45))*100,pLiabLim:(20+Math.round(Math.random()*180))*100,pBets:Math.floor(40+Math.random()*3200),acctAge:Math.floor(1+Math.random()*47)+'mo',pBos,pOaf,pDelay:Math.floor(Math.random()*9),pAccept:+(70+Math.random()*29).toFixed(1)};
 }
 let DATA=[];(function(){const now=Date.now();for(let i=26;i>=0;i--)DATA.push(makeBet(new Date(now-i*9000)));DATA.reverse();})();
 let autoOn=true,fType='',fValue=false;const openRows=new Set();
@@ -488,9 +489,13 @@ function playerCard(b){const opNet=-b.pPnl;return `
   <div class="ptip-em">${b.email} \u00b7 ${b.ip}</div>
   <div class="ptip-grid">
     <div><div class="k">Net P&L (op.)</div><div class="v ${opNet>=0?'pos':'neg'}">${opNet>=0?'+':'-'}\u20ac${Math.abs(opNet).toLocaleString('en-US')}</div></div>
-    <div><div class="k">Reject rate</div><div class="v">${b.pRej}%</div></div>
+    <div><div class="k">Acceptance %</div><div class="v">${b.pAccept}%</div></div>
+    <div><div class="k">Reject %</div><div class="v">${b.pRej}%</div></div>
+    <div><div class="k">Bet delay</div><div class="v">${b.pDelay}s</div></div>
     <div><div class="k">Stake limit</div><div class="v">\u20ac${b.pStakeLim.toLocaleString('en-US')}</div></div>
     <div><div class="k">Liability limit</div><div class="v">\u20ac${b.pLiabLim.toLocaleString('en-US')}</div></div>
+    <div><div class="k">OAF (up)</div><div class="v ${b.pOaf>1?'pos':''}">\u00d7${b.pOaf.toFixed(2)}</div></div>
+    <div><div class="k">BOS (down)</div><div class="v ${b.pBos<1?'neg':''}">\u00d7${b.pBos.toFixed(2)}</div></div>
     <div><div class="k">Bets lifetime</div><div class="v">${b.pBets.toLocaleString('en-US')}</div></div>
     <div><div class="k">24h stake</div><div class="v">\u20ac${(+b.last24).toLocaleString('en-US')}</div></div>
   </div>
@@ -509,9 +514,13 @@ function openPlayer(b){const w=window.open('','_blank','width=560,height=680');i
   <h1>${b.handle}</h1><div class="em">${b.email} \u00b7 ${b.ip} \u00b7 ${b.acctAge} old</div>
   <div class="g">
     <div class="c"><div class="k">Net P&L (operator)</div><div class="v ${opNet>=0?'pos':'neg'}">${opNet>=0?'+':'-'}\u20ac${Math.abs(opNet).toLocaleString('en-US')}</div></div>
-    <div class="c"><div class="k">Reject rate</div><div class="v">${b.pRej}%</div></div>
+    <div class="c"><div class="k">Acceptance %</div><div class="v">${b.pAccept}%</div></div>
+    <div class="c"><div class="k">Reject %</div><div class="v">${b.pRej}%</div></div>
+    <div class="c"><div class="k">Bet delay</div><div class="v">${b.pDelay}s</div></div>
     <div class="c"><div class="k">Stake limit</div><div class="v">\u20ac${b.pStakeLim.toLocaleString('en-US')}</div></div>
     <div class="c"><div class="k">Liability limit</div><div class="v">\u20ac${b.pLiabLim.toLocaleString('en-US')}</div></div>
+    <div class="c"><div class="k">OAF (up)</div><div class="v ${b.pOaf>1?'pos':''}">\u00d7${b.pOaf.toFixed(2)}</div></div>
+    <div class="c"><div class="k">BOS (down)</div><div class="v ${b.pBos<1?'neg':''}">\u00d7${b.pBos.toFixed(2)}</div></div>
     <div class="c"><div class="k">Bets lifetime</div><div class="v">${b.pBets.toLocaleString('en-US')}</div></div>
     <div class="c"><div class="k">24h stake</div><div class="v">\u20ac${(+b.last24).toLocaleString('en-US')}</div></div>
   </div><div class="note">Mock player profile - synthetic data.</div>`);w.document.close();}
@@ -537,7 +546,7 @@ function rows(newId){
   $('m-rows').querySelectorAll('.plink').forEach(el=>{const b=DATA.find(x=>x.id===+el.dataset.id);if(!b)return;
     el.addEventListener('mouseenter',e=>showPtip(b,e.clientX,e.clientY));
     el.addEventListener('mouseleave',hidePtip);
-    el.addEventListener('click',e=>{e.stopPropagation();if(noHover)openPlayer(b);});});
+    el.addEventListener('click',e=>{e.stopPropagation();openPlayer(b);});});
   const open=DATA.filter(b=>b.status==='pending').length;
   $('m-footCount').textContent=`${rs.length} bets shown / ${DATA.length} in feed / ${open} open`;
   $('m-live').textContent=`${open} open`; $('m-footTime').textContent=clk(new Date());
